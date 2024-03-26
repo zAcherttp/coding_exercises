@@ -1,19 +1,38 @@
 #include <iostream>
 #include <algorithm>
 
+#include <chrono>
+#include <thread>
+
 using namespace std;
 
-void printArray(int arr[], int size) 
-{ 
-	int i;
-	for (i = 0; i < size; i++) { 
+void printArray(int arr[], int begin, int end, int size) 
+{
+    if(begin > 0)
+    {
+        for(int i = 0; i < begin; i++)
+        {
+            cout << arr[i] << " ";
+        }
+    }
+
+    cout << "[ ";
+	for (int i = begin; i < end; i++) { 
 		cout << arr[i] << " ";
 	}
-    cout << '\n';
+    cout << "] ";
+
+    if(end < size)
+    {
+        for(int i = end; i < size; i++)
+        {
+            cout << arr[i] << " ";
+        }
+    }
+
 } 
 
-void merge(int array[], int const left, int const mid,
-           int const right)
+void merge(int array[], int const left, int const mid, int const right)
 {
     int const subArrayOne = mid - left + 1;
     int const subArrayTwo = right - mid;
@@ -71,16 +90,15 @@ void merge(int array[], int const left, int const mid,
  
 // begin is for left index and end is right index
 // of the sub-array of arr to be sorted
-void mergeSort(int array[], int const begin, int const end)
+void mergeSort(int array[], int const begin, int const end, int size)
 {
     if (begin >= end)
         return;
- 
     int mid = begin + (end - begin) / 2;
-    mergeSort(array, begin, mid);
-    mergeSort(array, mid + 1, end);
+    mergeSort(array, begin, mid, size);
+    mergeSort(array, mid + 1, end, size);  
     merge(array, begin, mid, end);
-    printArray(array, end + 1);
+        printArray(array, begin, end + 1, size); cout << '\n';
 }
 
 int main() {
@@ -93,7 +111,7 @@ int main() {
         cin >> arr[i];
     }
 
-	mergeSort(arr, 0, size - 1); 
+	mergeSort(arr, 0, size - 1, size);
 
 	return 0;
 }
