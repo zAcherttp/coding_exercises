@@ -635,6 +635,7 @@ public:
 
         return result;
     }
+    
     polynomial operator-(const polynomial &p) const
     {
         int h_deg, l_deg;
