@@ -44,12 +44,15 @@
 //   hình.
 //// check ✓
 
-// 4. Một ma trận là một mảng hai chiều gồm m dòng
+// 4. Một ma trận là một mảng hai chiều gồm row dòng
 //    và n cột. Hãy khai báo và cài đặt lớp biểu diễn
 //    khái niệm ma trận để thực hiện các yêu cầu sau:
-// ▪ Tạo ma trận ngẫu nhiên m dòng, n cột
-// ▪ Nhập ma trận m dòng n cột
+// ▪ Tạo ma trận ngẫu nhiên row dòng, col cột
+//// check ✓
+// ▪ Nhập ma trận row dòng col cột
+//// check ✓
 // ▪ Operator cộng hai ma trận
+//// check ✓
 // ▪ Operator nhân hai ma trận
 // ▪ Viết chương trình cho phép tạo 2 ma trận, cộng,
 //   trừ 2 ma trận và xuất kết quả ra màn hình.
@@ -68,33 +71,33 @@ using namespace std;
 class complex
 {
 private:
-    float r;
+    float row;
     float i;
 
 public:
-    complex(float _real = 0.0, float _im = 1.0) : r(_real), i(_im) {}
+    complex(float _real = 0.0, float _im = 1.0) : row(_real), i(_im) {}
 
-    friend ostream &operator<<(ostream &os, const complex &c)
+    friend ostream &operator<<(ostream &os, const complex &col)
     {
-        os << '(' << c.r << " + " << c.i << "i" << ')';
+        os << '(' << col.row << " + " << col.i << "i" << ')';
         return os;
     }
 
-    friend istream &operator>>(istream &is, complex &c)
+    friend istream &operator>>(istream &is, complex &col)
     {
         cout << "nhap a + bi (a  b): ";
-        is >> c.r >> c.i;
+        is >> col.row >> col.i;
         return is;
     }
 
-    void setReal(float _r)
+    void setReal(float _row)
     {
-        r = _r;
+        row = _row;
     }
 
     const float getReal()
     {
-        return r;
+        return row;
     }
 
     void setIm(float _i)
@@ -107,24 +110,24 @@ public:
         return i;
     }
 
-    complex operator+(const complex &c)
+    complex operator+(const complex &col)
     {
-        return complex(r + c.r, i + c.i);
+        return complex(row + col.row, i + col.i);
     }
 
-    complex operator-(const complex &c)
+    complex operator-(const complex &col)
     {
-        return complex(r - c.r, i - c.i);
+        return complex(row - col.row, i - col.i);
     }
 
-    complex operator*(const complex &c)
+    complex operator*(const complex &col)
     {
-        return complex(r * i - c.r * c.i, r * c.i + c.r * i);
+        return complex(row * i - col.row * col.i, row * col.i + col.row * i);
     }
 
-    complex operator/(const complex &c)
+    complex operator/(const complex &col)
     {
-        return complex((r * i + c.r * c.i) / (i * i + c.i * c.i), (c.r * i - r * c.i) / (i * i + c.i * c.i));
+        return complex((row * i + col.row * col.i) / (i * i + col.i * col.i), (col.row * i - row * col.i) / (i * i + col.i * col.i));
     }
 };
 
@@ -275,7 +278,7 @@ public:
         }
     }
 
-    friend ostream &operator<<(ostream &os, const arrPhanSo &obj)
+    friend ostream &operator<<(ostream &os, const DSPhanSo &obj)
     {
         os << '{';
         for (int i = 0; i < obj.size - 1; i++)
@@ -286,7 +289,7 @@ public:
         return os;
     }
 
-    friend istream &operator>>(istream &is, arrPhanSo &obj)
+    friend istream &operator>>(istream &is, DSPhanSo &obj)
     {
         for (int i = 0; i < obj.size; i++)
         {
@@ -335,15 +338,15 @@ private:
 public:
     monomial(int _coefficient = 1, int _exponent = 1) : coefficient(_coefficient), exponent(_exponent) {}
 
-    friend ostream &operator<<(ostream &os, const monomial &m)
+    friend ostream &operator<<(ostream &os, const monomial &row)
     {
-        os << m.coefficient << "x^" << m.exponent;
+        os << row.coefficient << "x^" << row.exponent;
         return os;
     }
 
-    friend istream &operator>>(istream &is, monomial &m)
+    friend istream &operator>>(istream &is, monomial &row)
     {
-        is >> m.coefficient >> m.exponent;
+        is >> row.coefficient >> row.exponent;
         return is;
     }
 
@@ -357,9 +360,9 @@ public:
         return exponent;
     }
 
-    void setCoefficient(int _c)
+    void setCoefficient(int _col)
     {
-        coefficient = _c;
+        coefficient = _col;
     }
 
     void setExponent(int _e)
@@ -489,9 +492,9 @@ public:
         return constant;
     }
 
-    void setConstant(int _c)
+    void setConstant(int _col)
     {
-        constant = _c;
+        constant = _col;
     }
 
     double getValue(double _x)
@@ -581,22 +584,154 @@ public:
 
 /////////////////////////// cau 4.
 
+#define randomMatrixSizeRange 10;       // [2, n]
+#define randomMatrixFillValueRange 10;  // [-n, n]
 template<typename t>
 class matrix
 {
 private:
-    int m;
-    int n;
+    int row;
+    int col;
     t **matrix;
 public:
-    matrix(int _m, int _n) : m(_m), n(_n)
+    matrix(int _row = 1, int _col = 1, int random_fill = 1) : row(_row), col(_col)
     {
-        *matrix = new t[_n];
-        for(int i = 0; i < _m; i++)
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<int> dSize(2, randomMatrixSizeRange);
+        if(_row <= 1 || _col <= 1)
         {
-            **matrix = new t[_m];
+            if(_row <= 1 && _col >= 2)
+            {
+                row = dSize(gen);
+            } else if(_row >= 2 && _col <= 1)
+            {
+                col = dSize(gen);
+            } else
+            {
+                row = dSize(gen);
+                col = dSize(gen);
+            }
+
+        }
+        *matrix = new t[col];
+        for(int i = 0; i < row; i++)
+        {
+            **matrix = new t[col];
+        }
+        if(random_fill)
+        {
+            uniform_int_distribution<t> dValue(-randomMatrixFillValueRange, randomMatrixFillValueRange);
+            for(int i = 0; i < n; i++)
+            {
+                for(int j = 0; j < row; j++)
+                {
+                    matrix[i][j] = dValue(gen);
+                }
+            }
         }
     }
+
+    int getRow()
+    {
+        return row;
+    }
+    
+    int getCol()
+    {
+        return col;
+    }
+
+    friend ostream &operator<<(ostream &os, const matrix &v)
+    {
+        for(int i = 0; i < v.getRow(); i++)
+        {
+            os << '[';
+            for(int j = 0; j < v.getCol() - 1; i++)
+            {
+                os << v.matrix[i][j] << ' ';
+            }
+            os << v.matrix[i][v.getCol() - 1] << ']' << '\n';
+        }
+        return os;
+    }
+
+    friend istream &operator>>(istream &is, matrix &v)
+    {
+        for(int i = 0; i < v.getRow(); i++)
+        {
+            for(int j = 0; j < v.getCol(); i++)
+            {
+                is << v.matrix[i][j];
+            }
+        }
+        return is;
+    }
+
+    matrix operator+(const matrix &mt)
+    {
+        if(mt.row == row && mt.col == col)
+        {
+            matrix sum(row, col);
+            for(int i = 0; i < row; i++)
+            {
+                for(int j = 0; j < col; j++)
+                {
+                    sum[i][j] = matrix[i][j] + mt.matrix[i][j];
+                }
+            }
+            return sum;
+        } else
+        {
+            throw invalid_argument("matrices are not of equal sizes");
+        }
+    }
+
+    matrix operator-(const matrix &mt)
+    {
+        if(mt.row == row && mt.col == col)
+        {
+            matrix sum(row, col);
+            for(int i = 0; i < row; i++)
+            {
+                for(int j = 0; j < col; j++)
+                {
+                    sum[i][j] = matrix[i][j] - mt.matrix[i][j];
+                }
+            }
+            return sum;
+        } else
+        {
+            throw invalid_argument("matrices are not of equal sizes");
+        }
+    }
+
+    matrix operator*(const matrix &mt)
+    {
+        if(row == mt.col)
+        {
+            matrix prod(col, mt.row);
+            for(int i = 0; i < row; i++)
+            {
+                for(int j = 0; j < col; j++)
+                {
+                    t sum = 0;
+                    for(int k = 0; k < row; k++)
+                    {
+                        sum += matrix[i][k] + mt.matrix[k][j];
+                    }
+                    prod[i][j] = sum;
+                }
+            }
+            return prod;
+
+        } else
+        {
+            throw invalid_argument("columns number of the first matrix is not equal to the rows number of the second matrix");
+        }
+    }
+
+
 };
 
 int main()
@@ -639,6 +774,15 @@ int main()
     case 4:
     {
 
+        int a, b, m, n;
+        cout << "nhap lan luot so hang va so cot cua ma tran A: ";
+        cin >> a >> b;
+        cout << "nhap lan luot so hang va so cot cua ma tran B: ";
+        cin >> m >> n;
+        matrix<int> A(a, b), B(m, n);
+        cout << A << '\n' << "+\n" << B << '\n' << A + B << '\n';
+        cout << A << '\n' << "-\n" << B << '\n' << A - B << '\n'; 
+        cout << A << '\n' << "*\n" << B << '\n' << A * B << '\n';
         break;
     }
     default:
