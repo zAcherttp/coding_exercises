@@ -63,6 +63,7 @@
 #include <iostream>
 #include <algorithm>
 #include <random>
+#include <chrono>
 
 using namespace std;
 
@@ -584,47 +585,45 @@ public:
 
 /////////////////////////// cau 4.
 
-#define randomMatrixSizeRange 10;       // [2, n]
-#define randomMatrixFillValueRange 10;  // [-n, n]
-template<typename t>
-class matrix
+#define randomMatrixSizeRange 10       // [2, n]
+#define randomMatrixFillValueRange 10  // [-n, n]
+class Matrix
 {
 private:
     int row;
     int col;
-    t **matrix;
+    int **matrix{};
 public:
-    matrix(int _row = 1, int _col = 1, int random_fill = 1) : row(_row), col(_col)
+    Matrix(int _row = 1, int _col = 1, int random_fill = 1) : row(_row), col(_col)
     {
         random_device rd;
         mt19937 gen(rd());
+        gen.seed(std::chrono::steady_clock::now().time_since_epoch().count());
         uniform_int_distribution<int> dSize(2, randomMatrixSizeRange);
         if(_row <= 1 || _col <= 1)
         {
             if(_row <= 1 && _col >= 2)
             {
                 row = dSize(gen);
-            } else if(_row >= 2 && _col <= 1)
-            {
+            } else if (_row >= 2)
                 col = dSize(gen);
-            } else
-            {
+            else {
                 row = dSize(gen);
                 col = dSize(gen);
             }
 
         }
-        *matrix = new t[col];
+        matrix = new int*[col];
         for(int i = 0; i < row; i++)
         {
-            **matrix = new t[col];
+            matrix[i] = new int[col];
         }
         if(random_fill)
         {
-            uniform_int_distribution<t> dValue(-randomMatrixFillValueRange, randomMatrixFillValueRange);
-            for(int i = 0; i < n; i++)
+            uniform_int_distribution<int> dValue(-randomMatrixFillValueRange, randomMatrixFillValueRange);
+            for(int i = 0; i < row; i++)
             {
-                for(int j = 0; j < row; j++)
+                for(int j = 0; j < col; j++)
                 {
                     matrix[i][j] = dValue(gen);
                 }
@@ -632,52 +631,61 @@ public:
         }
     }
 
-    int getRow()
+    ~Matrix()
+    {
+        for (int i = 0; i < row; ++i)
+        {
+            delete[] matrix[i];
+        }
+        delete[] matrix;
+    }
+
+    int getRow() const
     {
         return row;
     }
-    
-    int getCol()
+
+    int getCol() const
     {
         return col;
     }
 
-    friend ostream &operator<<(ostream &os, const matrix &v)
+    friend ostream &operator<<(ostream &os, const Matrix &v)
     {
-        for(int i = 0; i < v.getRow(); i++)
+        for(int i = 0; i < v.row; i++)
         {
             os << '[';
-            for(int j = 0; j < v.getCol() - 1; i++)
+            for(int j = 0; j < v.col - 1; j++)
             {
                 os << v.matrix[i][j] << ' ';
             }
-            os << v.matrix[i][v.getCol() - 1] << ']' << '\n';
+            os << v.matrix[i][v.col - 1] << ']' << '\n';
         }
         return os;
     }
 
-    friend istream &operator>>(istream &is, matrix &v)
+    friend istream &operator>>(istream &is, Matrix &v)
     {
-        for(int i = 0; i < v.getRow(); i++)
+        for(int i = 0; i < v.row; i++)
         {
-            for(int j = 0; j < v.getCol(); i++)
+            for(int j = 0; j < v.col; j++)
             {
-                is << v.matrix[i][j];
+                is >> v.matrix[i][j];
             }
         }
         return is;
     }
 
-    matrix operator+(const matrix &mt)
+    Matrix operator+(const Matrix &mt)
     {
         if(mt.row == row && mt.col == col)
         {
-            matrix sum(row, col);
+            Matrix sum(row, col, 0);
             for(int i = 0; i < row; i++)
             {
                 for(int j = 0; j < col; j++)
                 {
-                    sum[i][j] = matrix[i][j] + mt.matrix[i][j];
+                    sum.matrix[i][j] = matrix[i][j] + mt.matrix[i][j];
                 }
             }
             return sum;
@@ -687,16 +695,16 @@ public:
         }
     }
 
-    matrix operator-(const matrix &mt)
+    Matrix operator-(const Matrix &mt)
     {
         if(mt.row == row && mt.col == col)
         {
-            matrix sum(row, col);
+            Matrix sum(row, col, 0);
             for(int i = 0; i < row; i++)
             {
                 for(int j = 0; j < col; j++)
                 {
-                    sum[i][j] = matrix[i][j] - mt.matrix[i][j];
+                    sum.matrix[i][j] = matrix[i][j] - mt.matrix[i][j];
                 }
             }
             return sum;
@@ -706,24 +714,24 @@ public:
         }
     }
 
-    matrix operator*(const matrix &mt)
+    Matrix operator*(const Matrix &mt)
     {
         if(row == mt.col)
         {
-            matrix prod(col, mt.row);
+            Matrix product(col, mt.row, 0);
             for(int i = 0; i < row; i++)
             {
                 for(int j = 0; j < col; j++)
                 {
-                    t sum = 0;
+                    int sum = 0;
                     for(int k = 0; k < row; k++)
                     {
-                        sum += matrix[i][k] + mt.matrix[k][j];
+                        sum += matrix[i][k] * mt.matrix[k][j];
                     }
-                    prod[i][j] = sum;
+                    product.matrix[i][j] = sum;
                 }
             }
-            return prod;
+            return product;
 
         } else
         {
@@ -779,10 +787,14 @@ int main()
         cin >> a >> b;
         cout << "nhap lan luot so hang va so cot cua ma tran B: ";
         cin >> m >> n;
-        matrix<int> A(a, b), B(m, n);
-        cout << A << '\n' << "+\n" << B << '\n' << A + B << '\n';
-        cout << A << '\n' << "-\n" << B << '\n' << A - B << '\n'; 
-        cout << A << '\n' << "*\n" << B << '\n' << A * B << '\n';
+        Matrix A(a, b), B(m, n);
+        cout << "nhap ma tran A:\n";
+        cin >> A;
+        cout << "nhap ma tran B:\n";
+        cin >> B;
+        cout << A << "+\n" << B << '\n' << A + B << '\n';
+        cout << A << "-\n" << B << '\n' << A - B << '\n'; 
+        cout << A << "*\n" << B << '\n' << A * B << '\n';
         break;
     }
     default:
