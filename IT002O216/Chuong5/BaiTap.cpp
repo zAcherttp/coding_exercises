@@ -769,9 +769,9 @@ int main()
         cout << "nhap lan luot bac cua da thuc A va da thuc B: \n";
         cin >> a >> b;
         polynomial A(a), B(b);
-        cout << "nhap " << a - 1 << " he so cho da thuc A\n";
+        cout << "nhap " << a + 1 << " he so cho da thuc A\n";
         cin >> A;
-        cout << "nhap " << b - 1 << " he so cho da thuc B\n";
+        cout << "nhap " << b + 1 << " he so cho da thuc B\n";
         cin >> B;
         cout << "da thuc A: " << A << '\n';
         cout << "da thuc B: " << B << '\n';
