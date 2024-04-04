@@ -594,7 +594,7 @@ private:
     int col;
     int **matrix{};
 public:
-    Matrix(int _row = 1, int _col = 1, int random_fill = 1) : row(_row), col(_col)
+    explicit Matrix(int _row = 1, int _col = 1, int random_fill = 1) : row(_row), col(_col)
     {
         random_device rd;
         mt19937 gen(rd());
@@ -640,12 +640,12 @@ public:
         delete[] matrix;
     }
 
-    int getRow() const
+    [[nodiscard]] int getRow() const
     {
         return row;
     }
 
-    int getCol() const
+    [[nodiscard]] int getCol() const
     {
         return col;
     }
@@ -716,15 +716,15 @@ public:
 
     Matrix operator*(const Matrix &mt)
     {
-        if(row == mt.col)
+        if(col == mt.row) // Modified this condition
         {
-            Matrix product(col, mt.row, 0);
+            Matrix product(row, mt.col, 0); // Corrected the dimensions here
             for(int i = 0; i < row; i++)
             {
-                for(int j = 0; j < col; j++)
+                for(int j = 0; j < mt.col; j++) // Modified the loop condition to mt.col
                 {
                     int sum = 0;
-                    for(int k = 0; k < row; k++)
+                    for(int k = 0; k < col; k++) // Modified the loop condition to col
                     {
                         sum += matrix[i][k] * mt.matrix[k][j];
                     }
@@ -732,14 +732,12 @@ public:
                 }
             }
             return product;
-
-        } else
+        }
+        else
         {
             throw invalid_argument("columns number of the first matrix is not equal to the rows number of the second matrix");
         }
     }
-
-
 };
 
 int main()
@@ -781,19 +779,18 @@ int main()
     }
     case 4:
     {
-
         int a, b, m, n;
         cout << "nhap lan luot so hang va so cot cua ma tran A: ";
         cin >> a >> b;
         cout << "nhap lan luot so hang va so cot cua ma tran B: ";
         cin >> m >> n;
-        Matrix A(a, b), B(m, n);
-        cout << "nhap ma tran A:\n";
-        cin >> A;
-        cout << "nhap ma tran B:\n";
-        cin >> B;
+        Matrix A(a, b, 1), B(m, n, 1);
+        // cout << "nhap ma tran A (" << A.getCol() << "x" << A.getRow() << "):\n";
+        // cin >> A;
+        // cout << "nhap ma tran B (" << B.getCol() << "x" << B.getRow() << "):\n";
+        // cin >> B;
         cout << A << "+\n" << B << '\n' << A + B << '\n';
-        cout << A << "-\n" << B << '\n' << A - B << '\n'; 
+        cout << A << "-\n" << B << '\n' << A - B << '\n';
         cout << A << "*\n" << B << '\n' << A * B << '\n';
         break;
     }
