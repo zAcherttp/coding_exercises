@@ -59,7 +59,6 @@
 
 //// check ✓
 
-
 #include <iostream>
 #include <algorithm>
 #include <random>
@@ -152,7 +151,7 @@ public:
     friend istream &operator>>(istream &is, PhanSo &ps)
     {
         is >> ps.tu >> ps.mau;
-        while(!ps.mau)
+        while (!ps.mau)
         {
             cout << "nhap lai mau so (!0): ";
             is >> ps.mau;
@@ -252,7 +251,6 @@ public:
     }
 };
 
-
 #define randomRange 100
 class DSPhanSo
 {
@@ -302,7 +300,7 @@ public:
     double getSumArray()
     {
         double sum = 0.0;
-        for(int i = 0; i < size; i++)
+        for (int i = 0; i < size; i++)
         {
             sum += array[i].getValue();
         }
@@ -544,7 +542,7 @@ public:
 
         return result;
     }
-    
+
     polynomial operator-(const polynomial &p) const
     {
         int h_deg, l_deg;
@@ -585,14 +583,15 @@ public:
 
 /////////////////////////// cau 4.
 
-#define randomMatrixSizeRange 10       // [2, n]
-#define randomMatrixFillValueRange 10  // [-n, n]
+#define randomMatrixSizeRange 10      // [2, n]
+#define randomMatrixFillValueRange 10 // [-n, n]
 class Matrix
 {
 private:
     int row;
     int col;
     int **matrix{};
+
 public:
     explicit Matrix(int _row = 1, int _col = 1, int random_fill = 1) : row(_row), col(_col)
     {
@@ -600,32 +599,43 @@ public:
         mt19937 gen(rd());
         gen.seed(std::chrono::steady_clock::now().time_since_epoch().count());
         uniform_int_distribution<int> dSize(2, randomMatrixSizeRange);
-        if(_row <= 1 || _col <= 1)
+        if (_row <= 1 || _col <= 1)
         {
-            if(_row <= 1 && _col >= 2)
+            if (_row <= 1 && _col >= 2)
             {
                 row = dSize(gen);
-            } else if (_row >= 2)
+            }
+            else if (_row >= 2)
                 col = dSize(gen);
-            else {
+            else
+            {
                 row = dSize(gen);
                 col = dSize(gen);
             }
-
         }
-        matrix = new int*[col];
-        for(int i = 0; i < row; i++)
+        matrix = new int *[row];
+        for (int i = 0; i < col; i++)
         {
-            matrix[i] = new int[col];
+            matrix[i] = new int[row];
         }
-        if(random_fill)
+        if (random_fill)
         {
             uniform_int_distribution<int> dValue(-randomMatrixFillValueRange, randomMatrixFillValueRange);
-            for(int i = 0; i < row; i++)
+            for (int i = 0; i < row; i++)
             {
-                for(int j = 0; j < col; j++)
+                for (int j = 0; j < col; j++)
                 {
                     matrix[i][j] = dValue(gen);
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < col; j++)
+                {
+                    matrix[i][j] = 0;
                 }
             }
         }
@@ -652,10 +662,10 @@ public:
 
     friend ostream &operator<<(ostream &os, const Matrix &v)
     {
-        for(int i = 0; i < v.row; i++)
+        for (int i = 0; i < v.row; i++)
         {
             os << '[';
-            for(int j = 0; j < v.col - 1; j++)
+            for (int j = 0; j < v.col - 1; j++)
             {
                 os << v.matrix[i][j] << ' ';
             }
@@ -666,9 +676,9 @@ public:
 
     friend istream &operator>>(istream &is, Matrix &v)
     {
-        for(int i = 0; i < v.row; i++)
+        for (int i = 0; i < v.row; i++)
         {
-            for(int j = 0; j < v.col; j++)
+            for (int j = 0; j < v.col; j++)
             {
                 is >> v.matrix[i][j];
             }
@@ -678,18 +688,19 @@ public:
 
     Matrix operator+(const Matrix &mt)
     {
-        if(mt.row == row && mt.col == col)
+        if (mt.row == row && mt.col == col)
         {
-            Matrix sum(row, col, 0);
-            for(int i = 0; i < row; i++)
+            Matrix add(row, col, 0);
+            for (int i = 0; i < row; i++)
             {
-                for(int j = 0; j < col; j++)
+                for (int j = 0; j < col; j++)
                 {
-                    sum.matrix[i][j] = matrix[i][j] + mt.matrix[i][j];
+                    add.matrix[i][j] = matrix[i][j] + mt.matrix[i][j];
                 }
             }
-            return sum;
-        } else
+            return add;
+        }
+        else
         {
             throw invalid_argument("matrices are not of equal sizes");
         }
@@ -697,18 +708,19 @@ public:
 
     Matrix operator-(const Matrix &mt)
     {
-        if(mt.row == row && mt.col == col)
+        if (mt.row == row && mt.col == col)
         {
-            Matrix sum(row, col, 0);
-            for(int i = 0; i < row; i++)
+            Matrix sub(row, col, 0);
+            for (int i = 0; i < row; i++)
             {
-                for(int j = 0; j < col; j++)
+                for (int j = 0; j < col; j++)
                 {
-                    sum.matrix[i][j] = matrix[i][j] - mt.matrix[i][j];
+                    sub.matrix[i][j] = matrix[i][j] - mt.matrix[i][j];
                 }
             }
-            return sum;
-        } else
+            return sub;
+        }
+        else
         {
             throw invalid_argument("matrices are not of equal sizes");
         }
@@ -716,15 +728,15 @@ public:
 
     Matrix operator*(const Matrix &mt)
     {
-        if(col == mt.row) // Modified this condition
+        if (col == mt.row) // Modified this condition
         {
             Matrix product(row, mt.col, 0); // Corrected the dimensions here
-            for(int i = 0; i < row; i++)
+            for (int i = 0; i < row; i++)
             {
-                for(int j = 0; j < mt.col; j++) // Modified the loop condition to mt.col
+                for (int j = 0; j < mt.col; j++) // Modified the loop condition to mt.col
                 {
                     int sum = 0;
-                    for(int k = 0; k < col; k++) // Modified the loop condition to col
+                    for (int k = 0; k < col; k++) // Modified the loop condition to col
                     {
                         sum += matrix[i][k] * mt.matrix[k][j];
                     }
@@ -784,14 +796,42 @@ int main()
         cin >> a >> b;
         cout << "nhap lan luot so hang va so cot cua ma tran B: ";
         cin >> m >> n;
-        Matrix A(a, b, 1), B(m, n, 1);
+        Matrix A(a, b, 0), B(m, n, 0);
         // cout << "nhap ma tran A (" << A.getCol() << "x" << A.getRow() << "):\n";
         // cin >> A;
         // cout << "nhap ma tran B (" << B.getCol() << "x" << B.getRow() << "):\n";
         // cin >> B;
-        cout << A << "+\n" << B << '\n' << A + B << '\n';
-        cout << A << "-\n" << B << '\n' << A - B << '\n';
-        cout << A << "*\n" << B << '\n' << A * B << '\n';
+        cout << A << "+\n"
+             << B << '\n';
+        try
+        {
+            cout << A + B << '\n';
+        }
+        catch (const invalid_argument &e)
+        {
+            cerr << e.what() << '\n';
+        }
+        cout << A << "-\n"
+             << B << '\n';
+        try
+        {
+            cout << A - B << '\n';
+        }
+        catch (const invalid_argument &e)
+        {
+            cerr << e.what() << '\n';
+        }
+
+        cout << A << "*\n"
+             << B << '\n';
+        try
+        {
+            cout << A * B << '\n';
+        }
+        catch (const invalid_argument &e)
+        {
+            cerr << e.what() << '\n';
+        }
         break;
     }
     default:
