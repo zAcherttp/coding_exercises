@@ -688,14 +688,14 @@ public:
 
     Matrix operator+(const Matrix &mt)
     {
-        if (mt.row == row && mt.col == col)
+        if (mt.row == this->row && mt.col == this->col)
         {
             Matrix add(row, col, 0);
             for (int i = 0; i < row; i++)
             {
                 for (int j = 0; j < col; j++)
                 {
-                    add.matrix[i][j] = matrix[i][j] + mt.matrix[i][j];
+                    add.matrix[i][j] = this->matrix[i][j] + mt.matrix[i][j];
                 }
             }
             return add;
@@ -708,14 +708,14 @@ public:
 
     Matrix operator-(const Matrix &mt)
     {
-        if (mt.row == row && mt.col == col)
+        if (mt.row == this->row && mt.col == this->col)
         {
             Matrix sub(row, col, 0);
             for (int i = 0; i < row; i++)
             {
                 for (int j = 0; j < col; j++)
                 {
-                    sub.matrix[i][j] = matrix[i][j] - mt.matrix[i][j];
+                    sub.matrix[i][j] = this->matrix[i][j] - mt.matrix[i][j];
                 }
             }
             return sub;
@@ -728,7 +728,7 @@ public:
 
     Matrix operator*(const Matrix &mt)
     {
-        if (col == mt.row)
+        if (this->col == mt.row)
         {
             Matrix product(row, mt.col, 0);
             for (int i = 0; i < row; i++)
@@ -738,7 +738,7 @@ public:
                     int sum = 0;
                     for (int k = 0; k < col; k++)
                     {
-                        sum += matrix[i][k] * mt.matrix[k][j];
+                        sum += this->matrix[i][k] * mt.matrix[k][j];
                     }
                     product.matrix[i][j] = sum;
                 }
@@ -796,42 +796,32 @@ int main()
         cin >> a >> b;
         cout << "nhap lan luot so hang va so cot cua ma tran B: ";
         cin >> m >> n;
-        Matrix A(a, b, 1), B(m, n, 1);
-        // cout << "nhap ma tran A (" << A.getCol() << "x" << A.getRow() << "):\n";
-        // cin >> A;
-        // cout << "nhap ma tran B (" << B.getCol() << "x" << B.getRow() << "):\n";
-        // cin >> B;
-        cout << A << "+\n"
-             << B << '\n';
-        try
+        int option;
+        cout << "nhap de chon:\n";
+        cout << "0 - Nhap ma tran.\n";
+        cout << "1 - Tao ngau nhien ma tran.\n";
+        while(option != 0 && option != 1)
         {
-            cout << A + B << '\n';
+            cin >> option;
         }
-        catch (const invalid_argument &e)
-        {
-            cerr << e.what() << '\n';
-        }
-        cout << A << "-\n"
-             << B << '\n';
-        try
-        {
-            cout << A - B << '\n';
-        }
-        catch (const invalid_argument &e)
-        {
-            cerr << e.what() << '\n';
-        }
+        Matrix A(a, b, option), B(m, n, option);
 
-        cout << A << "*\n"
-             << B << '\n';
-        try
+        if (option == 0)
         {
-            cout << A * B << '\n';
-        }
-        catch (const invalid_argument &e)
-        {
-            cerr << e.what() << '\n';
-        }
+            cout << "nhap ma tran A (" << A.getCol() << "x" << A.getRow() << "):\n";
+            cin >> A;
+            cout << "nhap ma tran B (" << B.getCol() << "x" << B.getRow() << "):\n";
+            cin >> B;
+        }   
+
+        cout << A << "+\n" << B << '\n';
+        cout << A + B << '\n';
+
+        cout << A << "-\n" << B << '\n';
+        cout << A - B << '\n';
+
+        cout << A << "*\n" << B << '\n';
+        cout << A * B << '\n';
         break;
     }
     default:
