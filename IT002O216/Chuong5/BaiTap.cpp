@@ -728,15 +728,15 @@ public:
 
     Matrix operator*(const Matrix &mt)
     {
-        if (col == mt.row) // Modified this condition
+        if (col == mt.row)
         {
-            Matrix product(row, mt.col, 0); // Corrected the dimensions here
+            Matrix product(row, mt.col, 0);
             for (int i = 0; i < row; i++)
             {
-                for (int j = 0; j < mt.col; j++) // Modified the loop condition to mt.col
+                for (int j = 0; j < mt.col; j++)
                 {
                     int sum = 0;
-                    for (int k = 0; k < col; k++) // Modified the loop condition to col
+                    for (int k = 0; k < col; k++)
                     {
                         sum += matrix[i][k] * mt.matrix[k][j];
                     }
@@ -796,7 +796,7 @@ int main()
         cin >> a >> b;
         cout << "nhap lan luot so hang va so cot cua ma tran B: ";
         cin >> m >> n;
-        Matrix A(a, b, 0), B(m, n, 0);
+        Matrix A(a, b, 1), B(m, n, 1);
         // cout << "nhap ma tran A (" << A.getCol() << "x" << A.getRow() << "):\n";
         // cin >> A;
         // cout << "nhap ma tran B (" << B.getCol() << "x" << B.getRow() << "):\n";
