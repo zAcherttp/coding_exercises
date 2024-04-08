@@ -48,7 +48,7 @@ void quick(int arr[], int start, int end)
     quick(arr, p + 1, end);
 }
 
-pair<int, int> find(string opt)
+pair<int, int> option(string opt)
 {
     stringstream ss(opt);
     string temp;
@@ -66,6 +66,8 @@ pair<int, int> find(string opt)
     return make_pair(type, key);
 }
 
+void find(int arr[], pair<int, int> opt);
+
 int main()
 {
     int N, Q;
@@ -82,6 +84,8 @@ int main()
     string query;
     for(int i = 0; i < Q; i++)
     {
-        getline()
+        getline(cin, query);
+        cin.ignore();
+        find(data, option);
     }
 }
