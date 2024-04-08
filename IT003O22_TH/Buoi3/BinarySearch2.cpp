@@ -31,5 +31,7 @@ int main()
     for(int i = 0; i < N; i++)
     {
         cin >> arr[i];
+        if(arr[i].l_pos == -1) arr[i].l_pos = i;
+        else arr[i].h_pos = i;
     }
 }
