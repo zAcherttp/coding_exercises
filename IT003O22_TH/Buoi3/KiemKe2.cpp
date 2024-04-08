@@ -8,7 +8,7 @@ class Data
 public:
     string key;
     int count;
-bool operator<(const data &d)
+bool operator<(const Data &d)
 {
     return count == d.count ? (key > d.key) : (count < d.count);
 }
