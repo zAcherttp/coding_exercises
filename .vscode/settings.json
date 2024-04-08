@@ -1,6 +1,5 @@
 {
-  "terminal.integrated.fontFamily": "MesloLGS NF",
-  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.fontFamily": "JetBrainsMonoNL NF Medium",
   "terminal.external.osxExec": "iTerm.app",
   "files.associations": {
     "ostream": "cpp",
