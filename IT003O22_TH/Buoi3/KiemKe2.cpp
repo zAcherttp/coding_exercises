@@ -1,24 +1,26 @@
 #include <iostream>
 #include <vector>
-#include <utility>
 
 using namespace std;
 
+class Data
+{
+public:
+    string key;
+    int count;
+bool operator<(const data &d)
+{
+    return count == d.count ? (key > d.key) : (count < d.count);
+}
+};
+
 int main()
 {
-    pair<int, char> t;
-    vector<t> count;
-    int input, num;
-    cin << num;
-    while(num--)
-    {
-        cin << input;
-        t.first.push
-    }
-
-
+    int n;
+    cin >> n;
+    Data DS[n];
+    
 
 
     return 0;
-
 }
