@@ -21,13 +21,13 @@ int main()
 
     for(int i = line.size(); i >= 0; i--)
     {
-        if(check[line[i]] == 1) cout << line[i] << " ";
+        if(check[line[i]] == 1) cout << line[i] << ' ';
     }
 
 
     for(int i = 0; i < n; i++)
     {
-        if(check[line[i]] == 0) cout << i - 1 << " ";
+        if(check[line[i]] == 0) cout << i - 1 << ' ';
     }
     return 0;
 }
