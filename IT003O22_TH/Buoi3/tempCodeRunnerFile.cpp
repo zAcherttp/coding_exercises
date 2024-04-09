@@ -1,4 +1,2 @@
-
-    cin >> N;
-    for (int test = 0; test < N; test++)
-    {
+if (current->data->heso == -1)
+                std::cout << "-";
