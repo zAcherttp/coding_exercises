@@ -7,7 +7,8 @@ using namespace std;
 int main()
 {
     vector<int> line;
-    unordered_map<int, int> check;
+    unordered_map<int, bool> check;
+    unordered_map<int, bool> check_printed;
     int n, m;
     cin >> n >> m;
 
@@ -16,18 +17,22 @@ int main()
         int temp;
         cin >> temp;
         line.push_back(temp);
-        check[temp]++;
+        check[temp] = true;
     }
 
     for(int i = line.size(); i >= 0; i--)
     {
-        if(check[line[i]] == 1) cout << line[i] << ' ';
+        if(check[line[i]] && !check_printed[line[i]])
+        {
+            cout << line[i] << ' ';
+            check_printed[line[i]] = true;
+        }
     }
 
-
-    for(int i = 0; i < n; i++)
+    for(int i = 1; i <= n; i++)
     {
-        if(check[line[i]] == 0) cout << i - 1 << ' ';
+        if(!check[i]) cout << i << ' ';
     }
+
     return 0;
 }
