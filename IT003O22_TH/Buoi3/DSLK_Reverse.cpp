@@ -36,6 +36,7 @@ class SinglyLinkedList {
  * };
  *
  */
+
 void insert_node(SinglyLinkedList* llist, int item)
 {
     SinglyLinkedListNode *node = new SinglyLinkedListNode(item);
@@ -45,23 +46,40 @@ void insert_node(SinglyLinkedList* llist, int item)
 
 void reverseLinkedList(SinglyLinkedList* llist)
 {
+    SinglyLinkedListNode *current = llist->head;
 
+    int size = 0, i = 0;
+    while(current != nullptr)
+    {
+        size++;
+        current = current->next;
+    }
+
+    current = llist->head;
+    int data[size];
+    while(current != nullptr)
+    {
+        data[i++] = current->data;
+        current = current->next;
+    }
+
+    current = llist->head;
+    i = 0;
+    while(current != nullptr)
+    {
+        current->data = data[i++];
+        current = current->next;
+    }
 }
 
 void printLinkedList(SinglyLinkedList* llist)
 {
     SinglyLinkedListNode *current = llist->head;
-    while(current != )
-}
-
-
-void printList(Node* head) {
-    Node* current = head;
-    while (current != nullptr) {
-        std::cout << current->data << " ";
+    while(current != nullptr)
+    {
+        cout << current->data << " ";
         current = current->next;
     }
-    std::cout << std::endl;
 }
 
 int main()
