@@ -63,10 +63,10 @@ void Xuat(DATHUC &B)
             if (current->data->heso == -1 && current->data->somu != 0)
                 std::cout << "-";
 
-            if (current->data->somu > 0)
+            if (current->data->somu != 0)
                 std::cout << "x";
 
-            if (current->data->somu > 1)
+            if (current->data->somu != 1 && current->data->somu != 0)
                 std::cout << "^" << current->data->somu;
 
             if (current->data->somu == 0)
