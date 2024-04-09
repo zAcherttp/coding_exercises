@@ -46,74 +46,56 @@ struct DATHUC
 };
 //////////////// your code goes here.
 
-void Xuat(DATHUC B)
+void Xuat(DATHUC &B)
 {
     Node *current = B.head;
     bool isFirst = true;
     while (current != nullptr)
     {
-        if (current->data->heso > 0 && current->data->heso != 1 && isFirst)
+        if (current->data->heso != 0)
         {
-            isFirst = false;
-            cout << current->data->heso << ((current->data->somu == 1) ? ("x") : ("x^")) << ((current->data->somu == 1) ? : (current->data->somu));
-        }
-        if (current->data->heso > 0 && current->data->heso != 1 && isFirst)
-        {
-            isFirst = false;
-            cout << current->data->heso << ((current->data->somu == 1) ? ("x") : ("x^")) << ((current->data->somu == 1) ? : (current->data->somu));
-        }
-        if (current->data->heso == 1 && isFirst)
-        {
-            isFirst = false;
-            cout << ((current->data->somu == 1) ? ("x") : ("x^")) << ((current->data->somu == 1) ? : (current->data->somu));
-        }
+            if (!isFirst && current->data->heso > 0)
+                std::cout << "+";
 
-        if (current->data->heso < 0 && current->data->heso != -1)
-        {
-            isFirst = false;
-            cout << current->data->heso << ((current->data->somu == 1) ? ("x") : ("x^")) << ((current->data->somu == 1) ? : (current->data->somu));
+            if (current->data->heso != 1 && current->data->heso != -1 && current->data->somu != 0)
+                std::cout << current->data->heso;
+
+            if (current->data->heso == -1 && current->data->somu != 0)
+                std::cout << "-";
+
+            if (current->data->somu > 0)
+                std::cout << "x";
+
+            if (current->data->somu > 1)
+                std::cout << "^" << current->data->somu;
+
+            if (current->data->somu == 0)
+                std::cout << current->data->heso;
+
+            if (isFirst)
+                isFirst = false;
         }
-        if (current->data->heso == 1)
-        {
-            isFirst = false;
-            cout << "+" << ((current->data->somu == 1) ? ("x") : ("x^")) << ((current->data->somu == 1) ? : (current->data->somu));
-        }
-        if (current->data->heso == -1)
-        {
-            isFirst = false;
-            cout << "-" << ((current->data->somu == 1) ? ("x") : ("x^")) << ((current->data->somu == 1) ? : (current->data->somu));
-        }
-        if (current->data->heso == 0)
-            continue;
 
         current = current->next;
     }
+    if (isFirst)
+        cout << "0";
 }
 
-// Biến trong đa thức ký hiệu là x
-// Số mũ ký hiệu ^
-// Phép nhân không ghi ký hiệu
-// Các ký tự biểu diễn đa thức ghi liền nhau (không khoảng trắng)
-// Đơn thức đầu tiên nếu hệ số là số dương thì không được xuất dấu + trước hệ số
-// Đơn thức có hệ số bằng 0 thì không xuất đơn thức đó
-// Đơn thức có hệ số bằng 1 hoặc -1 thì không xuất số 1
-// Đơn thức có số mũ bằng 0 thì chỉ xuất hệ số của đơn thức
-// Đơn thức có số mũ bằng 1 thì không xuất số mũ
-
-void Nhap(DATHUC B, double heso, int somu)
+void Nhap(DATHUC &B, double &heso, int &somu)
 {
-    DONTHUC* _donthuc = new DONTHUC(heso, somu);
-    Node* node = new Node(_donthuc);
+    DONTHUC *_donthuc = new DONTHUC(heso, somu);
+    Node *node = new Node(_donthuc);
     if (!B.head)
     {
         B.head = node;
+        B.tail = node;
     }
     else
     {
-        B.head->next = node;
+        B.tail->next = node;
+        B.tail = node;
     }
-    B.tail = node;
-
 }
 
 double TinhDaThuc(DATHUC B, double x)
@@ -124,9 +106,8 @@ double TinhDaThuc(DATHUC B, double x)
     while (current != nullptr)
     {
         sum += current->data->heso * pow(x, current->data->somu);
+        current = current->next;
     }
-
-    current = current->next;
 
     return sum;
 }
