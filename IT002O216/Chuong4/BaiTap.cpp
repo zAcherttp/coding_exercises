@@ -524,7 +524,7 @@ class polynomial
 {
 private:
     int degree;
-    monomial *array;
+    monomial* array;
     int constant;
 
 public:
@@ -546,17 +546,41 @@ public:
         delete[] array;
     }
 
-    friend ostream &operator<<(ostream &os, const polynomial &p)
+    friend ostream& operator<<(ostream& os, const polynomial& p)
     {
+        bool isFirst = true;
         for (int i = 0; i < p.degree; i++)
         {
-            os << p.array[i] << " + ";
+            if (p.array[i].getCoefficient() != 0)
+            {
+                if (!isFirst && p.array[i].getCoefficient() > 0)
+                    os << "+";
+
+                if (p.array[i].getCoefficient() != 1 && p.array[i].getCoefficient() != -1 && p.array[i].getExponent() != 0)
+                    os << p.array[i].getCoefficient();
+
+                if (p.array[i].getCoefficient() == -1 && p.array[i].getExponent() != 0)
+                    os << "-";
+
+                if (p.array[i].getExponent() != 0)
+                    os << "x";
+
+                if (p.array[i].getExponent() != 1 && p.array[i].getExponent() != 0)
+                    os << "^" << p.array[i].getExponent();
+
+                if (p.array[i].getExponent() == 0)
+                    os << p.array[i].getCoefficient();
+
+                if (isFirst)
+                    isFirst = false;
+            }
         }
-        os << p.constant;
+        if (isFirst)
+           os << p.constant;
         return os;
     }
 
-    friend istream &operator>>(istream &is, polynomial &p)
+    friend istream& operator>>(istream& is, polynomial& p)
     {
         int temp = 0;
         for (int i = 0; i < p.degree; i++)
@@ -574,7 +598,7 @@ public:
         return degree;
     }
 
-    monomial *getMonomialsArray() const
+    monomial* getMonomialsArray() const
     {
         return array;
     }
@@ -599,10 +623,10 @@ public:
         return value;
     }
 
-    polynomial operator+(const polynomial &p) const
+    polynomial operator+(const polynomial& p) const
     {
         int h_deg, l_deg;
-        monomial *h_ptr, *l_ptr;
+        monomial* h_ptr, * l_ptr;
 
         if (p.getDegree() > this->getDegree())
         {
@@ -635,11 +659,11 @@ public:
 
         return result;
     }
-    
-    polynomial operator-(const polynomial &p) const
+
+    polynomial operator-(const polynomial& p) const
     {
         int h_deg, l_deg;
-        monomial *h_ptr, *l_ptr;
+        monomial* h_ptr, * l_ptr;
 
         if (p.getDegree() > this->getDegree())
         {
