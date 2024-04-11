@@ -575,8 +575,10 @@ public:
                     isFirst = false;
             }
         }
-        if (isFirst)
-           os << p.constant;
+        if(p.constant < 0)
+            os << p.constant;
+        else
+            os << "+" << p.constant;
         return os;
     }
 
