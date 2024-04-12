@@ -92,7 +92,8 @@
     "typeindex": "cpp",
     "typeinfo": "cpp",
     "valarray": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "climits": "cpp"
   },
   "editor.fontFamily": "JetBrainsMonoNL NF Medium",
   "editor.fontSize": 16,
