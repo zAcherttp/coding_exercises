@@ -71,15 +71,16 @@ int main()
     quick(triplet, 0, N);
 
     vector<tuple<int, int, int>> data;
-    tuple<int, int, int> temp = triplet[0];
+    data.push_back(triplet[0]);
 
-    data.push_back(temp);
-    for (int i = 1; i < N; i++)
+    for (int i = 0; i < N; i++)
     {
         if (get<0>(triplet[i]) == get<0>(data.back()))
         {
             if (get<1>(triplet[i]) < get<1>(data.back()))
                 get<1>(data.back()) = get<1>(triplet[i]);
+            if (get<2>(triplet[i]) > get<2>(data.back()))
+                get<2>(data.back()) = get<2>(triplet[i]);
             continue;
         }
         else
@@ -88,36 +89,30 @@ int main()
         }
     }
 
-    // cout << '\n';
-    // for (auto i : data)
-    // {
-    //     cout << get<2>(i) << " ";
-    // }
-    // cout << '\n';
-    // for (auto i : data)
-    // {
-    //     cout << get<1>(i) << " ";
-    // }
-    // cout << '\n';
-    // for (auto i : data)
-    // {
-    //     cout << get<0>(i) << " ";
-    // }
-    // cout << '\n';
+    cout << '\n';
+    for (auto i : data)
+    {
+        cout << get<2>(i) << " ";
+    }
+    cout << '\n';
+    for (auto i : data)
+    {
+        cout << get<1>(i) << " ";
+    }
+    cout << '\n';
+    for (auto i : data)
+    {
+        cout << get<0>(i) << " ";
+    }
+    cout << '\n';
 
-    for (auto i : data) {}
-
-    string query[Q];
+    string query;
     int option[Q];
     int key[Q];
 
     for (int i = 0; i < Q; i++)
     {
-        cin.ignore();
-        getline(cin, query[i]);
-        stringstream ss(query[i]);
-        string ignore;
-        ss >> ignore >> option[i] >> key[i];
+        cin >> query >> option[i] >> key[i];
     }
 
     // for (int i = 0; i < Q; i++)
