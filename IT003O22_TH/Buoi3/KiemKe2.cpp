@@ -31,7 +31,6 @@ int partition(vector<Data> &arr, int low, int high)
     swap(arr[i + 1], arr[high]);
     return (i + 1);
 }
-
 void quick(vector<Data> &arr, int low, int high)
 {
     if (low < high)
