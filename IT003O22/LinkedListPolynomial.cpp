@@ -1,8 +1,10 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <math.h>
 using namespace std;
 
-struct monomial
+class monomial
 {
+public:
     int exponent;
     double coefficient;
 
@@ -30,8 +32,9 @@ struct Node
     }
 };
 
-struct polynomial
+class polynomial
 {
+public:
     Node *head;
     Node *tail;
     polynomial()
@@ -40,31 +43,17 @@ struct polynomial
         this->tail = nullptr;
     }
 
-    void operator=(const polynomial &p)
-    {
-        Node *current = p.head;
-        while (current != nullptr)
-        {
-            monomial *_monomial = new monomial(current->data->coefficient, current->data->exponent);
-            Node *node = new Node(_monomial);
-            if (!this->head)
-            {
-                this->head = node;
-                this->tail = node;
-            }
-            else
-            {
-                this->tail->next = node;
-                this->tail = node;
-            }
-            current = current->next;
-        }
-    }
+    void insert(double &coefficient, int &exponent);
+
+    friend ostream &operator<<(ostream &os, const polynomial &p);
+
+    void operator=(const polynomial &p);
+    polynomial operator+(const polynomial &B);
 };
 
-void print(polynomial &B)
+ostream &operator<<(ostream &os, const polynomial &p)
 {
-    Node *current = B.head;
+    Node *current = p.head;
     bool isFirst = true;
     while (current != nullptr)
     {
@@ -96,107 +85,95 @@ void print(polynomial &B)
     }
     if (isFirst)
         cout << "0";
+    return os;
 }
 
-void input(polynomial &B, double &coefficient, int &exponent)
+void polynomial::insert(double &coefficient, int &exponent)
 {
     monomial *_monomial = new monomial(coefficient, exponent);
     Node *node = new Node(_monomial);
-    if (!B.head)
+    if (!this->head)
     {
-        B.head = node;
-        B.tail = node;
+        this->head = node;
+        this->tail = node;
     }
     else
     {
-        B.tail->next = node;
-        B.tail = node;
+        this->tail->next = node;
+        this->tail = node;
     }
 }
 
-double calc(polynomial B, double x)
+void polynomial::operator=(const polynomial &p)
 {
-    double sum = 0.0;
-    Node *current = B.head;
-
+    Node *current = p.head;
     while (current != nullptr)
     {
-        sum += current->data->coefficient * pow(x, current->data->exponent);
+        monomial *_monomial = new monomial(current->data->coefficient, current->data->exponent);
+        Node *node = new Node(_monomial);
+        if (!this->head)
+        {
+            this->head = node;
+            this->tail = node;
+        }
+        else
+        {
+            this->tail->next = node;
+            this->tail = node;
+        }
         current = current->next;
     }
-
-    return sum;
 }
 
-polynomial add(polynomial &A, polynomial &B)
+polynomial polynomial::operator+(const polynomial &B)
 {
-    polynomial C; // Resultant polynomial
+    polynomial result;
 
-    // Iterate through both lists simultaneously
-    Node *currA = A.head, *currB = B.head;
+    Node *currA = this->head;
+    Node *currB = B.head;
     while (currA != nullptr || currB != nullptr)
     {
-        // Create a new node for the result
-        Node *newNode = new Node();
-
-        // Case 1: One list is exhausted
         if (currA == nullptr)
         {
-            newNode->data = new monomial(*currB->data); // Copy monomial from B
+            result.insert(currB->data->coefficient, currB->data->exponent);
             currB = currB->next;
         }
         else if (currB == nullptr)
         {
-            newNode->data = new monomial(*currA->data); // Copy monomial from A
+            result.insert(currA->data->coefficient, currA->data->exponent);
             currA = currA->next;
         }
         else
         {
-            // Case 2: Both lists have elements
-
-            // Compare exponents
             if (currA->data->exponent > currB->data->exponent)
             {
-                newNode->data = new monomial(*currA->data); // Copy monomial from A
+                result.insert(currA->data->coefficient, currA->data->exponent);
                 currA = currA->next;
             }
             else if (currA->data->exponent < currB->data->exponent)
             {
-                newNode->data = new monomial(*currB->data); // Copy monomial from B
+                result.insert(currB->data->coefficient, currB->data->exponent);
                 currB = currB->next;
             }
             else
             {
-                // Case 3: Same exponents, add coefficients
                 double new_coeff = currA->data->coefficient + currB->data->coefficient;
                 if (new_coeff != 0)
-                { // Only add non-zero coefficients
-                    newNode->data = new monomial(new_coeff, currA->data->exponent);
+                {
+                    result.insert(new_coeff, currA->data->exponent);
                 }
                 currA = currA->next;
                 currB = currB->next;
             }
         }
-
-        // Add the new node to the result list
-        if (C.head == nullptr)
-        {
-            C.head = newNode;
-            C.tail = newNode;
-        }
-        else
-        {
-            C.tail->next = newNode;
-            C.tail = newNode;
-        }
     }
 
-    return C;
+    return result;
 }
 
 int main()
 {
-    polynomial A, B, C;
+    polynomial A, B;
     int a_size, b_size;
     double coefficient;
     int exponent;
@@ -205,26 +182,18 @@ int main()
     for (int i{}; i < a_size; i++)
     {
         cin >> coefficient >> exponent;
-        input(A, coefficient, exponent);
+        A.insert(coefficient, exponent);
     }
 
     cin >> b_size;
     for (int i{}; i < b_size; i++)
     {
         cin >> coefficient >> exponent;
-        input(B, coefficient, exponent);
+        B.insert(coefficient, exponent);
     }
 
-    cout << "Da thuc A: ";
-    print(A);
-    cout << '\n';
-    cout << "Da thuc B: ";
-    print(B);
-    cout << '\n';
-    cout << "A+B = ";
-    C = add(A, B);
-    print(C);
-    cout << '\n';
-    cout << calc(C, 10);
+    cout << "Da thuc A: " << A << '\n';
+    cout << "Da thuc B: " << B << '\n';
+    cout << "A+B = " << A + B << '\n';
     return 0;
 }
