@@ -60,12 +60,12 @@ public:
 
     */
 
-    void postOrder(Node *root)
+    void preOrder(Node *root)
     {
         if (!root)
             return;
-        postOrder(root->left);
-        postOrder(root->right);
+        preOrder(root->left);
+        preOrder(root->right);
         cout << root->data << " ";
     }
 
@@ -88,7 +88,7 @@ int main()
         root = myTree.insert(root, data);
     }
 
-    myTree.postOrder(root);
+    myTree.preOrder(root);
 
     return 0;
 }

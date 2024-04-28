@@ -1,20 +1,15 @@
-#include <NhanVien.h>
+#include "NhanVienVP.h"
 
-class NhanVienVP : public NhanVien
+NhanVienVP::NhanVienVP(int _wd) : work_days(_wd)
 {
-public:
-    int work_days;
-    NhanVienVP(int _wd) : work_days(_wd)
-    {
-        setSalary();
-    }
-    void setSalary()
-    {
-        salary = work_days * 100000;
-    }
-    void setWorkDays(int _wd)
-    {
-        work_days = _wd;
-        setSalary();
-    }
-};
+    setSalary();
+}
+void NhanVienVP::setSalary()
+{
+    salary = work_days * 100000;
+}
+void NhanVienVP::setWorkDays(int _wd)
+{
+    work_days = _wd;
+    setSalary();
+}
