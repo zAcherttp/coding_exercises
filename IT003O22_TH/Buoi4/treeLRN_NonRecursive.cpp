@@ -60,35 +60,40 @@ public:
 
     */
 
-    void levelOrder(Node *root)
+    void preOrder(Node *root)
     {
-        if (root == nullptr)
-        {
+        if (!root)
             return;
-        }
 
-        stack<Node *> q;
-        q.push(root);
+        stack<pair<Node *, bool>> stack;
+        stack.push({root, false});
 
-        while (!q.empty())
+        while (!stack.empty())
         {
-            Node *current = q.front();
-            q.pop();
+            pair<Node *, bool> cur = stack.top();
+            stack.pop();
 
-            cout << current->data << " "; // Process the node
+            Node *curr = cur.first;
+            bool visited = cur.second;
 
-            // Enqueue non-null children for next level
-            if (current->left)
+            if (!visited)
             {
-                q.push(current->left);
+                stack.push({curr, true});
+                if (curr->right)
+                {
+                    stack.push({curr->right, false});
+                }
+                if (curr->left)
+                {
+                    stack.push({curr->left, false});
+                }
             }
-            if (current->right)
+            else
             {
-                q.push(current->right);
+                cout << curr->data << " ";
             }
         }
     }
-
 }; // End of Solution
 
 int main()
@@ -108,7 +113,7 @@ int main()
         root = myTree.insert(root, data);
     }
 
-    myTree.levelOrder(root);
+    myTree.preOrder(root);
 
     return 0;
 }

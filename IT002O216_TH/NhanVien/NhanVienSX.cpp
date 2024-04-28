@@ -1,26 +1,20 @@
-#include <NhanVien.h>
+#include "NhanVienSX.h"
 
-class NhanVienSX : public NhanVien
+NhanVienSX::NhanVienSX(int _bs, int _p) : base_salary(_bs), product_num(_p)
 {
-public:
-    int base_salary;
-    int product_num;
-    NhanVienSX(int _bs, int _p) : base_salary(_bs), product_num(_p)
-    {
-        setSalary();
-    }
-    void setSalary()
-    {
-        salary = base_salary + product_num * 5000;
-    }
-    void setBaseSalary(int _bs)
-    {
-        base_salary = _bs;
-        setSalary();
-    }
-    void setProductNum(int _p)
-    {
-        product_num = _p;
-        setSalary();
-    }
-};
+    setSalary();
+}
+void NhanVienSX::setSalary()
+{
+    salary = base_salary + product_num * 5000;
+}
+void NhanVienSX::setBaseSalary(int _bs)
+{
+    base_salary = _bs;
+    setSalary();
+}
+void NhanVienSX::setProductNum(int _p)
+{
+    product_num = _p;
+    setSalary();
+}

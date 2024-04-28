@@ -1,57 +1,10 @@
-#include <iostream>
-#include <math.h>
-using namespace std;
+#include "polynomial.h"
 
-class monomial
+polynomial::polynomial()
 {
-public:
-    int exponent;
-    double coefficient;
-
-    monomial(double _coefficient = 0, int _exponent = 0) : coefficient(_coefficient), exponent(_exponent) {}
-
-    monomial &operator=(const monomial &m)
-    {
-        if (this == &m)
-            return *this;
-        this->coefficient = m.coefficient;
-        this->exponent = m.exponent;
-        return *this;
-    }
-};
-
-struct Node
-{
-    monomial *data;
-    Node *next;
-
-    Node(monomial *_data = nullptr)
-    {
-        this->data = _data;
-        this->next = nullptr;
-    }
-};
-
-class polynomial
-{
-public:
-    Node *head;
-    Node *tail;
-    polynomial()
-    {
-        this->head = nullptr;
-        this->tail = nullptr;
-    }
-
-    void insert(double &coefficient, int &exponent);
-
-    friend ostream &operator<<(ostream &os, const polynomial &p);
-    friend istream &operator>>(istream &is, polynomial &p);
-
-    void operator=(const polynomial &p);
-    polynomial operator+(const polynomial &B);
-    polynomial operator-(const polynomial &B);
-};
+    this->head = nullptr;
+    this->tail = nullptr;
+}
 
 ostream &operator<<(ostream &os, const polynomial &p)
 {
@@ -119,7 +72,6 @@ istream &operator>>(istream &is, polynomial &p)
     }
     return is;
 }
-
 
 void polynomial::operator=(const polynomial &p)
 {
@@ -232,17 +184,4 @@ polynomial polynomial::operator-(const polynomial &B)
     }
 
     return result;
-}
-
-int main()
-{
-    polynomial A, B;
-
-    cin >> A >> B;
-
-    cout << "Da thuc A: " << A << '\n';
-    cout << "Da thuc B: " << B << '\n';
-    cout << "A+B = " << A + B << '\n';
-    cout << "A-B = " << A - B << '\n';
-    return 0;
 }

@@ -1,25 +1,29 @@
-#include <NhanVien.h>
+#include "NhanVien.h"
+#include <string>
+#include <climits>
 
 int NhanVien::getSalary() const
 {
     return this->salary;
 }
 
-istream &operator>>(istream &is, NhanVien &nv)
+istream& operator>>(istream& is, NhanVien& nv)
 {
     cout << "nhap ho ten: ";
+    is.ignore();
     getline(is, nv.name);
-    is.ignore();
     cout << "nhap ngay thang nam sinh: ";
+    //is.ignore();
     getline(is, nv.birth_date);
-    is.ignore();
     cout << "nhap luong: ";
     is >> nv.salary;
+    return is;
 }
 
-ostream &operator<<(ostream &os, NhanVien &nv)
+ostream& operator<<(ostream& os, NhanVien& nv)
 {
     os << "ho ten: " << nv.name << '\n';
     os << "ngay sinh: " << nv.birth_date << '\n';
     os << "luong: " << nv.getSalary() << '\n';
+    return os;
 }
