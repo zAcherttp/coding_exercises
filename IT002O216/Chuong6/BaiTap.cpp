@@ -139,7 +139,8 @@ public:
 
     void xuatThongTin() const
     {
-        cout << setw(18) << left << "Ho ten GV" << ": " << HoTen << '\n';
+        string info = "Ho ten GV";
+        cout << setw(18) << left << info.append((GioiTinh == NAM) ? (" Nam") : (" Nu")) << ": " << HoTen << '\n';
         cout << setw(18) << left << "Ma Can Bo" << ": " << MaCanBo << '\n';
         cout << setw(18) << left << "So Gio Day" << ": " << SoGioDay << '\n';
         cout << setw(18) << left << "So Gio NC" << ": " << SoGioNghienCuu << '\n';
@@ -192,7 +193,8 @@ public:
 
     void xuatThongTin() const
     {
-        cout << setw(18) << left << "Ho ten NVHC" << ": " << HoTen << '\n';
+        string info = "Ho ten NVHC";
+        cout << setw(18) << left << info.append((GioiTinh == NAM) ? (" Nam") : (" Nu")) << ": " << HoTen << '\n';
         cout << setw(18) << left << "Ma Can Bo" << ": " << MaCanBo << '\n';
         cout << setw(18) << left << "So Gio Lam Them" << ": " << SoGioLamThem << '\n';
         cout << setw(18) << left << "So Ngay Lam Viec" << ": " << SoNgayLamViec << '\n';
