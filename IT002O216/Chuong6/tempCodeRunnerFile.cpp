@@ -1,0 +1,2 @@
+tream &os) const
+    {
