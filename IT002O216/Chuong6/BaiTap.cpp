@@ -1,16 +1,17 @@
-
-//// check ✓
-
 // 1. Xây dựng chương trình quản lý cán bộ viên chức
 //    trường Đại học CNTT, giả sử trường gồm 2 loại
 //    CBVC:
 // ▪ Giảng Viên gồm các thông tin: mã cán bộ, họ tên, giới
 //   tính, số giờ dạy, số giờ nghiên cứu
+//// check ✓
 // ▪ Lương = (số giờ dạy + số giờ nghiên cứu ) * đơn giá
+//// check ✓
 // ▪ Nhân viên hành chính: mã cán bộ, họ tên, giới tính, số
 //   ngày làm việc, số giờ làm them.
+//// check ✓
 // ▪ Lương = số ngày làm việc * tiền công 1 ngày + số giờ làm
 //   thêm * đơn giá
+//// check ✓
 
 // 2. Giả sử Trường ĐH CNTT TP.HCM đào tạo sinh viên theo 2 hệ là hệ cao đẳng và hệ
 //    đại học. Thông tin cần quản lí của một sinh viên cao đẳng bao gồm: mã số sinh viên,
@@ -453,6 +454,7 @@ int main(int argc, char *argv[])
             break;
             case 5:
             {
+                cout << "-----------------------------------------\n";
                 for (int i{}; i < danhsach.SoLuongCanBo; i++)
                 {
                     danhsach.xuatThongTinCanBo(i);
