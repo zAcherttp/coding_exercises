@@ -1,37 +1,20 @@
 #include <iostream>
+#include <random>
 
-using namespace std;
-
-class test
+int main()
 {
-public:
-    string s;
+    // Seed the random number generator (optional for better randomness)
+    std::random_device rd;  // Use system entropy to seed
+    std::mt19937 gen(rd()); // Use Mersenne Twister engine
 
-    test(string _default_arg = "Hello World!") : s(_default_arg) {}
+    // Define the range for the six-digit number (100000 to 999999)
+    std::uniform_int_distribution<> dist(100000, 999999);
 
-    friend ostream &operator<<(ostream &os, const test &_test)
+    int i{};
+    while (i - 100)
     {
-        os << _test.s;
-        return os;
+        std::cout << dist(gen) << '\n';
+        i++;
     }
-};
-
-// int main()
-// {
-//     cout << "Hello World!\n";
-
-//     test obj;
-
-//     cout << obj;
-
-//     return 0;
-// }
-
-int main(int argc, char* argv[])
-{
-    std::cout << "Have " << argc << " arguments:\n";
-    for (int i = 0; i < argc; ++i)
-    {
-        std::cout << argv[i] << "\n";
-    }
+    return 0;
 }
