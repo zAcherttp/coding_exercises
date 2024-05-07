@@ -23,7 +23,7 @@ struct Hashtable
 };
 
 void CreateHashtable(Hashtable &, int);
-int Insert(Hashtable &, Hocsinh);
+int Search(Hashtable, int, int &);
 void PrintHashtable(Hashtable);
 void DeleteHashtable(Hashtable &);
 
@@ -31,26 +31,39 @@ void Input(Hocsinh &x)
 {
     cin >> x.Maso;
     getline(cin >> ws, x.Hoten);
-    cin >> x.Namsinh;
     cin >> x.Gioitinh;
+    cin >> x.Namsinh;
     cin >> x.TBK;
 }
 int main()
 {
     Hashtable hashtable;
 
-    int m, n;
+    int m, n, k, nprob;
     Hocsinh hs;
 
     cin >> m;
     CreateHashtable(hashtable, m);
+    for (int i = 0; i < m; i++)
+    {
+        Input(hs);
+        hashtable.table[i] = hs;
+        if (hs.Maso > 0)
+            hashtable.n++;
+    }
     cin >> n;
     for (int i = 0; i < n; i++)
     {
-        Input(hs);
-        Insert(hashtable, hs);
+        cin >> k;
+        if (Search(hashtable, k, nprob) > -1)
+        {
+            cout << "THAM DO " << nprob << endl;
+        }
+        else
+        {
+            cout << "KHONG TIM THAY" << endl;
+        }
     }
-    PrintHashtable(hashtable);
     DeleteHashtable(hashtable);
     return 0;
 }
@@ -79,6 +92,7 @@ void PrintHashtable(Hashtable ht)
             cout << "[" << hs.Maso << ",  " << "  , " << ", " << ", " << "]\n";
     }
 }
+
 void DeleteHashtable(Hashtable &ht)
 {
     delete[] ht.table;
@@ -86,9 +100,22 @@ void DeleteHashtable(Hashtable &ht)
     ht.M = 0;
 }
 
-int Insert(Hashtable &ht, Hocsinh x)
+int Search(Hashtable ht, int maso, int &nprob)
 {
-    ht.table[x.Maso % ht.M] = x;
-    ht.n++;
-    return 1;
+    nprob = 0;
+
+    int index = maso % ht.M;
+    int i = 1;
+
+    while (ht.table[index].Maso != EMPTY && ht.table[index].Maso != maso)
+    {
+        nprob++;
+        index = (maso % ht.M + i * i) % ht.M;
+        i++;
+    }
+
+    if (ht.table[index].Maso == maso)
+        return 0;
+    else
+        return -1;
 }
