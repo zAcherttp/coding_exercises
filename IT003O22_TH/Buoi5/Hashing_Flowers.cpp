@@ -1,4 +1,3 @@
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -15,13 +14,27 @@ vector<int> get_ans(const vector<int> &A, int K)
         Hash[i]++;
     }
 
-    auto h = Hash.begin();
-    for (int i = 0; i < K; i++)
+    auto it = Hash.begin();
+    for (it; it != Hash.end() && K != 0; it++)
     {
-        ans.push_back(h->first);
-        if (h != Hash.end())
-            h++;
+        ans.push_back(it->first);
+        it->second--;
+        K--;
     }
+
+    it = Hash.begin();
+    while (K != 0)
+    {
+        if (it->second == 0)
+            it++;
+        else
+        {
+            ans.push_back(it->first);
+            it->second--;
+            K--;
+        }
+    }
+
     return ans;
 }
 
