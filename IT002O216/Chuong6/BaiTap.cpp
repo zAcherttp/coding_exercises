@@ -117,6 +117,11 @@ public:
         getline(cin, HoTen);
     }
 
+    virtual int tinhLuong(const int _donGia)
+    {
+        return _donGia;
+    }
+
     friend istream &operator>>(istream &is, CanBo &cb)
     {
         cb.nhapThongTin(is);
@@ -133,7 +138,7 @@ public:
     GiangVien(int _th = 0, int _rh = 0) : CanBo(GV), SoGioDay(_th), SoGioNghienCuu(_rh) {}
     ~GiangVien() {}
 
-    int tinhLuong(int _donGia)
+    int tinhLuong(int _donGia) override
     {
         return ((SoGioDay + SoGioNghienCuu) * _donGia);
     }
@@ -183,13 +188,14 @@ class NVHanhChinh : public CanBo
 public:
     int SoNgayLamViec;
     int SoGioLamThem;
+    int TienCongMotNgay;
 
-    NVHanhChinh(int _th = 0, int _rh = 0) : CanBo(HC), SoNgayLamViec(_th), SoGioLamThem(_rh) {}
+    NVHanhChinh(int _th = 0, int _rh = 0, int _dw = 0) : CanBo(HC), SoNgayLamViec(_th), SoGioLamThem(_rh), TienCongMotNgay(_dw) {}
     ~NVHanhChinh() {}
 
-    int tinhLuong(int _donGia, int _tienCongMotNgay)
+    int tinhLuong(int _donGia) override
     {
-        return (SoNgayLamViec * _tienCongMotNgay + SoGioLamThem * _donGia);
+        return (SoNgayLamViec * TienCongMotNgay + SoGioLamThem * _donGia);
     }
 
     void xuatThongTin() const
@@ -229,6 +235,9 @@ public:
 
         cout << "Nhap so lam them: ";
         cin >> SoGioLamThem;
+
+        cout << "Nhap tien cong mot ngay: ";
+        cin >> TienCongMotNgay;
     }
 };
 
@@ -380,6 +389,14 @@ public:
             break;
         }
     }
+
+    CanBo *operator[](const int _index)
+    {
+        if (0 <= _index <= SoLuongCanBo)
+            return DanhSach[_index];
+        cout << "index out of bound!\n";
+        return nullptr;
+    }
 };
 
 int main(int argc, char *argv[])
@@ -411,6 +428,7 @@ int main(int argc, char *argv[])
             cout << "3  - Chinh sua can bo\n";
             cout << "4  - In tt mot can bo\n";
             cout << "5  - In danh sach tt can bo\n";
+            cout << "6  - Tinh luong mot can bo\n";
             cout << "-1 - Exit\n";
             cin >> input;
 
@@ -462,7 +480,23 @@ int main(int argc, char *argv[])
                 }
             }
             break;
-
+            case 6:
+            {
+                int stt;
+                cout << "Nhap so thu tu can bo can tinh luong: ";
+                cin >> stt;
+                while (stt < 0 || danhsach.SoLuongCanBo <= stt)
+                {
+                    cout << "so thu tu nam ngoai danh sach!\n";
+                    cin >> stt;
+                }
+                int dongia;
+                cout << "Nhap don gia: ";
+                cin >> dongia;
+                danhsach.xuatThongTinCanBo(stt);
+                cout << "Luong: " << fixed << setprecision(3) << danhsach[stt]->tinhLuong(dongia) << " VND\n";
+            }
+            break;
             default:
                 break;
             }
