@@ -2,7 +2,7 @@
 //    Công ty có nhiều nhân viên làm việc trong ba bộ phận khác
 //    nhau: bộ phận quản lý, bộ phận sản xuất, bộ phận văn phòng.
 //    Việc tính lương cho nhân viên dựa vào các yếu tố sau:
-//    Đối với nhân viên văn phòng: Lương = Lương Cơ Bản + Số ngày làm việc *200.000 + Trợ Cấp
+//    Đối với nhân viên văn phòng: Lương = Lương Cơ Bản + Số ngày làm việc * 200.000 + Trợ Cấp
 //    Đối với nhân viên sản xuất: Lương = Lương Cơ Bản + Số Sản Phẩm * 2.000
 //    Đối với nhân viên quản lý: Lương = Lương Cơ Bản* Hệ số chức vụ + Thưởng.
 //    Ngoài ra công ty cần quản lý các thông tin về nhân viên của mình
@@ -60,47 +60,9 @@ public:
         : Phong(_p), MaNhanVien(std::move(_mcb)), HoTen(std::move(_name)), GioiTinh(_s), NgaySinh(_bd) {}
     ~NhanVien() = default;
 
-    virtual void xuatThongTin() const
-    {
-        cout << setw(18) << left << "Ho ten:" << HoTen << '\n';
-        cout << setw(18) << left << "Ma Nhan Vien:" << MaNhanVien << '\n';
-    }
+    virtual void xuatThongTin() const {}
 
-    virtual void nhapThongTin(istream &is)
-    {
-        int option;
-        cout << "Chon de nhap:\n";
-        cout << "0. Giang Vien\n";
-        cout << "1. Nhan Vien Hanh Chinh\n";
-        cin >> option;
-        while (0 > option || option > 1)
-        {
-            cout << "Lua chon khong hop le!\n";
-            cin >> option;
-        }
-        (option == 0) ? (Phong = VP) : (Phong = QL);
-
-        cout << "Nhap ma nhan vien: ";
-        cin >> MaNhanVien;
-
-        cout << "Chon de nhap:\n";
-        cout << "0. Nu\n";
-        cout << "1. Nam\n";
-        cin >> option;
-        while (0 > option || option > 1)
-        {
-            cout << "Lua chon khong hop le!\n";
-            cin >> option;
-        }
-        (option == 0) ? (GioiTinh = NU) : (GioiTinh = NAM);
-
-        cout << "Nhap ho va ten: ";
-        cin.ignore();
-        getline(cin, HoTen);
-
-        cout << "Nhap ngay sinh (ngay/thang/nam): ";
-        cin >> NgaySinh.ngay >> NgaySinh.thang >> NgaySinh.nam;
-    }
+    virtual void nhapThongTin(istream &is) {}
 
     virtual int tinhLuong(const int _luongCB)
     {
@@ -143,32 +105,32 @@ public:
         Phong = VP;
 
         cout << "Nhap ma nhan vien: ";
-        cin >> MaNhanVien;
+        is >> MaNhanVien;
 
         int option;
         cout << "Chon de nhap:\n";
         cout << "0. Nu\n";
         cout << "1. Nam\n";
-        cin >> option;
+        is >> option;
         while (0 > option || option > 1)
         {
             cout << "Lua chon khong hop le!\n";
-            cin >> option;
+            is >> option;
         }
         (option == 0) ? (GioiTinh = NU) : (GioiTinh = NAM);
 
         cout << "Nhap ho va ten: ";
-        cin.ignore();
-        getline(cin, HoTen);
+        is.ignore();
+        getline(is, HoTen);
 
         cout << "Nhap ngay sinh (ngay/thang/nam): ";
-        cin >> NgaySinh.ngay >> NgaySinh.thang >> NgaySinh.nam;
+        is >> NgaySinh.ngay >> NgaySinh.thang >> NgaySinh.nam;
 
         cout << "Nhap so ngay lam viec: ";
-        cin >> SoNgayLamViec;
+        is >> SoNgayLamViec;
 
         cout << "Nhap tro cap: ";
-        cin >> TroCap;
+        is >> TroCap;
     }
 };
 
@@ -199,29 +161,29 @@ public:
         Phong = SX;
 
         cout << "Nhap ma nhan vien: ";
-        cin >> MaNhanVien;
+        is >> MaNhanVien;
 
         int option;
         cout << "Chon de nhap:\n";
         cout << "0. Nu\n";
         cout << "1. Nam\n";
-        cin >> option;
+        is >> option;
         while (0 > option || option > 1)
         {
             cout << "Lua chon khong hop le!\n";
-            cin >> option;
+            is >> option;
         }
         (option == 0) ? (GioiTinh = NU) : (GioiTinh = NAM);
 
         cout << "Nhap ho va ten: ";
-        cin.ignore();
-        getline(cin, HoTen);
+        is.ignore();
+        getline(is, HoTen);
 
         cout << "Nhap ngay sinh (ngay/thang/nam): ";
-        cin >> NgaySinh.ngay >> NgaySinh.thang >> NgaySinh.nam;
+        is >> NgaySinh.ngay >> NgaySinh.thang >> NgaySinh.nam;
 
         cout << "Nhap so san pham: ";
-        cin >> SoSanPham;
+        is >> SoSanPham;
     }
 };
 
@@ -254,32 +216,32 @@ public:
         Phong = QL;
 
         cout << "Nhap ma nhan vien: ";
-        cin >> MaNhanVien;
+        is >> MaNhanVien;
 
         int option;
         cout << "Chon de nhap:\n";
         cout << "0. Nu\n";
         cout << "1. Nam\n";
-        cin >> option;
+        is >> option;
         while (0 > option || option > 1)
         {
             cout << "Lua chon khong hop le!\n";
-            cin >> option;
+            is >> option;
         }
         (option == 0) ? (GioiTinh = NU) : (GioiTinh = NAM);
 
         cout << "Nhap ho va ten: ";
-        cin.ignore();
-        getline(cin, HoTen);
+        is.ignore();
+        getline(is, HoTen);
 
-        cout << "Nhap ngay sinh (ngay/thang/nam): ";
-        cin >> NgaySinh.ngay >> NgaySinh.thang >> NgaySinh.nam;
+        cout << "Nhap ngay sinh (ngay thang nam): ";
+        is >> NgaySinh.ngay >> NgaySinh.thang >> NgaySinh.nam;
 
         cout << "Nhap he so chuc vu: ";
-        cin >> HeSoChucVu;
+        is >> HeSoChucVu;
 
         cout << "Nhap thuong: ";
-        cin >> Thuong;
+        is >> Thuong;
     }
 };
 
@@ -480,8 +442,11 @@ int main(int argc, char *argv[])
                 int dongia;
                 cout << "Nhap don gia: ";
                 cin >> dongia;
+                cout << "-----------------------------------------\n";
                 danhsach.xuatThongTinNhanVien(stt);
+                cout << "-----------------------------------------\n";
                 cout << "Luong: " << fixed << setprecision(3) << danhsach[stt]->tinhLuong(dongia) << " VND\n";
+                cout << "-----------------------------------------\n";
                 break;
             }
 
@@ -491,10 +456,6 @@ int main(int argc, char *argv[])
         }
         break;
     }
-    case 2:
-        break;
-    case 3:
-        break;
 
     default:
         break;
