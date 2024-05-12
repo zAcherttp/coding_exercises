@@ -26,42 +26,33 @@ using namespace std;
 int myStrlen(char s[]);
 bool myStrcat(char s1[], char s2[]);
 
-int main()
-{
+int main() {
     char s1[MAX], s2[MAX];
     cin.getline(s1, MAX);
     cin.getline(s2, MAX);
     bool kt = myStrcat(s1, s2);
 
-    if (kt)
-    {
+    if (kt) {
         cout << s1;
-    }
-    else
-    {
+    } else {
         cout << "Khong noi duoc. Khong du bo nho.";
     }
 
     return 0;
 }
 
-int myStrlen(char s[])
-{
+int myStrlen(char s[]) {
     int length = 0;
-    while (s[length] != '\0')
-    {
+    while (s[length] != '\0') {
         length++;
     }
     return length;
 }
 
-bool myStrcat(char s1[], char s2[])
-{
+bool myStrcat(char s1[], char s2[]) {
     int i = myStrlen(s1);
-    for (int j = 0; s2[j] != '\0'; j++)
-    {
-        if (i + j == MAX - 1)
-        {
+    for (int j = 0; s2[j] != '\0'; j++) {
+        if (i + j == MAX - 1) {
             return false;
         }
         s1[i + j] = s2[j];

@@ -6,8 +6,7 @@
 #define DELETE -1
 using namespace std;
 
-struct Hocsinh
-{
+struct Hocsinh {
     int Maso;
     string Hoten;
     int Namsinh;
@@ -15,8 +14,7 @@ struct Hocsinh
     double TBK;
 };
 
-struct Hashtable
-{
+struct Hashtable {
     int M; // Kich thuoc bang bam
     int n; // so phan tu trong bang bam
     Hocsinh *table;
@@ -27,16 +25,14 @@ int Insert(Hashtable &, Hocsinh);
 void PrintHashtable(Hashtable);
 void DeleteHashtable(Hashtable &);
 
-void Input(Hocsinh &x)
-{
+void Input(Hocsinh &x) {
     cin >> x.Maso;
     getline(cin >> ws, x.Hoten);
     cin >> x.Namsinh;
     cin >> x.Gioitinh;
     cin >> x.TBK;
 }
-int main()
-{
+int main() {
     Hashtable hashtable;
 
     int m, n;
@@ -45,8 +41,7 @@ int main()
     cin >> m;
     CreateHashtable(hashtable, m);
     cin >> n;
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         Input(hs);
         Insert(hashtable, hs);
     }
@@ -55,23 +50,19 @@ int main()
     return 0;
 }
 
-void CreateHashtable(Hashtable &ht, int m)
-{
+void CreateHashtable(Hashtable &ht, int m) {
     ht.table = new Hocsinh[m];
     if (ht.table == NULL)
         exit(1);
-    for (int i = 0; i < m; i++)
-    {
+    for (int i = 0; i < m; i++) {
         ht.table[i].Maso = EMPTY;
     }
     ht.M = m;
     ht.n = 0;
 }
 
-void PrintHashtable(Hashtable ht)
-{
-    for (int i = 0; i < ht.M; i++)
-    {
+void PrintHashtable(Hashtable ht) {
+    for (int i = 0; i < ht.M; i++) {
         Hocsinh hs = ht.table[i];
         if (hs.Maso > 0)
             cout << '[' << hs.Maso << ",  " << hs.Hoten << "  , " << hs.Gioitinh << ", " << hs.Namsinh << ", " << hs.TBK << "]\n";
@@ -79,15 +70,13 @@ void PrintHashtable(Hashtable ht)
             cout << "[" << hs.Maso << ",  " << "  , " << ", " << ", " << "]\n";
     }
 }
-void DeleteHashtable(Hashtable &ht)
-{
+void DeleteHashtable(Hashtable &ht) {
     delete[] ht.table;
     ht.table = NULL;
     ht.M = 0;
 }
 
-int Insert(Hashtable &ht, Hocsinh x)
-{
+int Insert(Hashtable &ht, Hocsinh x) {
     ht.table[x.Maso % ht.M] = x;
     ht.n++;
     return 1;

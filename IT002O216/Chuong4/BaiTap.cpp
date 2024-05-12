@@ -88,147 +88,118 @@
 // ▪ Cho biết thông tin sách nào được xuất bản gần đây nhất
 //// check ✓
 
+#include <algorithm>
 #include <iostream>
 #include <random>
-#include <algorithm>
 
 using namespace std;
 
 /////////////////////////// cau 1.
 #define randomRange 100
 
-class cArray
-{
+class cArray {
 private:
     int size;
     int *array;
 
 public:
     // cArray(size, pre_filled_with_random_nums_or_not)
-    cArray(int _size = 1, bool _pre_fill = 0) : size(_size), array(new int[_size])
-    {
-        if (_pre_fill)
-        {
+    cArray(int _size = 1, bool _pre_fill = 0) : size(_size), array(new int[_size]) {
+        if (_pre_fill) {
             random_device rd;
             mt19937 gen(rd());
             uniform_int_distribution<int> distribution(-randomRange, randomRange);
-            for (int i = 0; i < _size; i++)
-            {
+            for (int i = 0; i < _size; i++) {
                 array[i] = distribution(gen);
             }
-        }
-        else
-        {
+        } else {
             array = {0};
         }
     }
 
-    friend ostream &operator<<(ostream &os, const cArray &obj)
-    {
+    friend ostream &operator<<(ostream &os, const cArray &obj) {
         os << '{';
-        for (int i = 0; i < obj.size - 1; i++)
-        {
+        for (int i = 0; i < obj.size - 1; i++) {
             os << obj.array[i] << ", ";
         }
         os << obj.array[obj.size - 1] << '}';
         return os;
     }
 
-    friend istream &operator>>(istream &is, cArray &obj)
-    {
+    friend istream &operator>>(istream &is, cArray &obj) {
         cout << "nhap kich co array: ";
         is >> obj.size;
 
         obj.array = new int[obj.size];
         cout << "nhap array: ";
 
-        for (int i = 0; i < obj.size; i++)
-        {
+        for (int i = 0; i < obj.size; i++) {
             is >> obj.array[i];
         }
 
         return is;
     }
 
-    int getSize()
-    {
+    int getSize() {
         return size;
     }
 
-    const int *getArray()
-    {
+    const int *getArray() {
         return array;
     }
 
-    int count(const int n)
-    {
+    int count(const int n) {
         int count = 0;
-        for (int i = 0; i < size; i++)
-        {
-            if (n == array[i])
-            {
+        for (int i = 0; i < size; i++) {
+            if (n == array[i]) {
                 count++;
             }
         }
         return count;
     }
 
-    bool isAscending()
-    {
-        for (int i = 0; i < size - 1; i++)
-        {
-            if (array[i] < array[i + 1])
-            {
+    bool isAscending() {
+        for (int i = 0; i < size - 1; i++) {
+            if (array[i] < array[i + 1]) {
                 continue;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
         return true;
     }
 
-    int minOddNum()
-    {
+    int minOddNum() {
         int min = randomRange & 0 ? randomRange + 1 : randomRange;
         vector<int> odd;
-        for (int i = 0; i < size; i++)
-        {
-            if (array[i] & 1 && array[i] < min)
-            {
+        for (int i = 0; i < size; i++) {
+            if (array[i] & 1 && array[i] < min) {
                 min = array[i];
             }
         }
         return min;
     }
 
-    cArray sortedArr()
-    {
+    cArray sortedArr() {
         sort(array, array + size);
         return *this;
     }
 };
 
 /////////////////////////// cau 2.
-bool isPrime(int n)
-{
-    if (n <= 1)
-    {
+bool isPrime(int n) {
+    if (n <= 1) {
         return false;
     }
-    for (int i = 2; i * i <= n; i++)
-    {
-        if (n % i == 0)
-        {
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
             return false;
         }
     }
     return true;
 }
 
-class PhanSo
-{
+class PhanSo {
 public:
     int tu;
     int mau;
@@ -236,128 +207,106 @@ public:
 public:
     PhanSo(const int x = 1, const int y = 1) : tu(x), mau(y) {}
 
-    friend ostream &operator<<(ostream &os, const PhanSo &ps)
-    {
+    friend ostream &operator<<(ostream &os, const PhanSo &ps) {
         os << "(" << ps.tu << "/" << ps.mau << ")";
         return os;
     }
 
-    friend istream &operator>>(istream &is, PhanSo &ps)
-    {
+    friend istream &operator>>(istream &is, PhanSo &ps) {
         is >> ps.tu >> ps.mau;
         return is;
     }
 
-    double getValue() const
-    {
+    double getValue() const {
         return (double)tu / mau;
     }
 
-    PhanSo rutGon()
-    {
+    PhanSo rutGon() {
         // Euclidean algorithm
         int gcd = abs(tu);
         int temp = abs(mau);
 
-        while (temp != 0)
-        {
+        while (temp != 0) {
             int remainder = gcd % temp;
             gcd = temp;
             temp = remainder;
         }
 
-        if (gcd != 0)
-        {
+        if (gcd != 0) {
             return PhanSo(tu /= gcd, mau /= gcd);
         }
         return PhanSo(tu, mau);
     }
 
-    PhanSo operator+(const PhanSo &ps) const
-    {
+    PhanSo operator+(const PhanSo &ps) const {
         return PhanSo(tu * ps.mau + mau * ps.tu, mau * ps.mau);
     }
-    PhanSo operator+=(const PhanSo &ps)
-    {
+    PhanSo operator+=(const PhanSo &ps) {
         tu *= ps.mau;
         tu += mau * ps.tu;
         mau *= ps.mau;
         return *this;
     }
 
-    PhanSo operator-(const PhanSo &ps) const
-    {
+    PhanSo operator-(const PhanSo &ps) const {
         return PhanSo(tu * ps.mau - mau * ps.tu, mau * ps.mau);
     }
-    PhanSo operator-=(const PhanSo &ps)
-    {
+    PhanSo operator-=(const PhanSo &ps) {
         tu *= ps.mau;
         tu -= mau * ps.tu;
         mau *= ps.mau;
         return *this;
     }
 
-    PhanSo operator*(const PhanSo &ps) const
-    {
+    PhanSo operator*(const PhanSo &ps) const {
         return PhanSo(tu * ps.tu, mau * ps.mau);
     }
-    PhanSo operator*=(const PhanSo &ps)
-    {
+    PhanSo operator*=(const PhanSo &ps) {
         tu *= ps.tu;
         mau *= ps.mau;
         return *this;
     }
 
-    PhanSo operator/(const PhanSo &ps) const
-    {
+    PhanSo operator/(const PhanSo &ps) const {
         return PhanSo(tu * ps.mau, mau * ps.tu);
     }
-    PhanSo operator/=(const PhanSo &ps)
-    {
+    PhanSo operator/=(const PhanSo &ps) {
         tu *= ps.mau;
         mau *= ps.tu;
         return *this;
     }
 
-    bool operator<(const PhanSo &ps) const
-    {
+    bool operator<(const PhanSo &ps) const {
         return this->getValue() < ps.getValue();
     }
 
-    bool operator<=(const PhanSo &ps) const
-    {
+    bool operator<=(const PhanSo &ps) const {
         return this->getValue() <= ps.getValue();
     }
 
-    bool operator>(const PhanSo &ps) const
-    {
+    bool operator>(const PhanSo &ps) const {
         return this->getValue() > ps.getValue();
     }
 
-    bool operator>=(const PhanSo &ps) const
-    {
+    bool operator>=(const PhanSo &ps) const {
         return this->getValue() >= ps.getValue();
     }
 };
 
-class arrPhanSo
-{
+class arrPhanSo {
 private:
     int size;
     PhanSo *array;
 
 public:
     // arrPhanSo(size, pre_filled_with_random_nums_or_not)
-    arrPhanSo(int _size = 1, int _pre_fill = 0) : size(_size), array(new PhanSo[_size])
-    {
-        if (_pre_fill)
-        {
+    arrPhanSo(int _size = 1, int _pre_fill = 0) : size(_size), array(new PhanSo[_size]) {
+        if (_pre_fill) {
             random_device rd;
             mt19937 gen(rd());
             uniform_int_distribution<int> distribution(-randomRange, randomRange);
             int mau_temp;
-            for (int i = 0; i < _size; i++)
-            {
+            for (int i = 0; i < _size; i++) {
                 array[i].tu = distribution(gen);
                 mau_temp = distribution(gen);
                 array[i].mau = mau_temp == 0 ? mau_temp + 1 : mau_temp;
@@ -365,54 +314,43 @@ public:
         }
     }
 
-    friend ostream &operator<<(ostream &os, const arrPhanSo &obj)
-    {
+    friend ostream &operator<<(ostream &os, const arrPhanSo &obj) {
         os << '{';
-        for (int i = 0; i < obj.size - 1; i++)
-        {
+        for (int i = 0; i < obj.size - 1; i++) {
             os << obj.array[i] << ", ";
         }
         os << obj.array[obj.size - 1] << '}';
         return os;
     }
 
-    friend istream &operator>>(istream &is, arrPhanSo &obj)
-    {
-        for (int i = 0; i < obj.size; i++)
-        {
+    friend istream &operator>>(istream &is, arrPhanSo &obj) {
+        for (int i = 0; i < obj.size; i++) {
             is >> obj.array[i];
         }
         return is;
     }
 
-    PhanSo getMaxFraction()
-    {
+    PhanSo getMaxFraction() {
         PhanSo max(-randomRange, 1);
-        for (int i = 0; i < size; i++)
-        {
-            if (array[i].getValue() > max.getValue())
-            {
+        for (int i = 0; i < size; i++) {
+            if (array[i].getValue() > max.getValue()) {
                 max = array[i];
             }
         }
         return max;
     }
 
-    int getPrimeNumeratorCount()
-    {
+    int getPrimeNumeratorCount() {
         int count = 0;
-        for (int i = 0; i < size; i++)
-        {
-            if (isPrime(array[i].tu))
-            {
+        for (int i = 0; i < size; i++) {
+            if (isPrime(array[i].tu)) {
                 count++;
             }
         }
         return count;
     }
 
-    arrPhanSo sortAscending()
-    {
+    arrPhanSo sortAscending() {
         sort(array, array + size);
         return *this;
     }
@@ -420,8 +358,7 @@ public:
 
 /////////////////////////// cau 3.
 // suppose all varibles are x
-class monomial
-{
+class monomial {
 private:
     int coefficient;
     int exponent;
@@ -429,130 +366,97 @@ private:
 public:
     monomial(int _coefficient = 1, int _exponent = 1) : coefficient(_coefficient), exponent(_exponent) {}
 
-    friend ostream &operator<<(ostream &os, const monomial &m)
-    {
+    friend ostream &operator<<(ostream &os, const monomial &m) {
         os << m.coefficient << "x^" << m.exponent;
         return os;
     }
 
-    friend istream &operator>>(istream &is, monomial &m)
-    {
+    friend istream &operator>>(istream &is, monomial &m) {
         is >> m.coefficient >> m.exponent;
         return is;
     }
 
-    int getCoefficient() const
-    {
+    int getCoefficient() const {
         return coefficient;
     }
 
-    int getExponent() const
-    {
+    int getExponent() const {
         return exponent;
     }
 
-    void setCoefficient(int _c)
-    {
+    void setCoefficient(int _c) {
         coefficient = _c;
     }
 
-    void setExponent(int _e)
-    {
+    void setExponent(int _e) {
         exponent = _e;
     }
 
-    double getValue(double _x)
-    {
+    double getValue(double _x) {
         return (double)coefficient != 0 ? coefficient * pow(_x, exponent) : 0.0;
     }
 
-    monomial getDerivative() const
-    {
+    monomial getDerivative() const {
         return monomial(coefficient * exponent, exponent - 1);
     }
 
-    monomial operator+(const monomial &mn) const
-    {
-        if (exponent == mn.exponent)
-        {
+    monomial operator+(const monomial &mn) const {
+        if (exponent == mn.exponent) {
             return monomial(coefficient + mn.coefficient, exponent);
-        }
-        else
-        {
+        } else {
             throw invalid_argument("cannot add monomials with different powers");
         }
     }
-    monomial operator+=(const monomial &mn)
-    {
-        if (exponent == mn.exponent)
-        {
+    monomial operator+=(const monomial &mn) {
+        if (exponent == mn.exponent) {
             coefficient += mn.coefficient;
             return *this;
-        }
-        else
-        {
+        } else {
             throw invalid_argument("cannot add monomials with different powers");
         }
     }
-    monomial operator-(const monomial &mn) const
-    {
-        if (exponent == mn.exponent)
-        {
+    monomial operator-(const monomial &mn) const {
+        if (exponent == mn.exponent) {
             return monomial(coefficient - mn.coefficient, exponent);
-        }
-        else
-        {
+        } else {
             throw invalid_argument("cannot subtract monomials with different powers");
         }
     }
-    monomial operator-=(const monomial &mn)
-    {
-        if (exponent == mn.exponent)
-        {
+    monomial operator-=(const monomial &mn) {
+        if (exponent == mn.exponent) {
             coefficient -= mn.coefficient;
             return *this;
-        }
-        else
-        {
+        } else {
             throw invalid_argument("cannot subtract monomials with different powers");
         }
     }
 };
 
 /////////////////////////// cau 4.
-class polynomial
-{
+class polynomial {
 private:
     int degree;
-    monomial* array;
+    monomial *array;
     int constant;
 
 public:
-    polynomial(int _degree) : degree(_degree), constant(0)
-    {
-        if (_degree == 0)
-        {
+    polynomial(int _degree) : degree(_degree), constant(0) {
+        if (_degree == 0) {
             array = new monomial[1];
             array[0].setCoefficient(0);
-        }
-        else
-        {
+        } else {
             array = new monomial[_degree];
         }
     }
 
-    ~polynomial()
-    {
+    ~polynomial() {
         delete[] array;
     }
 
-    friend ostream& operator<<(ostream& os, const polynomial& p)
-    {
+    friend ostream &operator<<(ostream &os, const polynomial &p) {
         bool isFirst = true;
-        for (int i = 0; i < p.degree; i++)
-        {
-            if (p.array[i].getCoefficient() != 0)
-            {
+        for (int i = 0; i < p.degree; i++) {
+            if (p.array[i].getCoefficient() != 0) {
                 if (!isFirst && p.array[i].getCoefficient() > 0)
                     os << "+";
 
@@ -575,18 +479,16 @@ public:
                     isFirst = false;
             }
         }
-        if(p.constant < 0)
+        if (p.constant < 0)
             os << p.constant;
         else
             os << "+" << p.constant;
         return os;
     }
 
-    friend istream& operator>>(istream& is, polynomial& p)
-    {
+    friend istream &operator>>(istream &is, polynomial &p) {
         int temp = 0;
-        for (int i = 0; i < p.degree; i++)
-        {
+        for (int i = 0; i < p.degree; i++) {
             is >> temp;
             p.array[i].setCoefficient(temp);
             p.array[i].setExponent(p.degree - i);
@@ -595,48 +497,38 @@ public:
         return is;
     }
 
-    int getDegree() const
-    {
+    int getDegree() const {
         return degree;
     }
 
-    monomial* getMonomialsArray() const
-    {
+    monomial *getMonomialsArray() const {
         return array;
     }
 
-    int getConstant() const
-    {
+    int getConstant() const {
         return constant;
     }
 
-    void setConstant(int _c)
-    {
+    void setConstant(int _c) {
         constant = _c;
     }
 
-    double getValue(double _x)
-    {
+    double getValue(double _x) {
         double value = constant;
-        for (int i = 0; i < degree; i++)
-        {
+        for (int i = 0; i < degree; i++) {
             value += array[i].getValue(_x);
         }
         return value;
     }
 
-    polynomial operator+(const polynomial& p) const
-    {
+    polynomial operator+(const polynomial &p) const {
         int h_deg, l_deg;
-        monomial* h_ptr, * l_ptr;
+        monomial *h_ptr, *l_ptr;
 
-        if (p.getDegree() > this->getDegree())
-        {
+        if (p.getDegree() > this->getDegree()) {
             h_deg = p.getDegree();
             h_ptr = p.array;
-        }
-        else
-        {
+        } else {
             h_deg = this->getDegree();
             h_ptr = this->array;
         }
@@ -647,33 +539,26 @@ public:
         result.setConstant(this->constant + p.constant);
 
         int delta = h_deg - l_deg;
-        if (delta > 0)
-        {
-            for (int i = 0; i < delta; i++)
-            {
+        if (delta > 0) {
+            for (int i = 0; i < delta; i++) {
                 result.array[i] = h_ptr[i];
             }
         }
-        for (int i = delta; i < h_deg; i++)
-        {
+        for (int i = delta; i < h_deg; i++) {
             result.array[i] = h_ptr[i] + l_ptr[i - delta];
         }
 
         return result;
     }
 
-    polynomial operator-(const polynomial& p) const
-    {
+    polynomial operator-(const polynomial &p) const {
         int h_deg, l_deg;
-        monomial* h_ptr, * l_ptr;
+        monomial *h_ptr, *l_ptr;
 
-        if (p.getDegree() > this->getDegree())
-        {
+        if (p.getDegree() > this->getDegree()) {
             h_deg = p.getDegree();
             h_ptr = p.array;
-        }
-        else
-        {
+        } else {
             h_deg = this->getDegree();
             h_ptr = this->array;
         }
@@ -684,15 +569,12 @@ public:
         result.setConstant(this->constant + p.constant);
 
         int delta = h_deg - l_deg;
-        if (delta > 0)
-        {
-            for (int i = 0; i < delta; i++)
-            {
+        if (delta > 0) {
+            for (int i = 0; i < delta; i++) {
                 result.array[i] = h_ptr[i];
             }
         }
-        for (int i = delta; i < h_deg; i++)
-        {
+        for (int i = delta; i < h_deg; i++) {
             result.array[i] = h_ptr[i] - l_ptr[i - delta];
         }
 
@@ -701,8 +583,7 @@ public:
 };
 
 /////////////////////////// cau 5.
-class cBook
-{
+class cBook {
 private:
     string ISBN;
     string name;
@@ -712,16 +593,14 @@ private:
 public:
     cBook(string _ISBN = "978-3-16-148410-0", string _name = "The Blank", int _year = 2077, int _pages = 461) : ISBN(_ISBN), name(_name), year(_year), pages(_pages) {}
 
-    friend ostream &operator<<(ostream &os, const cBook &b)
-    {
+    friend ostream &operator<<(ostream &os, const cBook &b) {
         os << "ISBN: " << b.ISBN << endl;
         os << "Name: " << b.name << endl;
         os << "Year: " << b.year << endl;
         os << "Pages: " << b.pages << endl;
         return os;
     }
-    friend istream &operator>>(istream &is, cBook &b)
-    {
+    friend istream &operator>>(istream &is, cBook &b) {
         cout << "ISBN: ";
         is >> b.ISBN;
         cout << "Name: ";
@@ -733,43 +612,34 @@ public:
         return is;
     }
 
-    string getISBN() const
-    {
+    string getISBN() const {
         return ISBN;
     }
-    string getName() const
-    {
+    string getName() const {
         return name;
     }
-    int getYear() const
-    {
+    int getYear() const {
         return year;
     }
-    int getPages() const
-    {
+    int getPages() const {
         return pages;
     }
 
-    void setISBN(string _I)
-    {
+    void setISBN(string _I) {
         ISBN = _I;
     }
-    void setName(string _n)
-    {
+    void setName(string _n) {
         name = _n;
     }
-    void setYear(int _y)
-    {
+    void setYear(int _y) {
         year = _y;
     }
-    void setPages(int _p)
-    {
+    void setPages(int _p) {
         pages = _p;
     }
 };
 
-class cListBook
-{
+class cListBook {
 private:
     int size;
     cBook *array;
@@ -777,30 +647,23 @@ private:
 public:
     cListBook(int _size) : size(_size), array(new cBook[_size]) {}
 
-    friend ostream &operator<<(ostream &os, const cListBook &lb)
-    {
-        for (int i = 0; i < lb.size; i++)
-        {
+    friend ostream &operator<<(ostream &os, const cListBook &lb) {
+        for (int i = 0; i < lb.size; i++) {
             os << lb.array[i] << endl;
         }
         return os;
     }
-    friend istream &operator>>(istream &is, cListBook &lb)
-    {
-        for (int i = 0; i < lb.size; i++)
-        {
+    friend istream &operator>>(istream &is, cListBook &lb) {
+        for (int i = 0; i < lb.size; i++) {
             is >> lb.array[i];
         }
         return is;
     }
 
-    cBook latestBook()
-    {
+    cBook latestBook() {
         cBook latest = array[0];
-        for (int i = 0; i < size; i++)
-        {
-            if (array[i].getYear() > latest.getYear())
-            {
+        for (int i = 0; i < size; i++) {
+            if (array[i].getYear() > latest.getYear()) {
                 latest = array[i];
             }
         }
@@ -808,15 +671,12 @@ public:
     }
 };
 
-int main()
-{
+int main() {
     int cau;
     cout << "chon cau (1, 2, 3, 4, 5): ";
     cin >> cau;
-    switch (cau)
-    {
-    case 1:
-    {
+    switch (cau) {
+    case 1: {
         cArray A;
         cin >> A;
         cout << "array A: " << A << endl;
@@ -838,8 +698,7 @@ int main()
         cout << "sap xep tang dan array R: " << R.sortedArr() << endl;
         break;
     }
-    case 2:
-    {
+    case 2: {
         int size;
         cout << "nhap kich thuoc array phan so: ";
         cin >> size;
@@ -859,8 +718,7 @@ int main()
         cout << "sap xep tang dan array R: " << R.sortAscending() << endl;
         break;
     }
-    case 3:
-    {
+    case 3: {
         monomial A, B;
         cout << "nhap ax^b (a b): ";
         cin >> A;
@@ -876,8 +734,7 @@ int main()
         cout << "gia tri don thuc B voi x da nhap: " << B.getValue(x) << endl;
         break;
     }
-    case 4:
-    {
+    case 4: {
         int deg_A, deg_B;
         cout << "nhap bac cua da thuc A: ";
         cin >> deg_A;
@@ -892,15 +749,16 @@ int main()
         cout << '\t' << A << endl;
         cout << "    +" << endl;
         cout << '\t' << B << endl;
-        cout << '\t' << A + B << endl << endl;
+        cout << '\t' << A + B << endl
+             << endl;
         cout << '\t' << A << endl;
         cout << "    -" << endl;
         cout << '\t' << B << endl;
-        cout << '\t' << A - B << endl << endl;
+        cout << '\t' << A - B << endl
+             << endl;
         break;
     }
-    case 5:
-    {
+    case 5: {
         int size;
         cout << "nhap so sach: ";
         cin >> size;

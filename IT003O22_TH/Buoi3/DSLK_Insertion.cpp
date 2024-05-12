@@ -3,41 +3,33 @@
 #include <limits>
 using namespace std;
 
-class SinglyLinkedListNode
-{
+class SinglyLinkedListNode {
 public:
     int data;
     SinglyLinkedListNode *next;
 
-    SinglyLinkedListNode(int node_data)
-    {
+    SinglyLinkedListNode(int node_data) {
         this->data = node_data;
         this->next = nullptr;
     }
 };
 
-class SinglyLinkedList
-{
+class SinglyLinkedList {
 public:
     SinglyLinkedListNode *head;
     SinglyLinkedListNode *tail;
 
-    SinglyLinkedList()
-    {
+    SinglyLinkedList() {
         this->head = nullptr;
         this->tail = nullptr;
     }
 
-    void insert_node(int node_data)
-    {
+    void insert_node(int node_data) {
         SinglyLinkedListNode *node = new SinglyLinkedListNode(node_data);
 
-        if (!this->head)
-        {
+        if (!this->head) {
             this->head = node;
-        }
-        else
-        {
+        } else {
             this->tail->next = node;
         }
 
@@ -45,10 +37,8 @@ public:
     }
 };
 
-void free_singly_linked_list(SinglyLinkedListNode *node)
-{
-    while (node)
-    {
+void free_singly_linked_list(SinglyLinkedListNode *node) {
+    while (node) {
         SinglyLinkedListNode *temp = node;
         node = node->next;
 
@@ -56,10 +46,8 @@ void free_singly_linked_list(SinglyLinkedListNode *node)
     }
 }
 
-void printLinkedList(SinglyLinkedListNode *head)
-{
-    while (head != NULL)
-    {
+void printLinkedList(SinglyLinkedListNode *head) {
+    while (head != NULL) {
         cout << head->data << ' ';
         head = head->next;
     }
@@ -76,21 +64,17 @@ void printLinkedList(SinglyLinkedListNode *head)
  * };
  *
  */
-SinglyLinkedListNode *insertSortedLinkedList(SinglyLinkedListNode *head, int x)
-{
-    SinglyLinkedListNode* current = head;
-    SinglyLinkedListNode* element = new SinglyLinkedListNode(x);
+SinglyLinkedListNode *insertSortedLinkedList(SinglyLinkedListNode *head, int x) {
+    SinglyLinkedListNode *current = head;
+    SinglyLinkedListNode *element = new SinglyLinkedListNode(x);
 
-    if(head == nullptr || head->data >= x)
-    {
+    if (head == nullptr || head->data >= x) {
         element->next = head;
         head = element;
         return head;
     }
-    while(current->next != nullptr)
-    {
-        if(current->next->data > x)
-        {
+    while (current->next != nullptr) {
+        if (current->next->data > x) {
             element->next = current->next;
             current->next = element;
             return head;
@@ -98,15 +82,13 @@ SinglyLinkedListNode *insertSortedLinkedList(SinglyLinkedListNode *head, int x)
         current = current->next;
     }
 
-    if(current->next == nullptr)
-    {
+    if (current->next == nullptr) {
         current->next = element;
     }
     return head;
 }
 
-int main()
-{
+int main() {
     SinglyLinkedList *llist = new SinglyLinkedList();
     int llist_count;
     int x;
@@ -114,8 +96,7 @@ int main()
     cin >> llist_count;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    for (int i = 0; i < llist_count; i++)
-    {
+    for (int i = 0; i < llist_count; i++) {
         int llist_item;
         cin >> llist_item;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');

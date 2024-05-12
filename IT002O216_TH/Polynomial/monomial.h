@@ -3,8 +3,7 @@
 #include <math.h>
 using namespace std;
 
-class monomial
-{
+class monomial {
 public:
     int exponent;
     double coefficient;

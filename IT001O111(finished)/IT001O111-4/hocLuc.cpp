@@ -3,8 +3,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     double T, L, H, DTB;
     cin >> T >> L >> H;
     DTB = (T + L + H) / 3;

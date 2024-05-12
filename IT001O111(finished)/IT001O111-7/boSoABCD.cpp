@@ -1,6 +1,6 @@
+#include <chrono>
 #include <iostream>
 #include <string.h>
-#include <chrono>
 
 using namespace std;
 using namespace chrono;
@@ -8,14 +8,12 @@ using namespace chrono;
 int n;
 int a[20001];
 
-int main()
-{
+int main() {
     cin >> n;
 
     auto start_time = high_resolution_clock::now();
 
-    for (int i = 1; i <= n; i++)
-    {
+    for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= n; j++)
             if (i * j <= n)
                 a[i * j]++;

@@ -2,34 +2,25 @@
 #include <vector>
 using namespace std;
 
-int countSubMatrices(const vector<vector<char>> &l, const vector<vector<char>> &s)
-{
+int countSubMatrices(const vector<vector<char>> &l, const vector<vector<char>> &s) {
     int m = l.size();
     int n = s.size();
     int count = 0;
 
-    for (int i = 0; i <= m - n; i++)
-    {
-        for (int j = 0; j <= m - n; j++)
-        {
+    for (int i = 0; i <= m - n; i++) {
+        for (int j = 0; j <= m - n; j++) {
             int flag = 0;
-            for (int k = 0; k < n; k++)
-            {
-                for (int g = 0; g < n; g++)
-                {
-                    if (l[i + k][j + g] == s[k][g])
-                    {
+            for (int k = 0; k < n; k++) {
+                for (int g = 0; g < n; g++) {
+                    if (l[i + k][j + g] == s[k][g]) {
                         flag++;
-                    }
-                    else
-                    {
+                    } else {
                         flag = 0;
                         break;
                     }
                 }
             }
-            if (flag == n * n)
-            {
+            if (flag == n * n) {
                 count++;
             }
         }
@@ -37,16 +28,13 @@ int countSubMatrices(const vector<vector<char>> &l, const vector<vector<char>> &
     return count;
 }
 
-void rotateClockwiseBy90(vector<vector<char>> &m)
-{
+void rotateClockwiseBy90(vector<vector<char>> &m) {
 
     int n = m.size();
     vector<vector<char>> temp(n, vector<char>(n));
 
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             temp[j][n - i - 1] = m[i][j];
         }
     }
@@ -54,40 +42,33 @@ void rotateClockwiseBy90(vector<vector<char>> &m)
     m = temp;
 }
 
-int main()
-{
+int main() {
 
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-    while (true)
-    {
+    while (true) {
         int m, n;
         cin >> m >> n;
         int count[4] = {0, 0, 0, 0};
         vector<vector<char>> l(m, vector<char>(m)),
             s(n, vector<char>(n));
-        if (m == 0 || n == 0)
-        {
+        if (m == 0 || n == 0) {
             break;
         }
 
         // inputMatrix
-        for (int i = 0; i < m; i++)
-        {
+        for (int i = 0; i < m; i++) {
             string inputL = "temp";
             cin >> inputL;
-            for (int j = 0; j < m; j++)
-            {
+            for (int j = 0; j < m; j++) {
                 l[i][j] = inputL[j];
             }
         }
-        for (int i = 0; i < n; i++)
-        {
+        for (int i = 0; i < n; i++) {
             string inputS = "temp";
             cin >> inputS;
-            for (int j = 0; j < n; j++)
-            {
+            for (int j = 0; j < n; j++) {
                 s[i][j] = inputS[j];
             }
         }
@@ -102,8 +83,7 @@ int main()
         count[3] = countSubMatrices(l, s);
 
         // print result
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             cout << count[i] << " ";
         }
         cout << endl;

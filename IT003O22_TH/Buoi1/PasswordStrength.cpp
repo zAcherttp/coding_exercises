@@ -1,32 +1,27 @@
-#include <iostream>
-#include <vector>
 #include <algorithm>
+#include <iostream>
 #include <unordered_set>
+#include <vector>
 
 using namespace std;
 
-bool HasInvalidCharacter(string &s)
-{
+bool HasInvalidCharacter(string &s) {
     unordered_set<char> invalidChars = {'.', '/', '\\', '\'', '\"'};
 
-    for (char ch : s)
-    {
-        if (invalidChars.count(ch))
-        {
+    for (char ch : s) {
+        if (invalidChars.count(ch)) {
             return true;
         }
     }
     return false;
 }
 
-bool laKiTuDacBiet(char pw)
-{
+bool laKiTuDacBiet(char pw) {
     unordered_set<char> specialChars = {'!', '@', '#', '$', '%', '^', '&', '*', '?', '_', '~'};
     return specialChars.count(pw);
 }
 
-string passwordStrength(string &pw)
-{
+string passwordStrength(string &pw) {
     int score = 0;
     int BaseScore = 40;
     int Num_Excess = 0, Bonus_Excess = 3;
@@ -36,8 +31,7 @@ string passwordStrength(string &pw)
     int Bonus_Combo = 0, Bonus_FlatLower = 0, Bonus_FlatNumber = 0;
     int length = pw.length();
 
-    if (!HasInvalidCharacter(pw) && length > 7)
-    {
+    if (!HasInvalidCharacter(pw) && length > 7) {
         int numUpper = count_if(pw.begin(), pw.end(), ::isupper);
         int numNumbers = count_if(pw.begin(), pw.end(), ::isdigit);
         int numSymbols = count_if(pw.begin(), pw.end(), laKiTuDacBiet);
@@ -52,25 +46,20 @@ string passwordStrength(string &pw)
         if (numNumbers > 0)
             ComboScore++;
 
-        if (ComboScore == 1 || ComboScore == 2)
-        {
+        if (ComboScore == 1 || ComboScore == 2) {
             Bonus_Combo = 15;
-        }
-        else
-        {
+        } else {
             Bonus_Combo = 25;
         }
 
         // Bonus_FlatLower
-        if (Bonus_Combo == 0)
-        {
+        if (Bonus_Combo == 0) {
             Bonus_FlatLower = -15;
         }
 
         // Bonus_FlatNumber
         int allNumber = 0;
-        if (numNumbers > 0 && numSymbols + numUpper == 0 && !hasLower)
-        {
+        if (numNumbers > 0 && numSymbols + numUpper == 0 && !hasLower) {
             Bonus_FlatNumber = -35;
         }
 
@@ -85,9 +74,7 @@ string passwordStrength(string &pw)
 
         // Number_Symbols
         Num_Symbols = numSymbols;
-    }
-    else
-    {
+    } else {
         return "KhongHopLe";
     }
 
@@ -97,10 +84,9 @@ string passwordStrength(string &pw)
     return grading[score >= 100 ? 3 : (score >= 75 ? 2 : (score >= 50 ? 1 : 0))];
 }
 
-int main()
-{
+int main() {
     string password;
-        getline(cin, password);
-        cout << passwordStrength(password) << endl;
+    getline(cin, password);
+    cout << passwordStrength(password) << endl;
     return 0;
 }

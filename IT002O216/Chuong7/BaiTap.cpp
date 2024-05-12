@@ -17,38 +17,34 @@
 // ▪ Tính tổng lương của công ty.
 // ▪ Tìm kiếm một nhân viên theo họ tên.
 
+#include <iomanip>
 #include <iostream>
 #include <utility>
 #include <vector>
-#include <iomanip>
 
 using namespace std;
 
-enum sex
-{
+enum sex {
     NAM = 1,
     NU = 0,
     UNKNOWN = -1
 };
 
-enum phong
-{
+enum phong {
     VP = 0,
     SX = 1,
     QL = 2,
     EMPTY = -1
 };
 
-struct date
-{
+struct date {
     int ngay;
     int thang;
     int nam;
     date(int _d = 0, int _m = 0, int _y = 0) : ngay(_d), thang(_m), nam(_y){};
 };
 
-class NhanVien
-{
+class NhanVien {
 public:
     phong Phong;
     string MaNhanVien;
@@ -57,27 +53,24 @@ public:
     date NgaySinh;
 
     explicit NhanVien(phong _p = EMPTY, string _mcb = "", string _name = "", sex _s = UNKNOWN, date _bd = {})
-        : Phong(_p), MaNhanVien(std::move(_mcb)), HoTen(std::move(_name)), GioiTinh(_s), NgaySinh(_bd) {}
+        : Phong(_p), MaNhanVien(move(_mcb)), HoTen(move(_name)), GioiTinh(_s), NgaySinh(_bd) {}
     ~NhanVien() = default;
 
     virtual void xuatThongTin() const {}
 
     virtual void nhapThongTin(istream &is) {}
 
-    virtual int tinhLuong(const int _luongCB)
-    {
+    virtual int tinhLuong(const int _luongCB) {
         return _luongCB;
     }
 
-    friend istream &operator>>(istream &is, NhanVien &cb)
-    {
+    friend istream &operator>>(istream &is, NhanVien &cb) {
         cb.nhapThongTin(is);
         return is;
     }
 };
 
-class VanPhong : public NhanVien
-{
+class VanPhong : public NhanVien {
 public:
     int SoNgayLamViec;
     int TroCap;
@@ -85,13 +78,11 @@ public:
     explicit VanPhong(int _wd = 0, int _sub = 0) : NhanVien(VP), SoNgayLamViec(_wd), TroCap(_sub) {}
     ~VanPhong() = default;
 
-    int tinhLuong(int _luongCB) override
-    {
+    int tinhLuong(int _luongCB) override {
         return (_luongCB + SoNgayLamViec * 200000 + TroCap);
     }
 
-    void xuatThongTin() const override
-    {
+    void xuatThongTin() const override {
         string info = "Ho ten NVVP";
         cout << setw(18) << left << info.append((GioiTinh == NAM) ? (" Nam") : (" Nu")) << ": " << HoTen << '\n';
         cout << setw(18) << left << "Ngay Sinh" << ": " << NgaySinh.ngay << "/" << NgaySinh.thang << "/" << NgaySinh.nam << '\n';
@@ -100,8 +91,7 @@ public:
         cout << setw(18) << left << "Tro Cap" << ": " << TroCap << '\n';
     }
 
-    void nhapThongTin(istream &is) override
-    {
+    void nhapThongTin(istream &is) override {
         Phong = VP;
 
         cout << "Nhap ma nhan vien: ";
@@ -112,8 +102,7 @@ public:
         cout << "0. Nu\n";
         cout << "1. Nam\n";
         is >> option;
-        while (0 > option || option > 1)
-        {
+        while (0 > option || option > 1) {
             cout << "Lua chon khong hop le!\n";
             is >> option;
         }
@@ -134,21 +123,18 @@ public:
     }
 };
 
-class SanXuat : public NhanVien
-{
+class SanXuat : public NhanVien {
 public:
     int SoSanPham;
 
     explicit SanXuat(int _pn = 0) : NhanVien(QL), SoSanPham(_pn) {}
     ~SanXuat() = default;
 
-    int tinhLuong(int _luongCB) override
-    {
+    int tinhLuong(int _luongCB) override {
         return (_luongCB + SoSanPham * 2000);
     }
 
-    void xuatThongTin() const override
-    {
+    void xuatThongTin() const override {
         string info = "Ho ten NVSX";
         cout << setw(18) << left << info.append((GioiTinh == NAM) ? (" Nam") : (" Nu")) << ": " << HoTen << '\n';
         cout << setw(18) << left << "Ngay Sinh" << ": " << NgaySinh.ngay << "/" << NgaySinh.thang << "/" << NgaySinh.nam << '\n';
@@ -156,8 +142,7 @@ public:
         cout << setw(18) << left << "So San Pham" << ": " << SoSanPham << '\n';
     }
 
-    void nhapThongTin(istream &is) override
-    {
+    void nhapThongTin(istream &is) override {
         Phong = SX;
 
         cout << "Nhap ma nhan vien: ";
@@ -168,8 +153,7 @@ public:
         cout << "0. Nu\n";
         cout << "1. Nam\n";
         is >> option;
-        while (0 > option || option > 1)
-        {
+        while (0 > option || option > 1) {
             cout << "Lua chon khong hop le!\n";
             is >> option;
         }
@@ -187,8 +171,7 @@ public:
     }
 };
 
-class QuanLy : public NhanVien
-{
+class QuanLy : public NhanVien {
 public:
     int HeSoChucVu;
     int Thuong{};
@@ -196,13 +179,11 @@ public:
     explicit QuanLy(int _pc = 0) : NhanVien(QL), HeSoChucVu(_pc) {}
     ~QuanLy() = default;
 
-    int tinhLuong(int _luongCB) override
-    {
+    int tinhLuong(int _luongCB) override {
         return (_luongCB * HeSoChucVu + Thuong);
     }
 
-    void xuatThongTin() const override
-    {
+    void xuatThongTin() const override {
         string info = "Ho ten NVQL";
         cout << setw(18) << left << info.append((GioiTinh == NAM) ? (" Nam") : (" Nu")) << ": " << HoTen << '\n';
         cout << setw(18) << left << "Ngay Sinh" << ": " << NgaySinh.ngay << "/" << NgaySinh.thang << "/" << NgaySinh.nam << '\n';
@@ -211,8 +192,7 @@ public:
         cout << setw(18) << left << "Thuong" << ": " << Thuong << '\n';
     }
 
-    void nhapThongTin(istream &is) override
-    {
+    void nhapThongTin(istream &is) override {
         Phong = QL;
 
         cout << "Nhap ma nhan vien: ";
@@ -223,8 +203,7 @@ public:
         cout << "0. Nu\n";
         cout << "1. Nam\n";
         is >> option;
-        while (0 > option || option > 1)
-        {
+        while (0 > option || option > 1) {
             cout << "Lua chon khong hop le!\n";
             is >> option;
         }
@@ -245,8 +224,7 @@ public:
     }
 };
 
-class DSNhanVien
-{
+class DSNhanVien {
 public:
     int SoLuongNhanVien;
     vector<NhanVien *> DanhSach;
@@ -254,32 +232,25 @@ public:
     explicit DSNhanVien(int _sl = 0, const vector<NhanVien *> &_ds = {}) : SoLuongNhanVien(_sl), DanhSach({}) {}
     ~DSNhanVien() = default;
 
-    void xoaNhanVien(int _soThuTu)
-    {
-        if (_soThuTu >= 0 && _soThuTu < DanhSach.size())
-        {
+    void xoaNhanVien(int _soThuTu) {
+        if (_soThuTu >= 0 && _soThuTu < DanhSach.size()) {
             auto it = DanhSach.begin() + _soThuTu;
             DanhSach.erase(it);
-        }
-        else
-        {
+        } else {
             cout << "so thu tu nam ngoai danh sach!\n";
         }
 
         SoLuongNhanVien--;
     }
 
-    void xuatThongTinNhanVien(int _soThuTu) const
-    {
-        if (_soThuTu < 0 || DanhSach.size() <= _soThuTu)
-        {
+    void xuatThongTinNhanVien(int _soThuTu) const {
+        if (_soThuTu < 0 || DanhSach.size() <= _soThuTu) {
             cout << "so thu tu nam ngoai danh sach!\n";
         }
         DanhSach[_soThuTu]->xuatThongTin();
     }
 
-    void themNhanVien()
-    {
+    void themNhanVien() {
 
         int option;
         cout << "Chon de nhap:\n";
@@ -288,30 +259,25 @@ public:
         cout << "2. Nhan Vien Quan Ly\n";
 
         cin >> option;
-        while (0 > option || option > 2)
-        {
+        while (0 > option || option > 2) {
             cout << "Lua chon khong hop le!\n";
             cin >> option;
         }
 
-        switch (option)
-        {
-        case 0:
-        {
+        switch (option) {
+        case 0: {
             auto *mau = new VanPhong;
             cin >> *mau;
             DanhSach.push_back(mau);
             break;
         }
-        case 1:
-        {
+        case 1: {
             auto *mau = new SanXuat;
             cin >> *mau;
             DanhSach.push_back(mau);
             break;
         }
-        case 2:
-        {
+        case 2: {
             auto *mau = new QuanLy;
             cin >> *mau;
             DanhSach.push_back(mau);
@@ -325,13 +291,11 @@ public:
         SoLuongNhanVien++;
     }
 
-    void chinhSuaNhanVien()
-    {
+    void chinhSuaNhanVien() {
         int _stt;
         cout << "Nhap so thu tu nhan vien can chinh sua: ";
         cin >> _stt;
-        while (_stt < 0 || DanhSach.size() <= _stt)
-        {
+        while (_stt < 0 || DanhSach.size() <= _stt) {
             cout << "so thu tu nam ngoai danh sach!\n";
             cin >> _stt;
         }
@@ -339,8 +303,7 @@ public:
         cin >> *DanhSach[_stt];
     }
 
-    NhanVien *operator[](const int _index)
-    {
+    NhanVien *operator[](const int _index) {
         if (0 <= _index <= SoLuongNhanVien)
             return DanhSach[_index];
         cout << "index out of bound!\n";
@@ -348,23 +311,18 @@ public:
     }
 };
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     int cau;
     cout << "chon cau: ";
     cin >> cau;
-    switch (cau)
-    {
-    case 1:
-    {
+    switch (cau) {
+    case 1: {
         DSNhanVien danhsach;
 
         int input = 1;
-        while (input > 0)
-        {
+        while (input > 0) {
             cout << "[";
-            for (int i{}; i < danhsach.SoLuongNhanVien - 1; i++)
-            {
+            for (int i{}; i < danhsach.SoLuongNhanVien - 1; i++) {
                 cout << i << ", ";
             }
             if (danhsach.SoLuongNhanVien > 0)
@@ -381,61 +339,50 @@ int main(int argc, char *argv[])
             cout << "-1 - Exit\n";
             cin >> input;
 
-            switch (input)
-            {
-            case 1:
-            {
+            switch (input) {
+            case 1: {
                 danhsach.themNhanVien();
                 break;
             }
-            case 2:
-            {
+            case 2: {
                 int stt;
                 cout << "Nhap so thu tu nhan vien can xoa: ";
                 cin >> stt;
-                while (stt < 0 || danhsach.SoLuongNhanVien <= stt)
-                {
+                while (stt < 0 || danhsach.SoLuongNhanVien <= stt) {
                     cout << "so thu tu nam ngoai danh sach!\n";
                     cin >> stt;
                 }
                 danhsach.xoaNhanVien(stt);
                 break;
             }
-            case 3:
-            {
+            case 3: {
                 danhsach.chinhSuaNhanVien();
                 break;
             }
-            case 4:
-            {
+            case 4: {
                 int stt;
                 cout << "Nhap so thu tu nhan vien can in: ";
                 cin >> stt;
-                while (stt < 0 || danhsach.SoLuongNhanVien <= stt)
-                {
+                while (stt < 0 || danhsach.SoLuongNhanVien <= stt) {
                     cout << "so thu tu nam ngoai danh sach!\n";
                     cin >> stt;
                 }
                 danhsach.xuatThongTinNhanVien(stt);
                 break;
             }
-            case 5:
-            {
+            case 5: {
                 cout << "-----------------------------------------\n";
-                for (int i{}; i < danhsach.SoLuongNhanVien; i++)
-                {
+                for (int i{}; i < danhsach.SoLuongNhanVien; i++) {
                     danhsach.xuatThongTinNhanVien(i);
                     cout << "-----------------------------------------\n";
                 }
                 break;
             }
-            case 6:
-            {
+            case 6: {
                 int stt;
                 cout << "Nhap so thu tu nhan vien can tinh luong: ";
                 cin >> stt;
-                while (stt < 0 || danhsach.SoLuongNhanVien <= stt)
-                {
+                while (stt < 0 || danhsach.SoLuongNhanVien <= stt) {
                     cout << "so thu tu nam ngoai danh sach!\n";
                     cin >> stt;
                 }

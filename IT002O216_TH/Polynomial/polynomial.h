@@ -1,20 +1,17 @@
 #pragma once
 #include "monomial.h"
 
-struct Node
-{
+struct Node {
     monomial *data;
     Node *next;
 
-    Node(monomial *_data = nullptr)
-    {
+    Node(monomial *_data = nullptr) {
         this->data = _data;
         this->next = nullptr;
     }
 };
 
-class polynomial
-{
+class polynomial {
 public:
     Node *head;
     Node *tail;
@@ -29,6 +26,3 @@ public:
     polynomial operator+(const polynomial &B);
     polynomial operator-(const polynomial &B);
 };
-
-
-

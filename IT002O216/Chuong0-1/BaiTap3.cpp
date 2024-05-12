@@ -1,13 +1,12 @@
-#include <iostream>
-#include <math.h>
 #include <chrono>
 #include <iomanip>
+#include <iostream>
+#include <math.h>
 using namespace std;
 
 ////// a. b. c.
 
-class PhanSo
-{
+class PhanSo {
 public:
     int tu;
     int mau;
@@ -16,78 +15,65 @@ public:
     PhanSo() : tu(1), mau(1) {}
     PhanSo(const int x, const int y) : tu(x), mau(y) {}
 
-    void nhapPhanSo()
-    {
+    void nhapPhanSo() {
         cout << "nhap tu va mau: ";
         cin >> tu;
         cin >> mau;
-        while (mau == 0)
-        {
+        while (mau == 0) {
             cout << tu << "/";
             cin >> mau;
         }
     }
 
-    void xuatPhanSo()
-    {
-        if ((double)tu / mau > 0)
-        {
+    void xuatPhanSo() {
+        if ((double)tu / mau > 0) {
             tu = abs(tu);
             mau = abs(mau);
         }
         cout << tu << "/" << mau << endl;
     }
 
-    double getValue()
-    {
+    double getValue() {
         return (double)tu / mau;
     }
 
-    void rutGon()
-    {
+    void rutGon() {
         // Euclidean algorithm
         int gcd = abs(tu);
         int temp = abs(mau);
 
-        while (temp != 0)
-        {
+        while (temp != 0) {
             int remainder = gcd % temp;
             gcd = temp;
             temp = remainder;
         }
 
-        if (gcd != 0)
-        {
+        if (gcd != 0) {
             tu /= gcd;
             mau /= gcd;
         }
     }
 
-    PhanSo operator+(const PhanSo &ps) const
-    {
+    PhanSo operator+(const PhanSo &ps) const {
         return PhanSo(tu * ps.mau + mau * ps.tu, mau * ps.mau);
     }
 
-    PhanSo operator-(const PhanSo &ps) const
-    {
+    PhanSo operator-(const PhanSo &ps) const {
         return PhanSo(tu * ps.mau - mau * ps.tu, mau * ps.mau);
     }
 
-    PhanSo operator*(const PhanSo &ps) const
-    {
+    PhanSo operator*(const PhanSo &ps) const {
         return PhanSo(tu * ps.tu, mau * ps.mau);
     }
 
-    PhanSo operator/(const PhanSo &ps) const
-    {
+    PhanSo operator/(const PhanSo &ps) const {
         return PhanSo(tu * ps.mau, mau * ps.tu);
     }
 };
 
 ////// d.
 
-void xuatNgayKeTiep(int dd, int mm, int yyyy)
-{
+void xuatNgayKeTiep(int dd, int mm, int yyyy) {
     tm InputTime;
     InputTime.tm_sec = 0;
     InputTime.tm_min = 0;
@@ -103,14 +89,12 @@ void xuatNgayKeTiep(int dd, int mm, int yyyy)
     cout << "ngay tiep theo la: " << put_time(localTime, "%d/%m/%Y") << endl;
 }
 
-int main()
-{
+int main() {
     char cau;
     cout << "chon cau (a, b, c, d): ";
     cin >> cau;
     PhanSo A, B, C, D, E, F;
-    switch (cau)
-    {
+    switch (cau) {
     case 'a':
         cout << "nhap phan so (tu mau): ";
         A.nhapPhanSo();

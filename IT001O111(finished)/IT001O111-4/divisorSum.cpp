@@ -2,13 +2,10 @@
 
 using namespace std;
 
-int sum(int n)
-{
+int sum(int n) {
     int sum = 0;
-    for (int i = 1; i < n; i++)
-    {
-        if (n % i == 0)
-        {
+    for (int i = 1; i < n; i++) {
+        if (n % i == 0) {
             sum += i;
         }
         if (sum == 0)
@@ -17,8 +14,7 @@ int sum(int n)
     return sum;
 }
 
-int main()
-{
+int main() {
     int n;
     cin >> n;
     int sumOfDivisors = sum(n);

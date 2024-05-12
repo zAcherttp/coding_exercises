@@ -2,39 +2,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Node
-{
+class Node {
 public:
     int data;
     Node *left;
     Node *right;
-    Node(int d)
-    {
+    Node(int d) {
         data = d;
         left = NULL;
         right = NULL;
     }
 };
 
-class Solution
-{
+class Solution {
 public:
-    Node *insert(Node *root, int data)
-    {
-        if (root == NULL)
-        {
+    Node *insert(Node *root, int data) {
+        if (root == NULL) {
             return new Node(data);
-        }
-        else
-        {
+        } else {
             Node *cur;
-            if (data <= root->data)
-            {
+            if (data <= root->data) {
                 cur = insert(root->left, data);
                 root->left = cur;
-            }
-            else
-            {
+            } else {
                 cur = insert(root->right, data);
                 root->right = cur;
             }
@@ -60,30 +50,25 @@ public:
 
     */
 
-    void levelOrder(Node *root)
-    {
-        if (root == nullptr)
-        {
+    void levelOrder(Node *root) {
+        if (root == nullptr) {
             return;
         }
 
         stack<Node *> q;
         q.push(root);
 
-        while (!q.empty())
-        {
+        while (!q.empty()) {
             Node *current = q.front();
             q.pop();
 
             cout << current->data << " "; // Process the node
 
             // Enqueue non-null children for next level
-            if (current->left)
-            {
+            if (current->left) {
                 q.push(current->left);
             }
-            if (current->right)
-            {
+            if (current->right) {
                 q.push(current->right);
             }
         }
@@ -91,8 +76,7 @@ public:
 
 }; // End of Solution
 
-int main()
-{
+int main() {
 
     Solution myTree;
     Node *root = NULL;
@@ -102,8 +86,7 @@ int main()
 
     std::cin >> t;
 
-    while (t-- > 0)
-    {
+    while (t-- > 0) {
         std::cin >> data;
         root = myTree.insert(root, data);
     }

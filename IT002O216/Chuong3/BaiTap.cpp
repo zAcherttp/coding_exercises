@@ -60,32 +60,29 @@
 //   lớp số phức
 //// check ✓
 
-#include <iostream>
+#include <algorithm>
 #include <cmath>
 #include <iomanip>
+#include <iostream>
 #include <random>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 #define name(var) #var
 
 /////////////////////////// cau 1.
-struct DiemSo
-{
+struct DiemSo {
     double Toan, Van;
     double DTB;
 };
 
-struct Student
-{
+struct Student {
     string HoTen;
     DiemSo diemSo;
     string XepLoai;
 };
 
-void NhapThongTinHocSinh(Student &A)
-{
+void NhapThongTinHocSinh(Student &A) {
     cout << "Nhap Ho Ten: ";
     cin.ignore();
     getline(cin, A.HoTen);
@@ -97,8 +94,7 @@ void NhapThongTinHocSinh(Student &A)
 
     A.diemSo.DTB = round((A.diemSo.Toan + A.diemSo.Van) / 2 * 100) / 100;
 
-    if (A.diemSo.DTB > 10)
-    {
+    if (A.diemSo.DTB > 10) {
         A.XepLoai = "undefined";
         return;
     }
@@ -108,16 +104,14 @@ void NhapThongTinHocSinh(Student &A)
     A.XepLoai = xeploai[i >= 0 && i < (sizeof(xeploai) / sizeof(xeploai[0])) ? i : 6];
 }
 
-void XuatThongTinHocSinh(Student &A)
-{
+void XuatThongTinHocSinh(Student &A) {
     cout << "Ho Ten: " << A.HoTen << endl;
     cout << "Diem Trung Binh: " << fixed << setprecision(2) << A.diemSo.DTB << endl;
     cout << "Xep Loai: " << A.XepLoai << endl;
 }
 
 /////////////////////////// cau 2 + 3.
-class point2D
-{
+class point2D {
 private:
     int x;
     int y;
@@ -125,13 +119,11 @@ private:
 public:
     point2D(const int _x = 0, const int _y = 0) : x(_x), y(_y) {}
 
-    friend ostream &operator<<(ostream &os, const point2D &p)
-    {
+    friend ostream &operator<<(ostream &os, const point2D &p) {
         os << '(' << p.x << ", " << p.y << ')';
         return os;
     }
-    friend istream &operator>>(istream &is, point2D &p)
-    {
+    friend istream &operator>>(istream &is, point2D &p) {
         cout << "x" << '\t' << "= ";
         is >> p.x;
         cout << "y" << '\t' << "= ";
@@ -139,8 +131,7 @@ public:
         return is;
     }
 
-    float distance(point2D &A)
-    {
+    float distance(point2D &A) {
         return sqrt(pow((A.x - x), 2) + pow((A.y - y), 2));
     }
 };
@@ -148,111 +139,86 @@ public:
 /////////////////////////// cau 4.
 #define randomRange 100
 
-class cArray
-{
+class cArray {
 private:
     int size;
     int *array;
 
 public:
-    cArray(int _size) : size(_size), array(new int[_size])
-    {
+    cArray(int _size) : size(_size), array(new int[_size]) {
         random_device rd;
         mt19937 gen(rd());
         uniform_int_distribution<int> distribution(-randomRange, randomRange);
-        for (int i = 0; i < _size; i++)
-        {
+        for (int i = 0; i < _size; i++) {
             array[i] = distribution(gen);
         }
     }
 
-    friend ostream &operator<<(ostream &os, const cArray &obj)
-    {
+    friend ostream &operator<<(ostream &os, const cArray &obj) {
         os << '{';
-        for (int i = 0; i < obj.size - 1; i++)
-        {
+        for (int i = 0; i < obj.size - 1; i++) {
             os << obj.array[i] << ", ";
         }
         os << obj.array[obj.size - 1] << '}';
         return os;
     }
 
-    int getSize()
-    {
+    int getSize() {
         return size;
     }
 
-    const int *getArray()
-    {
+    const int *getArray() {
         return array;
     }
 
-    int soAmLonNhat()
-    {
+    int soAmLonNhat() {
         vector<int> negArr;
-        for (int i = 0; i < size; i++)
-        {
-            if (array[i] < 0)
-            {
+        for (int i = 0; i < size; i++) {
+            if (array[i] < 0) {
                 negArr.push_back(array[i]);
             }
         }
-        if (!negArr.empty())
-        {
+        if (!negArr.empty()) {
             int maxNeg = negArr[0];
-            for (int i = 0; i < negArr.size(); i++)
-            {
-                if (negArr[i] > maxNeg)
-                {
+            for (int i = 0; i < negArr.size(); i++) {
+                if (negArr[i] > maxNeg) {
                     maxNeg = negArr[i];
                 }
             }
             return maxNeg;
-        }
-        else
-        {
+        } else {
             return numeric_limits<int>::min();
         }
     }
 
-    int soLanXuatHienCua(const int n)
-    {
+    int soLanXuatHienCua(const int n) {
         int count = 0;
-        for (int i = 0; i < size; i++)
-        {
-            if (n == array[i])
-            {
+        for (int i = 0; i < size; i++) {
+            if (n == array[i]) {
                 count++;
             }
         }
         return count;
     }
 
-    bool mangCoGiamDanKhong()
-    {
-        for (int i = 0; i < size - 1; i++)
-        {
-            if (array[i] > array[i + 1])
-            {
+    bool mangCoGiamDanKhong() {
+        for (int i = 0; i < size - 1; i++) {
+            if (array[i] > array[i + 1]) {
                 continue;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
         return true;
     }
 
-    void sortArr()
-    {
+    void sortArr() {
         sort(array, array + size);
     }
 };
 
 /////////////////////////// cau 5.
-class cHocSinh
-{
+class cHocSinh {
 private:
     int MaHocSinh;
     string HoTen;
@@ -261,8 +227,7 @@ private:
     float DiemTrungBinh;
 
 public:
-    cHocSinh()
-    {
+    cHocSinh() {
         MaHocSinh = 0;
         HoTen = "";
         GioiTinh = "";
@@ -270,8 +235,7 @@ public:
         DiemTrungBinh = 0.0;
     }
 
-    friend ostream &operator<<(ostream &os, const cHocSinh &st)
-    {
+    friend ostream &operator<<(ostream &os, const cHocSinh &st) {
         os << "Ma Hoc Sinh: " << st.MaHocSinh << endl;
         os << "Ho Ten: " << st.HoTen << endl;
         os << "Gioi Tinh: " << st.GioiTinh << endl;
@@ -280,8 +244,7 @@ public:
         return os;
     }
 
-    friend istream &operator>>(istream &is, cHocSinh &st)
-    {
+    friend istream &operator>>(istream &is, cHocSinh &st) {
         cout << "Ma Hoc Sinh: ";
         is >> st.MaHocSinh;
         cout << "Ho Ten: ";
@@ -296,61 +259,50 @@ public:
         return is;
     }
 
-    void setMaHocSinh(int _maHocSinh)
-    {
+    void setMaHocSinh(int _maHocSinh) {
         MaHocSinh = _maHocSinh;
     }
 
-    void setHoTen(const string &_hoTen)
-    {
+    void setHoTen(const string &_hoTen) {
         HoTen = _hoTen;
     }
 
-    void setGioiTinh(const string &_gioiTinh)
-    {
+    void setGioiTinh(const string &_gioiTinh) {
         GioiTinh = _gioiTinh;
     }
 
-    void setNamSinh(int _namSinh)
-    {
+    void setNamSinh(int _namSinh) {
         NamSinh = _namSinh;
     }
 
-    void setDiemTrungBinh(float _diemTrungBinh)
-    {
+    void setDiemTrungBinh(float _diemTrungBinh) {
         DiemTrungBinh = _diemTrungBinh;
     }
 
-    int getMaHocSinh() const
-    {
+    int getMaHocSinh() const {
         return MaHocSinh;
     }
 
-    string getHoTen() const
-    {
+    string getHoTen() const {
         return HoTen;
     }
 
-    string getGioiTinh() const
-    {
+    string getGioiTinh() const {
         return GioiTinh;
     }
 
-    int getNamSinh() const
-    {
+    int getNamSinh() const {
         return NamSinh;
     }
 
-    float getDiemTrungBinh() const
-    {
+    float getDiemTrungBinh() const {
         return DiemTrungBinh;
     }
 };
 
 /////////////////////////// cau 6.
 
-class complex
-{
+class complex {
 private:
     float r;
     float i;
@@ -358,77 +310,63 @@ private:
 public:
     complex(float _real = 0.0, float _im = 1.0) : r(_real), i(_im) {}
 
-    friend ostream &operator<<(ostream &os, const complex &c)
-    {
+    friend ostream &operator<<(ostream &os, const complex &c) {
         os << '(' << c.r << " + " << c.i << "i" << ')';
         return os;
     }
 
-    friend istream &operator>>(istream &is, complex &c)
-    {
+    friend istream &operator>>(istream &is, complex &c) {
         cout << "nhap a + bi (a  b): ";
         is >> c.r >> c.i;
         return is;
     }
 
-    void setReal(float _r)
-    {
+    void setReal(float _r) {
         r = _r;
     }
 
-    const float getReal()
-    {
+    const float getReal() {
         return r;
     }
 
-    void setIm(float _i)
-    {
+    void setIm(float _i) {
         i = _i;
     }
 
-    const float getIm()
-    {
+    const float getIm() {
         return i;
     }
 
-    complex operator+(const complex &c)
-    {
+    complex operator+(const complex &c) {
         return complex(r + c.r, i + c.i);
     }
 
-    complex operator-(const complex &c)
-    {
+    complex operator-(const complex &c) {
         return complex(r - c.r, i - c.i);
     }
 
-    complex operator*(const complex &c)
-    {
+    complex operator*(const complex &c) {
         return complex(r * i - c.r * c.i, r * c.i + c.r * i);
     }
 
-    complex operator/(const complex &c)
-    {
+    complex operator/(const complex &c) {
         return complex((r * i + c.r * c.i) / (i * i + c.i * c.i), (c.r * i - r * c.i) / (i * i + c.i * c.i));
     }
 };
 
 /////////////////////////// main().
-int main()
-{
+int main() {
     int cau;
     cout << "chon cau: ";
     cin >> cau;
-    switch (cau)
-    {
-    case 1:
-    {
+    switch (cau) {
+    case 1: {
         Student A;
         NhapThongTinHocSinh(A);
         XuatThongTinHocSinh(A);
         break;
     }
-    case 2:
-    {
+    case 2: {
         float r;
         point2D A;
         cout << name(A) << ':';
@@ -439,8 +377,7 @@ int main()
         cout << " • chu vi    = " << fixed << setprecision(2) << 2 * r * M_PI << endl;
         break;
     }
-    case 3:
-    {
+    case 3: {
         point2D A, B;
         cout << name(A) << ':';
         cin >> A;
@@ -451,8 +388,7 @@ int main()
         cout << "> d(A, B) = " << fixed << setprecision(2) << A.distance(B);
         break;
     }
-    case 4:
-    {
+    case 4: {
         int size;
         cout << "nhap kich co cArray: ";
         cin >> size;
@@ -468,15 +404,13 @@ int main()
         cout << "> " << name(alpha) << " = " << alpha << endl;
         break;
     }
-    case 5:
-    {
+    case 5: {
         cHocSinh A, B;
         cin >> A >> B;
         (A.getDiemTrungBinh() > B.getDiemTrungBinh()) ? cout << name(A) : cout << name(B) << endl;
         (A.getNamSinh() < B.getNamSinh()) ? cout << name(A) : cout << name(B) << endl;
     }
-    case 6:
-    {
+    case 6: {
         complex a, b;
         cin >> a >> b;
         cout << a << " + " << b << " = " << a + b << endl;

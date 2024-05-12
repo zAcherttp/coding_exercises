@@ -1,17 +1,14 @@
 #include <cyclone/pfgen.h>
 using namespace cyclone;
 
-void ParticleForceRegistry::updateForces(real duration)
-{
+void ParticleForceRegistry::updateForces(real duration) {
     Registry::iterator i = registrations.begin();
-    for (; i != registrations.end(); i++)
-    {
+    for (; i != registrations.end(); i++) {
         i->fg->updateForce(i->particle, duration);
     }
 }
 
-void ParticleGravity::updateForce(Particle *particle, real duration)
-{
+void ParticleGravity::updateForce(Particle *particle, real duration) {
     // Check that we do not have infinite mass.
     if (!particle->hasFiniteMass())
         return;
@@ -20,8 +17,7 @@ void ParticleGravity::updateForce(Particle *particle, real duration)
     particle->addForce(gravity * particle->getMass());
 }
 
-void ParticleDrag::updateForce(Particle *particle, real duration)
-{
+void ParticleDrag::updateForce(Particle *particle, real duration) {
     Vector3 force;
     particle->getVelocity(&force);
 
@@ -35,8 +31,7 @@ void ParticleDrag::updateForce(Particle *particle, real duration)
     particle->addForce(force);
 }
 
-void ParticleSpring::updateForce(Particle *particle, real duration)
-{
+void ParticleSpring::updateForce(Particle *particle, real duration) {
     // Calculate the vector of the spring.
     Vector3 force;
     particle->getPosition(&force);
@@ -53,8 +48,7 @@ void ParticleSpring::updateForce(Particle *particle, real duration)
     particle->addForce(force);
 }
 
-void ParticleAnchoredSpring::updateForce(Particle *particle, real duration)
-{
+void ParticleAnchoredSpring::updateForce(Particle *particle, real duration) {
     // Calculate the vector of the spring.
     Vector3 force;
     particle->getPosition(&force);
