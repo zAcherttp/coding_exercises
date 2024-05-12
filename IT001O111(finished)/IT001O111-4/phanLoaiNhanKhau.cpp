@@ -2,8 +2,7 @@
 
 using namespace std;
 
-int gender(string g)
-{
+int gender(string g) {
     if (g == "M" || g == "m")
         return 1;
     else if (g == "F" || g == "f")
@@ -13,16 +12,14 @@ int gender(string g)
     return 0;
 }
 
-int age(int a)
-{
+int age(int a) {
     if (a < 21)
         return 34;
     else
         return 12;
 }
 
-int main()
-{
+int main() {
     int a;
     string g;
     int genderType;
@@ -33,23 +30,19 @@ int main()
     genderType = gender(g);
     ageRange = age(a);
 
-    if (genderType == 0)
-    {
+    if (genderType == 0) {
         if (ageRange == 34)
             type = 4;
         else if (ageRange == 12)
             type = 2;
         cout << type;
-    }
-    else if (genderType == 1)
-    {
+    } else if (genderType == 1) {
         if (ageRange == 34)
             type = 3;
         else if (ageRange == 12)
             type = 1;
         cout << type;
-    }
-    else
+    } else
         cout << "I do not know why";
     return 0;
 }

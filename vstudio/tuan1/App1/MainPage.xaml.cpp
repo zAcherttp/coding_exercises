@@ -3,8 +3,8 @@
 // Implementation of the MainPage class.
 //
 
-#include "pch.h"
 #include "MainPage.xaml.h"
+#include "pch.h"
 
 using namespace App1;
 
@@ -21,7 +21,6 @@ using namespace Windows::UI::Xaml::Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-MainPage::MainPage()
-{
-	InitializeComponent();
+MainPage::MainPage() {
+    InitializeComponent();
 }

@@ -2,39 +2,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Node
-{
+class Node {
 public:
     int data;
     Node *left;
     Node *right;
-    Node(int d)
-    {
+    Node(int d) {
         data = d;
         left = NULL;
         right = NULL;
     }
 };
 
-class Solution
-{
+class Solution {
 public:
-    Node *insert(Node *root, int data)
-    {
-        if (root == NULL)
-        {
+    Node *insert(Node *root, int data) {
+        if (root == NULL) {
             return new Node(data);
-        }
-        else
-        {
+        } else {
             Node *cur;
-            if (data <= root->data)
-            {
+            if (data <= root->data) {
                 cur = insert(root->left, data);
                 root->left = cur;
-            }
-            else
-            {
+            } else {
                 cur = insert(root->right, data);
                 root->right = cur;
             }
@@ -60,44 +50,36 @@ public:
 
     */
 
-    void preOrder(Node *root)
-    {
+    void preOrder(Node *root) {
         if (!root)
             return;
 
         stack<pair<Node *, bool>> stack;
         stack.push({root, false});
 
-        while (!stack.empty())
-        {
+        while (!stack.empty()) {
             pair<Node *, bool> cur = stack.top();
             stack.pop();
 
             Node *curr = cur.first;
             bool visited = cur.second;
 
-            if (!visited)
-            {
+            if (!visited) {
                 stack.push({curr, true});
-                if (curr->right)
-                {
+                if (curr->right) {
                     stack.push({curr->right, false});
                 }
-                if (curr->left)
-                {
+                if (curr->left) {
                     stack.push({curr->left, false});
                 }
-            }
-            else
-            {
+            } else {
                 cout << curr->data << " ";
             }
         }
     }
 }; // End of Solution
 
-int main()
-{
+int main() {
 
     Solution myTree;
     Node *root = NULL;
@@ -107,8 +89,7 @@ int main()
 
     std::cin >> t;
 
-    while (t-- > 0)
-    {
+    while (t-- > 0) {
         std::cin >> data;
         root = myTree.insert(root, data);
     }

@@ -8,20 +8,17 @@
 
 #include "XamlTypeInfo.g.h"
 
-namespace App1
-{
-    partial ref class App :  public ::Windows::UI::Xaml::Application,
-        public ::Windows::UI::Xaml::Markup::IXamlMetadataProvider
-    {
+namespace App1 {
+    partial ref class App : public ::Windows::UI::Xaml::Application,
+                            public ::Windows::UI::Xaml::Markup::IXamlMetadataProvider {
     public:
         void InitializeComponent();
-        [Windows::Foundation::Metadata::DefaultOverload]
-        virtual ::Windows::UI::Xaml::Markup::IXamlType^ GetXamlType(::Windows::UI::Xaml::Interop::TypeName type);
-        virtual ::Windows::UI::Xaml::Markup::IXamlType^ GetXamlType(::Platform::String^ fullName);
-        virtual ::Platform::Array<::Windows::UI::Xaml::Markup::XmlnsDefinition>^ GetXmlnsDefinitions();
+        [Windows::Foundation::Metadata::DefaultOverload] virtual ::Windows::UI::Xaml::Markup::IXamlType ^ GetXamlType(::Windows::UI::Xaml::Interop::TypeName type);
+        virtual ::Windows::UI::Xaml::Markup::IXamlType ^ GetXamlType(::Platform::String ^ fullName);
+        virtual ::Platform::Array<::Windows::UI::Xaml::Markup::XmlnsDefinition> ^ GetXmlnsDefinitions();
+
     private:
-        ::XamlTypeInfo::InfoProvider::XamlTypeInfoProvider^ _provider;
+        ::XamlTypeInfo::InfoProvider::XamlTypeInfoProvider ^ _provider;
         bool _contentLoaded;
     };
 }
-

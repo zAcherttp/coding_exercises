@@ -1,27 +1,20 @@
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
 using namespace std;
 
-int search_binary(string data[], string query, int N, int &count)
-{
+int search_binary(string data[], string query, int N, int &count) {
     int left = 0, right = N - 1;
     count = 0;
-    while (left <= right)
-    {
+    while (left <= right) {
         count += 1;
         int mid = floor((left + right) / 2);
 
-        if (data[mid] < query)
-        {
+        if (data[mid] < query) {
             left = mid + 1;
-        }
-        else if (data[mid] > query)
-        {
+        } else if (data[mid] > query) {
             right = mid - 1;
-        }
-        else
-        {
+        } else {
             return mid;
         }
     }
@@ -29,14 +22,12 @@ int search_binary(string data[], string query, int N, int &count)
     return -1;
 }
 
-int main()
-{
+int main() {
     int N;
     cin >> N;
     string data[N], X;
 
-    for (int i = 0; i < N; i++)
-    {
+    for (int i = 0; i < N; i++) {
         cin >> data[i];
     }
     cin >> X;

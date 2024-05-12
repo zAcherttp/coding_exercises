@@ -3,24 +3,20 @@ using namespace std;
 
 int N;
 
-int count_distinct(const vector<string> &ids)
-{
+int count_distinct(const vector<string> &ids) {
     map<string, int> Hash;
-    for(auto s : ids)
-    {
+    for (auto s : ids) {
         Hash[s]++;
     }
 
     int count = 0;
-    for(auto i = Hash.begin(); i != Hash.end(); i++)
-    {
+    for (auto i = Hash.begin(); i != Hash.end(); i++) {
         count++;
     }
     return count;
 }
 
-int main()
-{
+int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 

@@ -6,23 +6,16 @@
 //     the code is regenerated.
 //------------------------------------------------------------------------------
 
-
-
-namespace App1
-{
-    [::Windows::Foundation::Metadata::WebHostHidden]
-    partial ref class MainPage : public ::Windows::UI::Xaml::Controls::Page, 
-        public ::Windows::UI::Xaml::Markup::IComponentConnector,
-        public ::Windows::UI::Xaml::Markup::IComponentConnector2
-    {
+namespace App1 {
+    [::Windows::Foundation::Metadata::WebHostHidden] partial ref class MainPage : public ::Windows::UI::Xaml::Controls::Page,
+                                                                                  public ::Windows::UI::Xaml::Markup::IComponentConnector,
+                                                                                  public ::Windows::UI::Xaml::Markup::IComponentConnector2 {
     public:
         void InitializeComponent();
-        virtual void Connect(int connectionId, ::Platform::Object^ target);
-        virtual ::Windows::UI::Xaml::Markup::IComponentConnector^ GetBindingConnector(int connectionId, ::Platform::Object^ target);
-    
+        virtual void Connect(int connectionId, ::Platform::Object ^ target);
+        virtual ::Windows::UI::Xaml::Markup::IComponentConnector ^ GetBindingConnector(int connectionId, ::Platform::Object ^ target);
+
     private:
         bool _contentLoaded;
-    
     };
 }
-

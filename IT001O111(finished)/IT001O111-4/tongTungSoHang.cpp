@@ -2,8 +2,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     int p;
     cin >> p;
     string l = to_string(p);
@@ -11,8 +10,7 @@ int main()
 
     // xếp input vào array 4 chỗ theo lề phải
     int digit;
-    for (int i = 0; i < l.size(); i++)
-    {
+    for (int i = 0; i < l.size(); i++) {
         digit = p % 10;
         x[i] = digit;
         p /= 10;

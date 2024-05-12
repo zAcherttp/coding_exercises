@@ -1,33 +1,29 @@
-#include <iostream>
-#include <vector>
-#include <string.h>
 #include <algorithm>
+#include <iostream>
+#include <string.h>
+#include <vector>
 
 using namespace std;
 
 ////// de bai.
 
-struct NhanVien
-{
+struct NhanVien {
     char MaNhanVien[8];
     char HoTen[20];
     char PhongBan[10];
     int LuongCoBan;
     int Thuong;
-    int getThucLanh()
-    {
+    int getThucLanh() {
         return LuongCoBan + Thuong;
     }
 };
 
 ////// a.
 
-int tongThucLanh(vector<NhanVien> A)
-{
+int tongThucLanh(vector<NhanVien> A) {
     int n = A.size();
     int sum = 0;
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         sum += A[i].getThucLanh();
     }
     return sum;
@@ -37,14 +33,11 @@ int tongThucLanh(vector<NhanVien> A)
 
 ////// c.
 
-int soMucThuongCao(vector<NhanVien> A)
-{
+int soMucThuongCao(vector<NhanVien> A) {
     int count = 0;
     int n = A.size();
-    for (int i = 0; i < n; i++)
-    {
-        if (A[i].Thuong > 1200000)
-        {
+    for (int i = 0; i < n; i++) {
+        if (A[i].Thuong > 1200000) {
             count++;
         }
     }
@@ -53,31 +46,24 @@ int soMucThuongCao(vector<NhanVien> A)
 
 ////// d.
 
-bool compareNhanVien(NhanVien &a, NhanVien &b)
-{
-    if (strcmp(a.PhongBan, b.PhongBan) != 0)
-    {
+bool compareNhanVien(NhanVien &a, NhanVien &b) {
+    if (strcmp(a.PhongBan, b.PhongBan) != 0) {
         return strcmp(a.PhongBan, b.PhongBan) < 0; // PhongBan tang dan
-    }
-    else
-    {
+    } else {
         return strcmp(b.MaNhanVien, a.MaNhanVien) > 0; // MaNhanVien giam dan
     }
 }
 
-void inDanhSachLuong(vector<NhanVien> A)
-{
+void inDanhSachLuong(vector<NhanVien> A) {
     sort(A.begin(), A.end(), compareNhanVien);
-    for (auto &nv : A)
-    {
+    for (auto &nv : A) {
         std::cout << "Ma NV: " << nv.MaNhanVien << ", Ho Ten: " << nv.HoTen
                   << ", Phong Ban: " << nv.PhongBan << ", Luong Co Ban: " << nv.LuongCoBan
                   << ", Thuong: " << nv.Thuong << ", Thuc Lanh: " << nv.getThucLanh() << std::endl;
     }
 }
 
-int main()
-{
+int main() {
     vector<NhanVien> nv = {
         {"NV00001", "Nguyen Van A", "Marketing", 10000000, 500000},
         {"NV00002", "Tran Thi B", "IT", 8000000, 300000},

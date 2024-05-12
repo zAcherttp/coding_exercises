@@ -2,21 +2,18 @@
 #include <math.h>
 using namespace std;
 
-struct DiemSo
-{
+struct DiemSo {
     double Toan, Van, Ly, Hoa;
     double DTB;
 };
 
-struct Student
-{
+struct Student {
     int MaHocSinh;
     string HoTen;
     DiemSo DiemSo;
 };
 
-void NhapThongTinHocSinh(Student &A)
-{
+void NhapThongTinHocSinh(Student &A) {
     cout << "Nhap Ma Hoc Sinh: ";
     cin >> A.MaHocSinh;
 
@@ -34,15 +31,13 @@ void NhapThongTinHocSinh(Student &A)
     cin >> A.DiemSo.Hoa;
     A.DiemSo.DTB = round((A.DiemSo.Toan + A.DiemSo.Van + A.DiemSo.Ly + A.DiemSo.Hoa) / 4 * 100) / 100;
 }
-void XuatThongTinHocSinh(Student &A)
-{
+void XuatThongTinHocSinh(Student &A) {
     cout << "Ma Hoc Sinh: " << A.MaHocSinh << endl;
     cout << "Ho Ten: " << A.HoTen << endl;
     cout << "Diem Trung Binh: " << A.DiemSo.DTB << endl;
 }
 
-int main()
-{
+int main() {
 
     Student A;
     NhapThongTinHocSinh(A);

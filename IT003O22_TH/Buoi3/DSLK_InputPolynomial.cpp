@@ -1,19 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct DONTHUC
-{
+struct DONTHUC {
     int somu;
     double heso;
 
-    DONTHUC(double _heso = 0, int _somu = 0)
-    {
+    DONTHUC(double _heso = 0, int _somu = 0) {
         heso = _heso;
         somu = _somu;
     }
 
-    DONTHUC &operator=(const DONTHUC &rhs)
-    {
+    DONTHUC &operator=(const DONTHUC &rhs) {
         if (this == &rhs)
             return *this;
         this->heso = rhs.heso;
@@ -22,38 +19,31 @@ struct DONTHUC
     }
 };
 
-struct Node
-{
+struct Node {
     DONTHUC *data;
     Node *next;
 
-    Node(DONTHUC *_data = nullptr)
-    {
+    Node(DONTHUC *_data = nullptr) {
         this->data = _data;
         this->next = nullptr;
     }
 };
 
-struct DATHUC
-{
+struct DATHUC {
     Node *head;
     Node *tail;
-    DATHUC()
-    {
+    DATHUC() {
         this->head = nullptr;
         this->tail = nullptr;
     }
 };
 //////////////// your code goes here.
 
-void Xuat(DATHUC &B)
-{
+void Xuat(DATHUC &B) {
     Node *current = B.head;
     bool isFirst = true;
-    while (current != nullptr)
-    {
-        if (current->data->heso != 0)
-        {
+    while (current != nullptr) {
+        if (current->data->heso != 0) {
             if (!isFirst && current->data->heso > 0)
                 std::cout << "+";
 
@@ -82,29 +72,23 @@ void Xuat(DATHUC &B)
         cout << "0";
 }
 
-void Nhap(DATHUC &B, double &heso, int &somu)
-{
+void Nhap(DATHUC &B, double &heso, int &somu) {
     DONTHUC *_donthuc = new DONTHUC(heso, somu);
     Node *node = new Node(_donthuc);
-    if (!B.head)
-    {
+    if (!B.head) {
         B.head = node;
         B.tail = node;
-    }
-    else
-    {
+    } else {
         B.tail->next = node;
         B.tail = node;
     }
 }
 
-double TinhDaThuc(DATHUC B, double x)
-{
+double TinhDaThuc(DATHUC B, double x) {
     double sum = 0.0;
     Node *current = B.head;
 
-    while (current != nullptr)
-    {
+    while (current != nullptr) {
         sum += current->data->heso * pow(x, current->data->somu);
         current = current->next;
     }
@@ -113,14 +97,12 @@ double TinhDaThuc(DATHUC B, double x)
 }
 
 //////////////// your code ends here.
-int main()
-{
+int main() {
     DATHUC B;
     int N;
 
     cin >> N;
-    for (int test = 0; test < N; test++)
-    {
+    for (int test = 0; test < N; test++) {
         double heso;
         int somu;
         cin >> heso >> somu;

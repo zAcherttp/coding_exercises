@@ -2,34 +2,25 @@
 
 using namespace std;
 
-bool isRightTriangle(int a, int b, int c)
-{
-    if (a > b && a > c)
-    {
+bool isRightTriangle(int a, int b, int c) {
+    if (a > b && a > c) {
         return (a * a == b * b + c * c);
-    }
-    else if (b > a && b > c)
-    {
+    } else if (b > a && b > c) {
         return (b * b == a * a + c * c);
-    }
-    else
-    {
+    } else {
         return (c * c == a * a + b * b);
     }
 }
 
-bool IsTriangle(int a, int b, int c)
-{
+bool IsTriangle(int a, int b, int c) {
     return (a + b > c && a + c > b && b + c > a);
 }
 
-int main()
-{
+int main() {
     double a, b, c, s;
     cin >> a >> b >> c;
 
-    if (IsTriangle(a, b, c))
-    {
+    if (IsTriangle(a, b, c)) {
 
         double s, d;
         d = (a + b + c) / 2.0;
@@ -43,7 +34,6 @@ int main()
             cout << "Tam giac can, dien tich = " << setprecision(2) << fixed << s;
         else
             cout << "Tam giac thuong, dien tich = " << setprecision(2) << fixed << s;
-    }
-    else
+    } else
         cout << "Khong phai tam giac";
 }

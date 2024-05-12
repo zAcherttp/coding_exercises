@@ -1,19 +1,17 @@
-#include <vector>
-#include <iostream>
 #include "NhanVienSX.h"
 #include "NhanVienVP.h"
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
-int main()
-{
-    int m; //n;
+int main() {
+    int m; // n;
     vector<NhanVienSX> DSNhanVienSX;
     vector<NhanVienVP> DSNhanVienVP;
     cout << "nhap so nhan vien sx: ";
     cin >> m;
-    for (int i{}; i < m; i++)
-    {
+    for (int i{}; i < m; i++) {
         int base_salary = 0;
         int product_num = 0;
         NhanVienSX temp;
@@ -27,8 +25,7 @@ int main()
         DSNhanVienSX.push_back(temp);
     }
 
-    for (int i{}; i < m; i++)
-    {
+    for (int i{}; i < m; i++) {
         cout << DSNhanVienSX[i];
     }
 }

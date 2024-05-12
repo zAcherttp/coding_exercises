@@ -2,13 +2,10 @@
 
 using namespace std;
 
-bool check_sum(int array[], int size, int sum)
-{
+bool check_sum(int array[], int size, int sum) {
     std::unordered_map<int, bool> seen;
-    for (int i = 0; i < size; i++)
-    {
-        if (seen.count(sum - array[i]))
-        {
+    for (int i = 0; i < size; i++) {
+        if (seen.count(sum - array[i])) {
             return true;
         }
         seen[array[i]] = true;
@@ -16,14 +13,12 @@ bool check_sum(int array[], int size, int sum)
     return false;
 }
 
-int main()
-{
+int main() {
     int arraySize;
     cin >> arraySize;
 
     int array[arraySize];
-    for (int i = 0; i < arraySize; i++)
-    {
+    for (int i = 0; i < arraySize; i++) {
         cin >> array[i];
     }
 

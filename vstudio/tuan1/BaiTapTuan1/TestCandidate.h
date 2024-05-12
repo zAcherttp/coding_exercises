@@ -1,17 +1,16 @@
 #pragma once
 #include "candidate.h"
-class TestCandidate
-{
+class TestCandidate {
 private:
-	int size;
-	candidate *dsts;
+    int size;
+    candidate *dsts;
+
 public:
-	TestCandidate();
-	~TestCandidate();
+    TestCandidate();
+    ~TestCandidate();
 
-	void Nhap();
-	void Xuat() const;
+    void Nhap();
+    void Xuat() const;
 
-	void inDSTT();
+    void inDSTT();
 };
-

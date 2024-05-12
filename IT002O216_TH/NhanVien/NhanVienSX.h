@@ -1,8 +1,6 @@
 #pragma once
 #include "NhanVien.h"
-class NhanVienSX :
-    public NhanVien
-{
+class NhanVienSX : public NhanVien {
 public:
     int base_salary;
     int product_num;
@@ -11,4 +9,3 @@ public:
     void setBaseSalary(int _bs);
     void setProductNum(int _p);
 };
-

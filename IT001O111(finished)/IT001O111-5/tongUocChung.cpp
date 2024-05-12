@@ -2,31 +2,26 @@
 
 using namespace std;
 
-int input()
-{
+int input() {
     int m;
     cin >> m;
     return m;
 }
 
-int input(int &b)
-{
+int input(int &b) {
     cin >> b;
     return b;
 }
 
-int TongUocChung(int a, int b)
-{
+int TongUocChung(int a, int b) {
     int sum = 0;
     int smallerNum;
     if (a < b)
         smallerNum = a;
     else
         smallerNum = b;
-    for (int i = 1; i <= smallerNum; i++)
-    {
-        if (a % i == 0 && b % i == 0)
-        {
+    for (int i = 1; i <= smallerNum; i++) {
+        if (a % i == 0 && b % i == 0) {
             sum += i;
         }
     }
@@ -36,8 +31,7 @@ int TongUocChung(int a, int b)
         return sum;
 }
 
-int main()
-{
+int main() {
     int a, b;
     a = input();
     input(b);

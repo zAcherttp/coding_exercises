@@ -6,8 +6,7 @@
 #define DELETE -1
 using namespace std;
 
-struct Hocsinh
-{
+struct Hocsinh {
     int Maso;
     string Hoten;
     int Namsinh;
@@ -15,8 +14,7 @@ struct Hocsinh
     double TBK;
 };
 
-struct Hashtable
-{
+struct Hashtable {
     int M; // Kich thuoc bang bam
     int n; // so phan tu trong bang bam
     Hocsinh *table;
@@ -27,16 +25,14 @@ int Delete(Hashtable &, int, int &);
 void PrintHashtable(Hashtable);
 void DeleteHashtable(Hashtable &);
 
-void Input(Hocsinh &x)
-{
+void Input(Hocsinh &x) {
     cin >> x.Maso;
     getline(cin >> ws, x.Hoten);
     cin >> x.Gioitinh;
     cin >> x.Namsinh;
     cin >> x.TBK;
 }
-int main()
-{
+int main() {
     Hashtable hashtable;
 
     int m, n, k, nprob;
@@ -44,23 +40,18 @@ int main()
 
     cin >> m;
     CreateHashtable(hashtable, m);
-    for (int i = 0; i < m; i++)
-    {
+    for (int i = 0; i < m; i++) {
         Input(hs);
         hashtable.table[i] = hs;
         if (hs.Maso > 0)
             hashtable.n++;
     }
     cin >> n;
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         cin >> k;
-        if (Delete(hashtable, k, nprob))
-        {
+        if (Delete(hashtable, k, nprob)) {
             cout << "THAM DO " << nprob << endl;
-        }
-        else
-        {
+        } else {
             cout << "KHONG XOA DUOC" << endl;
         }
     }
@@ -69,23 +60,19 @@ int main()
     return 0;
 }
 
-void CreateHashtable(Hashtable &ht, int m)
-{
+void CreateHashtable(Hashtable &ht, int m) {
     ht.table = new Hocsinh[m];
     if (ht.table == NULL)
         exit(1);
-    for (int i = 0; i < m; i++)
-    {
+    for (int i = 0; i < m; i++) {
         ht.table[i].Maso = EMPTY;
     }
     ht.M = m;
     ht.n = 0;
 }
 
-void PrintHashtable(Hashtable ht)
-{
-    for (int i = 0; i < ht.M; i++)
-    {
+void PrintHashtable(Hashtable ht) {
+    for (int i = 0; i < ht.M; i++) {
         Hocsinh hs = ht.table[i];
         if (hs.Maso > 0)
             cout << '[' << hs.Maso << ",  " << hs.Hoten << "  , " << hs.Gioitinh << ", " << hs.Namsinh << ", " << hs.TBK << "]\n";
@@ -98,33 +85,28 @@ void PrintHashtable(Hashtable ht)
     }
 }
 
-void DeleteHashtable(Hashtable &ht)
-{
+void DeleteHashtable(Hashtable &ht) {
     delete[] ht.table;
     ht.table = NULL;
     ht.M = 0;
 }
 
-int Delete(Hashtable &ht, int maso, int &nprob)
-{
+int Delete(Hashtable &ht, int maso, int &nprob) {
     nprob = 0;
 
     int index = maso % ht.M;
     int i = 1;
 
-    while (ht.table[index].Maso != EMPTY && ht.table[index].Maso != maso)
-    {
+    while (ht.table[index].Maso != EMPTY && ht.table[index].Maso != maso) {
         nprob++;
         index = (maso % ht.M + i * i) % ht.M;
         i++;
     }
 
-    if (ht.table[index].Maso == maso)
-    {
+    if (ht.table[index].Maso == maso) {
         ht.table[index].Maso = DELETE;
         ht.n--;
         return 1;
-    }
-    else
+    } else
         return 0;
 }

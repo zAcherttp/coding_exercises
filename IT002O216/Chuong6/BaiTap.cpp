@@ -46,29 +46,26 @@
 // ▪ Xuất danh sách nhân viên
 // ▪ Liệt kê danh sách nhân viên có lương thấp hơn mức lương trung bình của các nhân viên trong công ty
 
+#include <iomanip>
 #include <iostream>
 #include <vector>
-#include <iomanip>
 
 using namespace std;
 
 /////////////////////////// cau 1.
-enum sex
-{
+enum sex {
     NAM = 1,
     NU = 0,
     UNKNOWN = -1
 };
 
-enum phong
-{
+enum phong {
     GV = 0,
     HC = 1,
     EMPTY = -1,
 };
 
-class CanBo
-{
+class CanBo {
 public:
     phong Phong;
     string MaCanBo;
@@ -78,21 +75,18 @@ public:
     CanBo(phong _p = EMPTY, string _mcb = "", string _name = "", sex _s = UNKNOWN) : Phong(_p), MaCanBo(_mcb), HoTen(_name), GioiTinh(_s) {}
     ~CanBo() {}
 
-    virtual void xuatThongTin() const
-    {
+    virtual void xuatThongTin() const {
         cout << setw(18) << left << "Ho ten:" << HoTen << '\n';
         cout << setw(18) << left << "Ma Can Bo:" << MaCanBo << '\n';
     }
 
-    virtual void nhapThongTin(istream &is)
-    {
+    virtual void nhapThongTin(istream &is) {
         int option;
         cout << "Chon de nhap:\n";
         cout << "0. Giang Vien\n";
         cout << "1. Nhan Vien Hanh Chinh\n";
         cin >> option;
-        while (0 > option || option > 1)
-        {
+        while (0 > option || option > 1) {
             cout << "Lua chon khong hop le!\n";
             cin >> option;
         }
@@ -105,8 +99,7 @@ public:
         cout << "0. Nu\n";
         cout << "1. Nam\n";
         cin >> option;
-        while (0 > option || option > 1)
-        {
+        while (0 > option || option > 1) {
             cout << "Lua chon khong hop le!\n";
             cin >> option;
         }
@@ -117,20 +110,17 @@ public:
         getline(cin, HoTen);
     }
 
-    virtual int tinhLuong(const int _donGia)
-    {
+    virtual int tinhLuong(const int _donGia) {
         return _donGia;
     }
 
-    friend istream &operator>>(istream &is, CanBo &cb)
-    {
+    friend istream &operator>>(istream &is, CanBo &cb) {
         cb.nhapThongTin(is);
         return is;
     }
 };
 
-class GiangVien : public CanBo
-{
+class GiangVien : public CanBo {
 public:
     int SoGioDay;
     int SoGioNghienCuu;
@@ -138,13 +128,11 @@ public:
     GiangVien(int _th = 0, int _rh = 0) : CanBo(GV), SoGioDay(_th), SoGioNghienCuu(_rh) {}
     ~GiangVien() {}
 
-    int tinhLuong(int _donGia) override
-    {
+    int tinhLuong(int _donGia) override {
         return ((SoGioDay + SoGioNghienCuu) * _donGia);
     }
 
-    void xuatThongTin() const
-    {
+    void xuatThongTin() const {
         string info = "Ho ten GV";
         cout << setw(18) << left << info.append((GioiTinh == NAM) ? (" Nam") : (" Nu")) << ": " << HoTen << '\n';
         cout << setw(18) << left << "Ma Can Bo" << ": " << MaCanBo << '\n';
@@ -152,8 +140,7 @@ public:
         cout << setw(18) << left << "So Gio NC" << ": " << SoGioNghienCuu << '\n';
     }
 
-    void nhapThongTin(istream &is) override
-    {
+    void nhapThongTin(istream &is) override {
         Phong = GV;
 
         cout << "Nhap ma can bo: ";
@@ -164,8 +151,7 @@ public:
         cout << "0. Nu\n";
         cout << "1. Nam\n";
         cin >> option;
-        while (0 > option || option > 1)
-        {
+        while (0 > option || option > 1) {
             cout << "Lua chon khong hop le!\n";
             cin >> option;
         }
@@ -183,8 +169,7 @@ public:
     }
 };
 
-class NVHanhChinh : public CanBo
-{
+class NVHanhChinh : public CanBo {
 public:
     int SoNgayLamViec;
     int SoGioLamThem;
@@ -193,13 +178,11 @@ public:
     NVHanhChinh(int _th = 0, int _rh = 0, int _dw = 0) : CanBo(HC), SoNgayLamViec(_th), SoGioLamThem(_rh), TienCongMotNgay(_dw) {}
     ~NVHanhChinh() {}
 
-    int tinhLuong(int _donGia) override
-    {
+    int tinhLuong(int _donGia) override {
         return (SoNgayLamViec * TienCongMotNgay + SoGioLamThem * _donGia);
     }
 
-    void xuatThongTin() const
-    {
+    void xuatThongTin() const {
         string info = "Ho ten NVHC";
         cout << setw(18) << left << info.append((GioiTinh == NAM) ? (" Nam") : (" Nu")) << ": " << HoTen << '\n';
         cout << setw(18) << left << "Ma Can Bo" << ": " << MaCanBo << '\n';
@@ -207,8 +190,7 @@ public:
         cout << setw(18) << left << "So Ngay Lam Viec" << ": " << SoNgayLamViec << '\n';
     }
 
-    void nhapThongTin(istream &is) override
-    {
+    void nhapThongTin(istream &is) override {
         Phong = HC;
 
         cout << "Nhap ma can bo: ";
@@ -219,8 +201,7 @@ public:
         cout << "0. Nu\n";
         cout << "1. Nam\n";
         cin >> option;
-        while (0 > option || option > 1)
-        {
+        while (0 > option || option > 1) {
             cout << "Lua chon khong hop le!\n";
             cin >> option;
         }
@@ -241,8 +222,7 @@ public:
     }
 };
 
-class DSCanBo
-{
+class DSCanBo {
 public:
     int SoLuongCanBo;
     vector<CanBo *> DanhSach;
@@ -250,32 +230,25 @@ public:
     DSCanBo(int _sl = 0, vector<CanBo *> _ds = {}) : SoLuongCanBo(_sl), DanhSach({}) {}
     ~DSCanBo() {}
 
-    void xoaCanBo(int _soThuTu)
-    {
-        if (_soThuTu >= 0 && _soThuTu < DanhSach.size())
-        {
+    void xoaCanBo(int _soThuTu) {
+        if (_soThuTu >= 0 && _soThuTu < DanhSach.size()) {
             auto it = DanhSach.begin() + _soThuTu;
             DanhSach.erase(it);
-        }
-        else
-        {
+        } else {
             cout << "so thu tu nam ngoai danh sach!\n";
         }
 
         SoLuongCanBo--;
     }
 
-    void xuatThongTinCanBo(int _soThuTu) const
-    {
-        if (_soThuTu < 0 || DanhSach.size() <= _soThuTu)
-        {
+    void xuatThongTinCanBo(int _soThuTu) const {
+        if (_soThuTu < 0 || DanhSach.size() <= _soThuTu) {
             cout << "so thu tu nam ngoai danh sach!\n";
         }
         DanhSach[_soThuTu]->xuatThongTin();
     }
 
-    void themCanBo()
-    {
+    void themCanBo() {
 
         int option;
         cout << "Chon de nhap:\n";
@@ -283,24 +256,20 @@ public:
         cout << "1. Nhan Vien Hanh Chinh\n";
 
         cin >> option;
-        while (0 > option || option > 1)
-        {
+        while (0 > option || option > 1) {
             cout << "Lua chon khong hop le!\n";
             cin >> option;
         }
 
-        switch (option)
-        {
-        case 0:
-        {
+        switch (option) {
+        case 0: {
             GiangVien *mau = new GiangVien;
             cin >> *mau;
             DanhSach.push_back(mau);
             break;
         }
 
-        case 1:
-        {
+        case 1: {
             NVHanhChinh *mau = new NVHanhChinh;
             cin >> *mau;
             DanhSach.push_back(mau);
@@ -314,21 +283,17 @@ public:
         SoLuongCanBo++;
     }
 
-    void chinhSuaCanBo()
-    {
+    void chinhSuaCanBo() {
         int _stt;
         cout << "Nhap so thu tu can bo can chinh sua: ";
         cin >> _stt;
-        while (_stt < 0 || DanhSach.size() <= _stt)
-        {
+        while (_stt < 0 || DanhSach.size() <= _stt) {
             cout << "so thu tu nam ngoai danh sach!\n";
             cin >> _stt;
         }
 
-        switch (DanhSach[_stt]->Phong)
-        {
-        case GV:
-        {
+        switch (DanhSach[_stt]->Phong) {
+        case GV: {
             cout << "Nhap ma can bo: ";
             cin >> DanhSach[_stt]->MaCanBo;
 
@@ -337,8 +302,7 @@ public:
             cout << "0. Nu\n";
             cout << "1. Nam\n";
             cin >> option;
-            while (0 > option || option > 1)
-            {
+            while (0 > option || option > 1) {
                 cout << "Lua chon khong hop le!\n";
                 cin >> option;
             }
@@ -353,11 +317,9 @@ public:
 
             cout << "Nhap so gio nghien cuu: ";
             cin >> static_cast<GiangVien *>(DanhSach[_stt])->SoGioNghienCuu;
-        }
-        break;
+        } break;
 
-        case HC:
-        {
+        case HC: {
             cout << "Nhap ma can bo: ";
             cin >> DanhSach[_stt]->MaCanBo;
 
@@ -366,8 +328,7 @@ public:
             cout << "0. Nu\n";
             cout << "1. Nam\n";
             cin >> option;
-            while (0 > option || option > 1)
-            {
+            while (0 > option || option > 1) {
                 cout << "Lua chon khong hop le!\n";
                 cin >> option;
             }
@@ -382,16 +343,14 @@ public:
 
             cout << "Nhap so gio lam them: ";
             cin >> static_cast<NVHanhChinh *>(DanhSach[_stt])->SoGioLamThem;
-        }
-        break;
+        } break;
 
         default:
             break;
         }
     }
 
-    CanBo *operator[](const int _index)
-    {
+    CanBo *operator[](const int _index) {
         if (0 <= _index <= SoLuongCanBo)
             return DanhSach[_index];
         cout << "index out of bound!\n";
@@ -399,23 +358,18 @@ public:
     }
 };
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     int i{};
     cout << "chon cau: ";
     cin >> i;
-    switch (i)
-    {
-    case 1:
-    {
+    switch (i) {
+    case 1: {
         DSCanBo danhsach;
 
         int input = 1;
-        while (input > 0)
-        {
+        while (input > 0) {
             cout << "[";
-            for (int i{}; i < danhsach.SoLuongCanBo - 1; i++)
-            {
+            for (int i{}; i < danhsach.SoLuongCanBo - 1; i++) {
                 cout << i << ", ";
             }
             if (danhsach.SoLuongCanBo > 0)
@@ -432,61 +386,45 @@ int main(int argc, char *argv[])
             cout << "-1 - Exit\n";
             cin >> input;
 
-            switch (input)
-            {
-            case 1:
-            {
+            switch (input) {
+            case 1: {
                 danhsach.themCanBo();
-            }
-            break;
-            case 2:
-            {
+            } break;
+            case 2: {
                 int stt;
                 cout << "Nhap so thu tu can bo can xoa: ";
                 cin >> stt;
-                while (stt < 0 || danhsach.SoLuongCanBo <= stt)
-                {
+                while (stt < 0 || danhsach.SoLuongCanBo <= stt) {
                     cout << "so thu tu nam ngoai danh sach!\n";
                     cin >> stt;
                 }
                 danhsach.xoaCanBo(stt);
-            }
-            break;
-            case 3:
-            {
+            } break;
+            case 3: {
                 danhsach.chinhSuaCanBo();
-            }
-            break;
-            case 4:
-            {
+            } break;
+            case 4: {
                 int stt;
                 cout << "Nhap so thu tu can bo can in: ";
                 cin >> stt;
-                while (stt < 0 || danhsach.SoLuongCanBo <= stt)
-                {
+                while (stt < 0 || danhsach.SoLuongCanBo <= stt) {
                     cout << "so thu tu nam ngoai danh sach!\n";
                     cin >> stt;
                 }
                 danhsach.xuatThongTinCanBo(stt);
-            }
-            break;
-            case 5:
-            {
+            } break;
+            case 5: {
                 cout << "-----------------------------------------\n";
-                for (int i{}; i < danhsach.SoLuongCanBo; i++)
-                {
+                for (int i{}; i < danhsach.SoLuongCanBo; i++) {
                     danhsach.xuatThongTinCanBo(i);
                     cout << "-----------------------------------------\n";
                 }
-            }
-            break;
-            case 6:
-            {
+            } break;
+            case 6: {
                 int stt;
                 cout << "Nhap so thu tu can bo can tinh luong: ";
                 cin >> stt;
-                while (stt < 0 || danhsach.SoLuongCanBo <= stt)
-                {
+                while (stt < 0 || danhsach.SoLuongCanBo <= stt) {
                     cout << "so thu tu nam ngoai danh sach!\n";
                     cin >> stt;
                 }
@@ -495,14 +433,12 @@ int main(int argc, char *argv[])
                 cin >> dongia;
                 danhsach.xuatThongTinCanBo(stt);
                 cout << "Luong: " << fixed << setprecision(3) << danhsach[stt]->tinhLuong(dongia) << " VND\n";
-            }
-            break;
+            } break;
             default:
                 break;
             }
         }
-    }
-    break;
+    } break;
     case 2:
         break;
     case 3:

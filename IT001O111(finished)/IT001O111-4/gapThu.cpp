@@ -2,8 +2,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     long double n, m, h, w;
     cin >> n >> m >> h >> w;
 
@@ -12,13 +11,11 @@ int main()
     fm = m;
 
     int gap1 = 0;
-    while (fn > h)
-    {
+    while (fn > h) {
         fn /= 2;
         gap1 += 1;
     }
-    while (fm > w)
-    {
+    while (fm > w) {
         fm /= 2;
         gap1 += 1;
     }
@@ -27,13 +24,11 @@ int main()
     fn = n;
     fm = m;
     int gap2 = 0;
-    while (fn > w)
-    {
+    while (fn > w) {
         fn /= 2;
         gap2 += 1;
     }
-    while (fm > h)
-    {
+    while (fm > h) {
         fm /= 2;
         gap2 += 1;
     }

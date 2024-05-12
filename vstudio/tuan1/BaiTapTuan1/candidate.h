@@ -1,40 +1,37 @@
 #pragma once
 #include <string>
-struct date
-{
-	int day;
-	int month;
-	int year;
+struct date {
+    int day;
+    int month;
+    int year;
 };
-struct score
-{
-	float Toan;
-	float Van;
-	float Anh;
+struct score {
+    float Toan;
+    float Van;
+    float Anh;
 };
-class candidate
-{
+class candidate {
 private:
-	int Ma;
-	std::string HoTen;
-	date NgaySinh;
-	score Diem;
+    int Ma;
+    std::string HoTen;
+    date NgaySinh;
+    score Diem;
+
 public:
-	candidate();
-	~candidate();
+    candidate();
+    ~candidate();
 
-	void Nhap();
-	void const Xuat();
+    void Nhap();
+    void const Xuat();
 
-	int const getMaHocSinh();
+    int const getMaHocSinh();
 
-	float const getScoreSum();
+    float const getScoreSum();
 
-	float const getMathScore();
-	float const getMathScore();
-	float const getMathScore();
+    float const getMathScore();
+    float const getMathScore();
+    float const getMathScore();
 
-	void const printName();
-	void const printBirthDate();
+    void const printName();
+    void const printBirthDate();
 };
-

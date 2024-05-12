@@ -4,31 +4,26 @@ using namespace std;
 int n, k;
 vector<int> a;
 
-vector<int> get_ans(const vector<int> &A, int K)
-{
+vector<int> get_ans(const vector<int> &A, int K) {
     map<int, int> Hash;
     vector<int> ans;
 
-    for (auto i : A)
-    {
+    for (auto i : A) {
         Hash[i]++;
     }
 
     auto it = Hash.begin();
-    for (it; it != Hash.end() && K != 0; it++)
-    {
+    for (it; it != Hash.end() && K != 0; it++) {
         ans.push_back(it->first);
         it->second--;
         K--;
     }
 
     it = Hash.begin();
-    while (K != 0)
-    {
+    while (K != 0) {
         if (it->second == 0)
             it++;
-        else
-        {
+        else {
             ans.push_back(it->first);
             it->second--;
             K--;
@@ -38,8 +33,7 @@ vector<int> get_ans(const vector<int> &A, int K)
     return ans;
 }
 
-int main()
-{
+int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 

@@ -1,12 +1,10 @@
 #include <cyclone/core.h>
-namespace cyclone
-{
+namespace cyclone {
     /*
     A particle is the simplest object that can be simulated in the
     physics system.
     */
-    class Particle
-    {
+    class Particle {
     public:
         /*
         Holds the linear position of the particle in
@@ -73,8 +71,7 @@ namespace cyclone
         */
         void addForce(const Vector3 &force);
 
-        Vector3 getPosition(const Vector3 *vector)
-        {
+        Vector3 getPosition(const Vector3 *vector) {
             return Vector3(this->position.x, this->position.y, this->position.z);
         }
     };

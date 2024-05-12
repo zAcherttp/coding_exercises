@@ -5,8 +5,7 @@
 #define LOAD 0.7
 using namespace std;
 
-struct Hocsinh
-{
+struct Hocsinh {
     int Maso;
     string Hoten;
     int Namsinh;
@@ -14,14 +13,12 @@ struct Hocsinh
     double TBK;
 };
 
-struct Node
-{
+struct Node {
     Hocsinh data;
     Node *next;
 };
 
-struct List
-{
+struct List {
     Node *head, *tail;
 };
 
@@ -32,8 +29,7 @@ int RemoveHead(List &);
 int RemoveAfter(List &, Node *);
 void DeleteList(List &);
 
-struct Hashtable
-{
+struct Hashtable {
     int M; // Kich thuoc bang bam
     int n; // so phan tu trong bang bam
     List *table;
@@ -45,16 +41,14 @@ Node *Search(Hashtable, int);
 void PrintHashtable(Hashtable);
 void DeleteHashtable(Hashtable &);
 
-void Input(Hocsinh &x)
-{
+void Input(Hocsinh &x) {
     cin >> x.Maso;
     getline(cin >> ws, x.Hoten);
     cin >> x.Gioitinh;
     cin >> x.Namsinh;
     cin >> x.TBK;
 }
-int main()
-{
+int main() {
     Hashtable hashtable;
 
     int m, n, k;
@@ -62,26 +56,22 @@ int main()
 
     cin >> m;
     CreateHashtable(hashtable, m);
-    for (int i = 0; i < m; i++)
-    {
+    for (int i = 0; i < m; i++) {
         cin >> k;
         hashtable.n += k;
-        for (int j = 0; j < k; j++)
-        {
+        for (int j = 0; j < k; j++) {
             Input(hs);
             AddTail(hashtable.table[i], hs);
         }
     }
     cin >> n;
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         cin >> k;
         Node *p = Search(hashtable, k);
 
         if (p == NULL)
             cout << "KHONG TIM THAY\n";
-        else
-        {
+        else {
             hs = p->data;
             cout << '[' << hs.Maso << ",  " << hs.Hoten << "  , " << hs.Gioitinh << ", " << hs.Namsinh << ", " << hs.TBK << "]\n";
         }
@@ -89,13 +79,11 @@ int main()
     DeleteHashtable(hashtable);
     return 0;
 }
-void CreateList(List &l)
-{
+void CreateList(List &l) {
     l.head = l.tail = NULL;
 }
 
-Node *CreateNode(Hocsinh x)
-{
+Node *CreateNode(Hocsinh x) {
     Node *p = new Node;
     if (p == NULL)
         exit(1);
@@ -104,20 +92,17 @@ Node *CreateNode(Hocsinh x)
     return p;
 }
 
-void AddTail(List &l, Hocsinh x)
-{
+void AddTail(List &l, Hocsinh x) {
     Node *p = CreateNode(x);
     if (l.head == NULL)
         l.head = l.tail = p;
-    else
-    {
+    else {
         l.tail->next = p;
         l.tail = p;
     }
 }
 
-int RemoveHead(List &l)
-{
+int RemoveHead(List &l) {
     if (l.head == NULL)
         return 0;
     Node *p = l.head;
@@ -128,8 +113,7 @@ int RemoveHead(List &l)
     return 1;
 }
 
-int RemoveAfter(List &l, Node *q)
-{
+int RemoveAfter(List &l, Node *q) {
     if (l.head == NULL)
         return 0;
 
@@ -144,10 +128,8 @@ int RemoveAfter(List &l, Node *q)
     return 1;
 }
 
-void DeleteList(List &l)
-{
-    while (l.head)
-    {
+void DeleteList(List &l) {
+    while (l.head) {
         Node *p = l.head;
         l.head = p->next;
         delete p;
@@ -155,8 +137,7 @@ void DeleteList(List &l)
     l.head = l.tail = NULL;
 }
 
-void CreateHashtable(Hashtable &ht, int m)
-{
+void CreateHashtable(Hashtable &ht, int m) {
     ht.table = new List[m];
     for (int i = 0; i < m; i++)
         CreateList(ht.table[i]);
@@ -164,18 +145,14 @@ void CreateHashtable(Hashtable &ht, int m)
     ht.n = 0;
 }
 
-int Hash(Hashtable ht, int maso)
-{
+int Hash(Hashtable ht, int maso) {
     return maso % ht.M;
 }
 
-void PrintHashtable(Hashtable ht)
-{
-    for (int i = 0; i < ht.M; i++)
-    {
+void PrintHashtable(Hashtable ht) {
+    for (int i = 0; i < ht.M; i++) {
         Node *p = ht.table[i].head;
-        while (p)
-        {
+        while (p) {
             Hocsinh hs = p->data;
             cout << '[' << hs.Maso << ",  " << hs.Hoten << "  , " << hs.Gioitinh << ", " << hs.Namsinh << ", " << hs.TBK << "] ";
             p = p->next;
@@ -184,10 +161,8 @@ void PrintHashtable(Hashtable ht)
     }
 }
 
-void DeleteHashtable(Hashtable &ht)
-{
-    for (int i = 0; i < ht.M; i++)
-    {
+void DeleteHashtable(Hashtable &ht) {
+    for (int i = 0; i < ht.M; i++) {
         DeleteList(ht.table[i]);
     }
     delete[] ht.table;
@@ -195,13 +170,11 @@ void DeleteHashtable(Hashtable &ht)
     ht.M = 0;
 }
 
-Node *Search(Hashtable ht, int maso)
-{
+Node *Search(Hashtable ht, int maso) {
     int hash = Hash(ht, maso);
     List &bucket = ht.table[hash];
     Node *current = bucket.head;
-    while (current != nullptr)
-    {
+    while (current != nullptr) {
         if (current->data.Maso == maso)
             break;
         current = current->next;

@@ -1,14 +1,12 @@
 #include <cyclone/particle.h>
 #include <cyclone/precision.h>
 #include <vector>
-namespace cyclone
-{
+namespace cyclone {
     /*
     A force generator can be asked to add a force to one or more
     particles.
     */
-    class ParticleForceGenerator
-    {
+    class ParticleForceGenerator {
     public:
         /*
         Overload this in implementations of the interface to calculate
@@ -20,15 +18,13 @@ namespace cyclone
     /*
     Holds all the force generators and the particles they apply to.
     */
-    class ParticleForceRegistry
-    {
+    class ParticleForceRegistry {
     protected:
         /*
         Keeps track of one force generator and the particle it
         applies to.
         */
-        struct ParticleForceRegistration
-        {
+        struct ParticleForceRegistration {
             Particle *particle;
             ParticleForceGenerator *fg;
         };
@@ -71,8 +67,7 @@ namespace cyclone
     A force generator that applies a gravitational force. One instance
     can be used for multiple particles.
     */
-    class ParticleGravity : public ParticleForceGenerator
-    {
+    class ParticleGravity : public ParticleForceGenerator {
 
         /* Holds the acceleration due to gravity. */
         Vector3 gravity;
@@ -89,8 +84,7 @@ namespace cyclone
     A force generator that applies a drag force. One instance
     can be used for multiple particles.
     */
-    class ParticleDrag : public ParticleForceGenerator
-    {
+    class ParticleDrag : public ParticleForceGenerator {
 
         /* Holds the velocity drag coefficient. */
         real k1;
@@ -109,8 +103,7 @@ namespace cyclone
     /*
     A force generator that applies a spring force.
     */
-    class ParticleSpring : public ParticleForceGenerator
-    {
+    class ParticleSpring : public ParticleForceGenerator {
         /* The particle at the other end of the spring. */
         Particle *other;
 
@@ -133,8 +126,7 @@ namespace cyclone
     A force generator that applies a spring force, where
     one end is attached to a fixed point in space.
     */
-    class ParticleAnchoredSpring : public ParticleForceGenerator
-    {
+    class ParticleAnchoredSpring : public ParticleForceGenerator {
         /* The location of the anchored end of the spring. */
         Vector3 *anchor;
 

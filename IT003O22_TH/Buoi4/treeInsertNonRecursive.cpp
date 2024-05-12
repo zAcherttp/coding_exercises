@@ -2,25 +2,21 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Node
-{
+class Node {
 public:
     int data;
     Node *left;
     Node *right;
-    Node(int d)
-    {
+    Node(int d) {
         data = d;
         left = NULL;
         right = NULL;
     }
 };
 
-class Solution
-{
+class Solution {
 public:
-    void preOrder(Node *root)
-    {
+    void preOrder(Node *root) {
 
         if (root == NULL)
             return;
@@ -48,32 +44,22 @@ public:
 
     */
 
-    Node *insert(Node *root, int data)
-    {
+    Node *insert(Node *root, int data) {
         Node *x = new Node(data);
         Node *pos = root;
-        if (!root)
-        {
+        if (!root) {
             root = x;
             //      cout << x->data << endl;
-        }
-        else
-        {
-            while (pos)
-            {
-                if (data < pos->data)
-                {
-                    if (pos->left == nullptr)
-                    {
+        } else {
+            while (pos) {
+                if (data < pos->data) {
+                    if (pos->left == nullptr) {
                         pos->left = x;
                         return root;
                     }
                     pos = pos->left;
-                }
-                else
-                {
-                    if (pos->right == nullptr)
-                    {
+                } else {
+                    if (pos->right == nullptr) {
                         pos->right = x;
                         return root;
                     }
@@ -87,8 +73,7 @@ public:
     }
 };
 
-int main()
-{
+int main() {
 
     Solution myTree;
     Node *root = NULL;
@@ -98,8 +83,7 @@ int main()
 
     std::cin >> t;
 
-    while (t-- > 0)
-    {
+    while (t-- > 0) {
         std::cin >> data;
         root = myTree.insert(root, data);
     }

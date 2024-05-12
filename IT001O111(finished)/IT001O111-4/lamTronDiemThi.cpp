@@ -2,8 +2,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     double diem, temp;
     int n;
     cin >> diem >> n;

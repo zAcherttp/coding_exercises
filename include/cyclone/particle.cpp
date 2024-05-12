@@ -3,8 +3,7 @@
 
 using namespace cyclone;
 
-void Particle::integrate(real duration)
-{
+void Particle::integrate(real duration) {
     assert(duration > 0.0);
 
     // Update linear position.
@@ -24,12 +23,10 @@ void Particle::integrate(real duration)
     clearAccumulator();
 }
 
-void Particle::clearAccumulator()
-{
+void Particle::clearAccumulator() {
     forceAccum.clear();
 }
 
-void Particle::addForce(const Vector3 &force)
-{
+void Particle::addForce(const Vector3 &force) {
     forceAccum += force;
 }

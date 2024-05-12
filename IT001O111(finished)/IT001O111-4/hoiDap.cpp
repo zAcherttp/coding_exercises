@@ -2,8 +2,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     int temperature;
     cout << "What is the outdoor temperature?";
     cin >> temperature;

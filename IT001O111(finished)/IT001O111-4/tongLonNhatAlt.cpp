@@ -2,20 +2,17 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
 
     int arraySize;
     cin >> arraySize;
 
     int array[arraySize];
-    for (int i = 0; i < arraySize; i++)
-    {
+    for (int i = 0; i < arraySize; i++) {
         cin >> array[i];
     }
 
-    for (int i = 1; i < arraySize; i += 2)
-    {
+    for (int i = 1; i < arraySize; i += 2) {
         array[i] = array[i] * pow(-1, i);
     }
 
@@ -23,10 +20,8 @@ int main()
     vector<int> minPos;
 
     int posSum = 0;
-    for (int i = 0; i < arraySize; i++)
-    {
-        if (array[i] >= 0)
-        {
+    for (int i = 0; i < arraySize; i++) {
+        if (array[i] >= 0) {
             posSum += array[i];
             minPos.push_back(array[i]);
             // cout << array[i] << " ";
@@ -35,10 +30,8 @@ int main()
     // cout << "= " << posSum << endl;
 
     int negSum = 0;
-    for (int i = 0; i < arraySize; i++)
-    {
-        if (array[i] < 0)
-        {
+    for (int i = 0; i < arraySize; i++) {
+        if (array[i] < 0) {
             negSum += array[i];
             minNeg.push_back(array[i]);
             // cout << array[i] << " ";
@@ -47,12 +40,10 @@ int main()
     // cout << "= " << negSum << endl;
 
     int minN = INT_MAX, minP = INT_MAX;
-    if (!minNeg.empty())
-    {
+    if (!minNeg.empty()) {
         minN = *min_element(minNeg.begin(), minNeg.end());
     }
-    if (!minPos.empty())
-    {
+    if (!minPos.empty()) {
         minP = *min_element(minPos.begin(), minPos.end());
     }
 

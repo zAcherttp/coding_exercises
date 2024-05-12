@@ -2,8 +2,7 @@
 
 monomial::monomial(double _coefficient = 0, int _exponent = 0) : coefficient(_coefficient), exponent(_exponent) {}
 
-monomial &monomial::operator=(const monomial &m)
-{
+monomial &monomial::operator=(const monomial &m) {
     if (this == &m)
         return *this;
     this->coefficient = m.coefficient;

@@ -2,16 +2,14 @@
 #include <math.h>
 using namespace std;
 
-class monomial
-{
+class monomial {
 public:
     int exponent;
     double coefficient;
 
     monomial(double _coefficient = 0, int _exponent = 0) : coefficient(_coefficient), exponent(_exponent) {}
 
-    monomial &operator=(const monomial &m)
-    {
+    monomial &operator=(const monomial &m) {
         if (this == &m)
             return *this;
         this->coefficient = m.coefficient;
@@ -20,25 +18,21 @@ public:
     }
 };
 
-struct Node
-{
+struct Node {
     monomial *data;
     Node *next;
 
-    Node(monomial *_data = nullptr)
-    {
+    Node(monomial *_data = nullptr) {
         this->data = _data;
         this->next = nullptr;
     }
 };
 
-class polynomial
-{
+class polynomial {
 public:
     Node *head;
     Node *tail;
-    polynomial()
-    {
+    polynomial() {
         this->head = nullptr;
         this->tail = nullptr;
     }
@@ -53,14 +47,11 @@ public:
     polynomial operator-(const polynomial &B);
 };
 
-ostream &operator<<(ostream &os, const polynomial &p)
-{
+ostream &operator<<(ostream &os, const polynomial &p) {
     Node *current = p.head;
     bool isFirst = true;
-    while (current != nullptr)
-    {
-        if (current->data->coefficient != 0)
-        {
+    while (current != nullptr) {
+        if (current->data->coefficient != 0) {
             if (!isFirst && current->data->coefficient > 0)
                 cout << "+";
 
@@ -90,51 +81,39 @@ ostream &operator<<(ostream &os, const polynomial &p)
     return os;
 }
 
-void polynomial::insert(double &coefficient, int &exponent)
-{
+void polynomial::insert(double &coefficient, int &exponent) {
     monomial *_monomial = new monomial(coefficient, exponent);
     Node *node = new Node(_monomial);
-    if (!this->head)
-    {
+    if (!this->head) {
         this->head = node;
         this->tail = node;
-    }
-    else
-    {
+    } else {
         this->tail->next = node;
         this->tail = node;
     }
 }
 
-istream &operator>>(istream &is, polynomial &p)
-{
+istream &operator>>(istream &is, polynomial &p) {
     double coefficient;
     int exponent;
     int size;
     cin >> size;
-    for (int i{}; i < size; i++)
-    {
+    for (int i{}; i < size; i++) {
         cin >> coefficient >> exponent;
         p.insert(coefficient, exponent);
     }
     return is;
 }
 
-
-void polynomial::operator=(const polynomial &p)
-{
+void polynomial::operator=(const polynomial &p) {
     Node *current = p.head;
-    while (current != nullptr)
-    {
+    while (current != nullptr) {
         monomial *_monomial = new monomial(current->data->coefficient, current->data->exponent);
         Node *node = new Node(_monomial);
-        if (!this->head)
-        {
+        if (!this->head) {
             this->head = node;
             this->tail = node;
-        }
-        else
-        {
+        } else {
             this->tail->next = node;
             this->tail = node;
         }
@@ -142,41 +121,28 @@ void polynomial::operator=(const polynomial &p)
     }
 }
 
-polynomial polynomial::operator+(const polynomial &B)
-{
+polynomial polynomial::operator+(const polynomial &B) {
     polynomial result;
 
     Node *currA = this->head;
     Node *currB = B.head;
-    while (currA != nullptr || currB != nullptr)
-    {
-        if (currA == nullptr)
-        {
+    while (currA != nullptr || currB != nullptr) {
+        if (currA == nullptr) {
             result.insert(currB->data->coefficient, currB->data->exponent);
             currB = currB->next;
-        }
-        else if (currB == nullptr)
-        {
+        } else if (currB == nullptr) {
             result.insert(currA->data->coefficient, currA->data->exponent);
             currA = currA->next;
-        }
-        else
-        {
-            if (currA->data->exponent > currB->data->exponent)
-            {
+        } else {
+            if (currA->data->exponent > currB->data->exponent) {
                 result.insert(currA->data->coefficient, currA->data->exponent);
                 currA = currA->next;
-            }
-            else if (currA->data->exponent < currB->data->exponent)
-            {
+            } else if (currA->data->exponent < currB->data->exponent) {
                 result.insert(currB->data->coefficient, currB->data->exponent);
                 currB = currB->next;
-            }
-            else
-            {
+            } else {
                 double new_coeff = currA->data->coefficient + currB->data->coefficient;
-                if (new_coeff != 0)
-                {
+                if (new_coeff != 0) {
                     result.insert(new_coeff, currA->data->exponent);
                 }
                 currA = currA->next;
@@ -188,41 +154,28 @@ polynomial polynomial::operator+(const polynomial &B)
     return result;
 }
 
-polynomial polynomial::operator-(const polynomial &B)
-{
+polynomial polynomial::operator-(const polynomial &B) {
     polynomial result;
 
     Node *currA = this->head;
     Node *currB = B.head;
-    while (currA != nullptr || currB != nullptr)
-    {
-        if (currA == nullptr)
-        {
+    while (currA != nullptr || currB != nullptr) {
+        if (currA == nullptr) {
             result.insert(currB->data->coefficient, currB->data->exponent);
             currB = currB->next;
-        }
-        else if (currB == nullptr)
-        {
+        } else if (currB == nullptr) {
             result.insert(currA->data->coefficient, currA->data->exponent);
             currA = currA->next;
-        }
-        else
-        {
-            if (currA->data->exponent > currB->data->exponent)
-            {
+        } else {
+            if (currA->data->exponent > currB->data->exponent) {
                 result.insert(currA->data->coefficient, currA->data->exponent);
                 currA = currA->next;
-            }
-            else if (currA->data->exponent < currB->data->exponent)
-            {
+            } else if (currA->data->exponent < currB->data->exponent) {
                 result.insert(currB->data->coefficient, currB->data->exponent);
                 currB = currB->next;
-            }
-            else
-            {
+            } else {
                 double new_coeff = currA->data->coefficient - currB->data->coefficient;
-                if (new_coeff != 0)
-                {
+                if (new_coeff != 0) {
                     result.insert(new_coeff, currA->data->exponent);
                 }
                 currA = currA->next;
@@ -234,8 +187,7 @@ polynomial polynomial::operator-(const polynomial &B)
     return result;
 }
 
-int main()
-{
+int main() {
     polynomial A, B;
 
     cin >> A >> B;

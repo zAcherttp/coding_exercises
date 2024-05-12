@@ -8,50 +8,44 @@
 //------------------------------------------------------------------------------
 #pragma once
 
-namespace XamlBindingInfo
-{
+namespace XamlBindingInfo {
     ref class XamlBindings;
 
-    class IXamlBindings
-    {
+    class IXamlBindings {
     public:
-        virtual ~IXamlBindings() {};
+        virtual ~IXamlBindings(){};
         virtual bool IsInitialized() = 0;
         virtual void Update() = 0;
-        virtual bool SetDataRoot(::Platform::Object^ data) = 0;
+        virtual bool SetDataRoot(::Platform::Object ^ data) = 0;
         virtual void StopTracking() = 0;
-        virtual void Connect(int connectionId, ::Platform::Object^ target) = 0;
+        virtual void Connect(int connectionId, ::Platform::Object ^ target) = 0;
         virtual void ResetTemplate() = 0;
-        virtual int ProcessBindings(::Windows::UI::Xaml::Controls::ContainerContentChangingEventArgs^ args) = 0;
-        virtual void SubscribeForDataContextChanged(::Windows::UI::Xaml::FrameworkElement^ object, ::XamlBindingInfo::XamlBindings^ handler) = 0;
+        virtual int ProcessBindings(::Windows::UI::Xaml::Controls::ContainerContentChangingEventArgs ^ args) = 0;
+        virtual void SubscribeForDataContextChanged(::Windows::UI::Xaml::FrameworkElement ^ object, ::XamlBindingInfo::XamlBindings ^ handler) = 0;
     };
 
-    ref class XamlBindings sealed : 
-        ::Windows::UI::Xaml::IDataTemplateExtension, 
-        ::Windows::UI::Xaml::Markup::IComponentConnector
-    {
-    internal:
-        XamlBindings(::XamlBindingInfo::IXamlBindings* pBindings);
+    ref class XamlBindings sealed : ::Windows::UI::Xaml::IDataTemplateExtension,
+                                    ::Windows::UI::Xaml::Markup::IComponentConnector {
+        internal : XamlBindings(::XamlBindingInfo::IXamlBindings *pBindings);
         void Initialize();
         void Update();
         void StopTracking();
-        void Loading(::Windows::UI::Xaml::FrameworkElement^ src, ::Platform::Object^ data);
-        void DataContextChanged(::Windows::UI::Xaml::FrameworkElement^ sender, ::Windows::UI::Xaml::DataContextChangedEventArgs^ args);
-        void SubscribeForDataContextChanged(::Windows::UI::Xaml::FrameworkElement^ object);
+        void Loading(::Windows::UI::Xaml::FrameworkElement ^ src, ::Platform::Object ^ data);
+        void DataContextChanged(::Windows::UI::Xaml::FrameworkElement ^ sender, ::Windows::UI::Xaml::DataContextChangedEventArgs ^ args);
+        void SubscribeForDataContextChanged(::Windows::UI::Xaml::FrameworkElement ^ object);
 
     public:
         // IComponentConnector
-        virtual void Connect(int connectionId, ::Platform::Object^ target);
+        virtual void Connect(int connectionId, ::Platform::Object ^ target);
 
         // IDataTemplateExtension
         virtual bool ProcessBinding(unsigned int);
-        virtual int ProcessBindings(::Windows::UI::Xaml::Controls::ContainerContentChangingEventArgs^ args);
+        virtual int ProcessBindings(::Windows::UI::Xaml::Controls::ContainerContentChangingEventArgs ^ args);
         virtual void ResetTemplate();
 
     private:
         ~XamlBindings();
 
-        IXamlBindings* _pBindings = nullptr;
+        IXamlBindings *_pBindings = nullptr;
     };
 }
-
