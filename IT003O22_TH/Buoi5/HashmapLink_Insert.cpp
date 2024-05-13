@@ -157,27 +157,10 @@ void DeleteHashtable(Hashtable &ht) {
 }
 
 int Insert(Hashtable &ht, Hocsinh x) {
-    int hash = Hash(ht, x.Maso);
-    List &bucket = ht.table[hash];
-
-    if (bucket.head == nullptr) {
-        List tmp;
-        CreateList(tmp);
-        bucket = tmp;
-        bucket.head = CreateNode(x);
-        bucket.tail = bucket.head;
+    if (ht.n + 1 <= ht.M * LOAD) {
+        AddTail(ht.table[Hash(ht, x.Maso)], x);
         ht.n++;
         return 1;
     }
-
-    Node *cur = bucket.head;
-    while (cur != nullptr) {
-        if (cur->data.Maso == x.Maso)
-            return 0;
-        cur = cur->next;
-    }
-
-    AddTail(bucket, x);
-    ht.n++;
-    return 1;
+    return 0;
 }

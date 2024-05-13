@@ -1,5 +1,6 @@
+#include <algorithm>
 #include <iostream>
-#include <set>
+#include <stdexcept>
 using namespace std;
 class IntSet {
 private:
@@ -8,15 +9,19 @@ private:
 
 public:
     IntSet(int *_values = nullptr, int _count = 0);
+    IntSet(const IntSet &_set);
     ~IntSet();
 
     int getCount() const;
-    IntSet makeSet() const;
+    bool contains(int &element) const;
+    void clear();
+
     friend istream &operator>>(istream &is, IntSet &_set);
     friend ostream &operator<<(ostream &os, const IntSet &_set);
 
     int &operator[](int index);
     IntSet operator+(const IntSet &_set);
     IntSet operator-(const IntSet &_set);
+    IntSet &operator=(const IntSet &_set);
     bool operator==(const IntSet &_set);
 };

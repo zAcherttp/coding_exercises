@@ -77,7 +77,16 @@ void DeleteHashtable(Hashtable &ht) {
 }
 
 int Insert(Hashtable &ht, Hocsinh x) {
-    ht.table[x.Maso % ht.M] = x;
-    ht.n++;
-    return 1;
+    if (ht.n + 1 <= ht.M * LOAD) {
+        int i = 0, key = x.Maso % ht.M;
+        do {
+            int hash = (key + i) % ht.M;
+            if (ht.table[hash].Maso == EMPTY) {
+                ht.table[hash] = x;
+                ht.n++;
+                return 1;
+            }
+        } while (i++ <= ht.M * LOAD);
+    }
+    return 0;
 }
