@@ -1,106 +1,33 @@
 #include "IntSet.h"
 
 IntSet::IntSet(int *_values, int _count) {
-    if (_values == nullptr)
-        values = new int[_count];
-    else
-        count = _count;
+    count = 0;
+    values = nullptr;
+    for (int i = 0; i < _count; i++) {
+        if(!this->contains(_values[i])) {
+            values = (int *)realloc(values, ++count * sizeof(int));
+            values[count - 1] = _values[i];
+        }
+    }
+    sort(values, values + count);
+}
+IntSet::IntSet(const IntSet &_set) : count(_set.count) {
+    values = new int[count];
+    copy(_set.values, _set.values + count, values);
 }
 IntSet::~IntSet() {
     delete[] values;
 }
-
 int IntSet::getCount() const {
     return count;
 }
-IntSet IntSet::makeSet() const {
-    IntSet intset;
-    set<int> set;
-    for (int i = 0; i < count; i++) {
-        set.insert(values[i]);
-    }
-    intset.count = (int)set.size();
-    intset.values = new int[intset.count];
-    int i = 0;
-    for (auto value : set) {
-        intset.values[i++] = value;
-    }
-    return intset;
+bool IntSet::contains(int &element) const {
+    return find(values, values + count, element) != values + count;
 }
-
-istream &operator>>(istream &is, IntSet &_set) {
-    int n;
-    cout << "nhap so phan tu cua set: ";
-    is >> n;
-    set<int> set_;
-    cout << "nhap cac phan tu: ";
-    for (int i = 0; i < n; i++) {
-        int temp;
-        is >> temp;
-        set_.insert(temp);
-    }
-    _set.count = (int)set_.size();
-    delete[] _set.values;
-    _set.values = new int[_set.count];
-    int j = 0;
-    for (auto value : set_) {
-        _set.values[j] = value;
-        j++;
-    }
-    return is;
-}
-ostream &operator<<(ostream &os, const IntSet &_set) {
-    for (int i = 0; i < _set.count - 1; i++) {
-        os << _set.values[i] << " ";
-    }
-    os << _set.values[_set.count - 1];
-    return os;
-}
-int &IntSet::operator[](int index) {
-    if (index >= count || index < 0)
-        cout << "index out of bound";
-    exit(0);
-    return values[index];
-}
-
-IntSet IntSet::operator+(const IntSet &_set) {
-    IntSet _union;
-    set<int> __union;
-    for (int i = 0; i < this->count; i++) {
-        __union.insert(this->values[i]);
-    }
-    for (int i = 0; i < _set.count; i++) {
-        __union.insert(_set.values[i]);
-    }
-    _union.count = (int)__union.size();
-    _union.values = new int[_union.count];
-    int i = 0;
-    for (auto value : __union) {
-        _union.values[i] = value;
-        i++;
-    }
-    return _union;
-}
-IntSet IntSet::operator-(const IntSet &_set) {
-    IntSet _subtract;
-    set<int> __subtract;
-    for (int i = 0; i < this->count; i++) {
-        __subtract.insert(this->values[i]);
-    }
-    for (int i = 0; i < _set.count; i++) {
-        if (__subtract.find(_set.values[i]) != __subtract.end())
-            __subtract.erase(_set.values[i]);
-        else
-            __subtract.insert(_set.values[i]);
-    }
-    _subtract.count = (int)__subtract.size();
-    _subtract.values = new int[_subtract.count];
-    int i = 0;
-    for (auto value : __subtract) {
-        _subtract.values[i] = value;
-        i++;
-    }
-    return _subtract;
+void IntSet::clear() {
+    delete[] values;
+    values = nullptr;
+    count = 0;
 }
 bool IntSet::operator==(const IntSet &_set) {
     if (this->count == _set.count) {
@@ -111,7 +38,89 @@ bool IntSet::operator==(const IntSet &_set) {
                 return false;
         }
         return true;
-    } else {
-        return false;
     }
+    return false;
+}
+IntSet &IntSet::operator=(const IntSet &_set) {
+    if (this != &_set) {
+        this->clear();
+        count = _set.count;
+        values = new int[count];
+        copy(_set.values, _set.values + count, values);
+    }
+    return *this;
+}
+IntSet IntSet::operator-(const IntSet &_set) {
+    IntSet result;
+
+    for (int i = 0; i < this->count; i++) {
+        if (!_set.contains(this->values[i])) {
+            result.values = (int *)realloc(result.values, ++result.count * sizeof(int));
+            result.values[result.count - 1] = _set.values[i];
+        }
+    }
+
+    for (int i = 0; i < _set.count; i++) {
+        if (!this->contains(_set.values[i])) {
+            result.values = (int *)realloc(result.values, ++result.count * sizeof(int));
+            result.values[result.count - 1] = _set.values[i];
+        }
+    }
+
+    sort(result.values, result.values + result.count);
+
+    return result;
+}
+
+IntSet IntSet::operator+(const IntSet &_set) {
+    IntSet result = *this;
+
+    for (int i = 0; i < _set.count; i++) {
+        if (!result.contains(_set.values[i])) {
+            result.values = (int *)realloc(result.values, ++result.count * sizeof(int));
+            result.values[result.count - 1] = _set.values[i];
+        }
+    }
+
+    sort(result.values, result.values + result.count);
+
+    return result;
+}
+int &IntSet::operator[](int index) {
+    if (index >= count || index < 0) {
+        throw out_of_range("index out of bounds!");
+    }
+    return values[index];
+}
+ostream &operator<<(ostream &os, const IntSet &_set) {
+    if (_set.count > 0) {
+        for (int i = 0; i < _set.count; i++) {
+            os << _set.values[i] << " ";
+        }
+    } else
+        cout << "empty set!";
+    return os;
+}
+istream &operator>>(istream &is, IntSet &_set) {
+    _set.clear();
+
+    int n;
+    cout << "number of unique elements: ";
+    is >> n;
+
+    for (int i = 0; i < n; ++i) {
+        int temp;
+        cout << "element: ";
+        is >> temp;
+
+        if (!_set.contains(temp)) {
+            _set.values = (int *)realloc(_set.values, ++_set.count * sizeof(int));
+            _set.values[_set.count - 1] = temp;
+            cout << temp << " added!\n";
+        } else {
+            cout << "duplicate element!, skipping\n";
+        }
+    }
+
+    return is;
 }

@@ -138,3 +138,22 @@
 //     cout << check << "/" << cases << " cases passed." << endl;
 //     return 0;
 // }
+
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    int *i = new int[2];
+    cout << i[0] << '\n';
+    i[0] = 619, i[1] = 916;
+    cout << i[0] << i[1] << '\n';
+    delete[] i;
+    cout << i[0] << '\n';
+    i = new int[1];
+    cout << i[0] << '\n';
+    i[0] = 619;
+    cout << i[0] << i[1] << '\n';
+    
+    return 0;
+}
