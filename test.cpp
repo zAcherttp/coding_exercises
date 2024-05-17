@@ -140,20 +140,63 @@
 // }
 
 #include <iostream>
-
+#define N 100
 using namespace std;
 
 int main() {
-    int *i = new int[2];
-    cout << i[0] << '\n';
-    i[0] = 619, i[1] = 916;
-    cout << i[0] << i[1] << '\n';
-    delete[] i;
-    cout << i[0] << '\n';
-    i = new int[1];
-    cout << i[0] << '\n';
-    i[0] = 619;
-    cout << i[0] << i[1] << '\n';
-    
+    char input[N], cmp[N];
+    cin.getline(input, N);
+    cin.getline(cmp, N);
+
+    char *p1 = input, *p2 = cmp;
+    int size1 = 0, size2 = 0;
+    while (*p1 != '\0') {
+        size1++;
+        p1++;
+    }
+    while (*p2 != '\0') {
+        size2++;
+        p2++;
+    }
+    p1 = input, p2 = cmp;
+
+    bool isEqual = true;
+    bool firstHalf = false;
+    bool lastHalf = false;
+
+    while (lastHalf == false) {
+        cout << "checking '" << *p1 << "' and '" << *p2 << "': ";
+        if (*p2 == '*') {
+            cout << "wildcard!\n";
+            if (firstHalf)
+                lastHalf = true;
+            if (!firstHalf)
+                firstHalf = true;
+
+            p1 = input + size1;
+            p2 = cmp + size2;
+        } else if (*p2 != *p1) {
+            cout << "not equal!\n";
+            isEqual = false;
+            break;
+        } else {
+            cout << "equal!\n";
+        }
+
+        if (!firstHalf) {
+            p1++;
+            p2++;
+        } else {
+            p1--;
+            p2--;
+        }
+
+        if(*p1 == '\0' && *p2 == '\0') {
+            isEqual = true;
+            break;
+        }
+    }
+
+    cout << isEqual;
     return 0;
 }
