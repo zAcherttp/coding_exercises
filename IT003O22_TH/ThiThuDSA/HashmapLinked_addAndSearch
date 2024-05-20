@@ -1,0 +1,67 @@
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct Hashtable {
+    float LOAD;
+    int M;
+    int n;
+    vector<vector<int>> table;
+};
+
+void CreateHashtable(Hashtable &, int, float);
+int Hash(Hashtable, int);
+int Insert(Hashtable&, int);
+void Find(Hashtable&, int, int&);
+
+int main() {
+    Hashtable hashtable;
+    int m, n;
+    float LOAD;
+    cin >> m >> LOAD >> n;
+    CreateHashtable(hashtable, m, LOAD);
+    for (int i = 0; i < n; i++) {
+        int t;
+        cin >> t;
+        Insert(hashtable, t);
+    }
+
+    int nprob, q;
+    cin >> q;
+    for (int i = 0; i < q; i++) {
+        int t;
+        cin >> t;
+        Find(hashtable, t, nprob);
+    }
+    return 0;
+}
+
+void CreateHashtable(Hashtable &ht, int m, float l) {
+    ht.table = vector<vector<int>>(m, vector<int>(0));
+    ht.M = m;
+    ht.LOAD = l;
+    ht.n = 0;
+}
+
+int Hash(Hashtable ht, int maso) {
+    return maso % ht.M;
+}
+
+int Insert(Hashtable &ht, int x) {
+    if (ht.n + 1 <= ht.M * ht.LOAD) {
+        ht.table[Hash(ht, x)].push_back(x);
+        ht.n++;
+        return 1;
+    }
+    return 0;
+}
+
+void Find(Hashtable& ht, int x, int &nprob) {
+    int index = x % ht.M;nprob = 0;
+    //cout << "index = " << x << " % " << ht.M << " = " << index << '\n';
+    if (ht.table[index].size() > 0){while (ht.table[index][nprob] != x && nprob < ht.table[index].size()) {nprob++;}
+    //cout << "size = " << ht.table[index].size() << '\n';
+    if (ht.table[index][nprob] == x)cout << nprob + 1 << '\n';else cout << "KHONG" << '\n';}else cout << "KHONG" << '\n';
+}
