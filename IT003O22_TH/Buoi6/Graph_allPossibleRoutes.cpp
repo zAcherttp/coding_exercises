@@ -41,8 +41,8 @@ int main() {
         }
     }
 
-    for(int v = 1; v < vertice; v++) {
-        if(find(routes.begin(), routes.begin() + routes.size(), v) != routes.end()) {
+    for (int v = 1; v < vertice; v++) {
+        if (find(routes.begin(), routes.begin() + routes.size(), v) != routes.end()) {
             cout << "CO\n";
         } else {
             cout << "KHONG\n";
