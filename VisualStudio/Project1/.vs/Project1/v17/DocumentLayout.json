@@ -1,0 +1,147 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Cplusplus\\VisualStudio\\Project1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{FD7DE908-901F-45FF-BDC8-C1084A4AF91D}|Project1.vcxproj|E:\\Cplusplus\\VisualStudio\\Project1\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{FD7DE908-901F-45FF-BDC8-C1084A4AF91D}|Project1.vcxproj|solutionrelative:Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FD7DE908-901F-45FF-BDC8-C1084A4AF91D}|Project1.vcxproj|E:\\Cplusplus\\VisualStudio\\Project1\\GameGraphics.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{FD7DE908-901F-45FF-BDC8-C1084A4AF91D}|Project1.vcxproj|solutionrelative:GameGraphics.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FD7DE908-901F-45FF-BDC8-C1084A4AF91D}|Project1.vcxproj|E:\\Cplusplus\\VisualStudio\\Project1\\GameGraphics.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{FD7DE908-901F-45FF-BDC8-C1084A4AF91D}|Project1.vcxproj|solutionrelative:GameGraphics.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FD7DE908-901F-45FF-BDC8-C1084A4AF91D}|Project1.vcxproj|E:\\Cplusplus\\VisualStudio\\Project1\\Debug.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{FD7DE908-901F-45FF-BDC8-C1084A4AF91D}|Project1.vcxproj|solutionrelative:Debug.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FD7DE908-901F-45FF-BDC8-C1084A4AF91D}|Project1.vcxproj|E:\\Cplusplus\\VisualStudio\\Project1\\Debug.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{FD7DE908-901F-45FF-BDC8-C1084A4AF91D}|Project1.vcxproj|solutionrelative:Debug.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Main.cpp",
+              "DocumentMoniker": "E:\\Cplusplus\\VisualStudio\\Project1\\Main.cpp",
+              "RelativeDocumentMoniker": "Main.cpp",
+              "ToolTip": "E:\\Cplusplus\\VisualStudio\\Project1\\Main.cpp",
+              "RelativeToolTip": "Main.cpp",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-12T08:41:05.615Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Debug.cpp",
+              "DocumentMoniker": "E:\\Cplusplus\\VisualStudio\\Project1\\Debug.cpp",
+              "RelativeDocumentMoniker": "Debug.cpp",
+              "ToolTip": "E:\\Cplusplus\\VisualStudio\\Project1\\Debug.cpp",
+              "RelativeToolTip": "Debug.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-12T12:12:37.349Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Debug.h",
+              "DocumentMoniker": "E:\\Cplusplus\\VisualStudio\\Project1\\Debug.h",
+              "RelativeDocumentMoniker": "Debug.h",
+              "ToolTip": "E:\\Cplusplus\\VisualStudio\\Project1\\Debug.h",
+              "RelativeToolTip": "Debug.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-01-12T12:10:55.907Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GameGraphics.cpp",
+              "DocumentMoniker": "E:\\Cplusplus\\VisualStudio\\Project1\\GameGraphics.cpp",
+              "RelativeDocumentMoniker": "GameGraphics.cpp",
+              "ToolTip": "E:\\Cplusplus\\VisualStudio\\Project1\\GameGraphics.cpp",
+              "RelativeToolTip": "GameGraphics.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKAAAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-12T08:32:23.521Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GameGraphics.h",
+              "DocumentMoniker": "E:\\Cplusplus\\VisualStudio\\Project1\\GameGraphics.h",
+              "RelativeDocumentMoniker": "GameGraphics.h",
+              "ToolTip": "E:\\Cplusplus\\VisualStudio\\Project1\\GameGraphics.h",
+              "RelativeToolTip": "GameGraphics.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-01-12T08:32:01.471Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 179,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{a80febb4-e7e0-4147-b476-21aaf2453969}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 349,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
