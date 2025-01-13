@@ -3,4 +3,22 @@
 ################################################################################
 
 /.tmp.driveupload
-/IT003O22/LinkedListPolynomial.exe
+/
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.suo
+*.user
+*.ipch
+*.aps
+*.ncb
+*.sdf
+*.opensdf
+*.log
+*.tlog
+*.lastbuildstate
+*.sln.docstates
+*.in
+*.out
