@@ -1,26 +1,56 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+﻿# OS
+Thumbs.db
+.DS_Store
 
-/.tmp.driveupload
-/
-*.exe
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temp
+*.log
+*.tmp
+
+# Rust
+target/
+
+# C/C++ compiled artifacts
+*.o
 *.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
 *.pdb
-*.ilk
 *.idb
-*.suo
-*.user
-*.ipch
+*.ilk
+
+# Visual Studio
+.vs/
+ipch/
+Debug/
+Release/
+x64/
+x86/
+bin/
+obj/
+packages/
 *.aps
 *.ncb
 *.sdf
 *.opensdf
-*.log
+*.suo
+*.user
+*.VC.db
+*.VC.VC.opendb
+*.opendb
 *.tlog
 *.lastbuildstate
 *.sln.docstates
-*.in
-*.out
-*.db
-*.json
+
+# Upload/cache artifacts
+/.tmp.driveupload
