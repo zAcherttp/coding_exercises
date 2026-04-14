@@ -436,7 +436,7 @@ impl Game {
             self.star_effect = None;
         }
 
-        if self.grow_with_time_enabled {
+        if self.star_cheat_enabled && self.grow_with_time_enabled {
             self.grow_with_time_progress += SIMULATION_TICK.as_secs_f32() * GROW_WITH_TIME_PER_SEC;
             let bonus_growth = self.grow_with_time_progress.floor() as usize;
             self.grow_with_time_progress -= bonus_growth as f32;
@@ -699,7 +699,7 @@ impl Game {
     }
 
     fn update_food_magnet(&mut self, now: Instant) {
-        if !self.food_magnet_enabled {
+        if !(self.star_cheat_enabled && self.food_magnet_enabled) {
             for food in &mut self.foods {
                 food.velocity = Vec2::zero();
             }
@@ -755,6 +755,12 @@ impl Game {
             food.position.x += food.velocity.x * dt;
             food.position.y += food.velocity.y * dt;
             food.clamp_position(grid);
+        }
+    }
+
+    fn clear_food_magnet_state(&mut self) {
+        for food in &mut self.foods {
+            food.velocity = Vec2::zero();
         }
     }
 }
@@ -1000,9 +1006,15 @@ fn draw(
         frame.render_widget(body, board);
 
         let hud = format!(
-            "coverage: {:>5.1}% | len: {} | sim: 60hz | render: 60fps{} | q to quit",
+            "coverage: {:>5.1}% | len: {} | speed: {:.1}/s{} | sim: 60hz | render: 60fps{} | q to quit",
             game.coverage() * 100.0,
             game.snake.len(),
+            game.snake_cells_per_second(now),
+            if (game.movement_steps_per_tick(now) - MAX_SNAKE_STEPS_PER_TICK).abs() <= f32::EPSILON {
+                " MAX"
+            } else {
+                ""
+            },
             if let Some(remaining) = game.star_remaining(now) {
                 let stacks = game.effective_star_stacks(now).unwrap_or(0);
                 format!(" | star x{}: {:.1}s", stacks, remaining.as_secs_f32())
@@ -1239,6 +1251,10 @@ fn main() -> io::Result<()> {
                                 }
                                 PauseMenuFocus::StarCheatToggle => {
                                     game.star_cheat_enabled = !game.star_cheat_enabled;
+                                    if !game.star_cheat_enabled {
+                                        game.grow_with_time_progress = 0.0;
+                                        game.clear_food_magnet_state();
+                                    }
                                 }
                                 PauseMenuFocus::StarCheatMinus => {
                                     if game.star_cheat_enabled {
@@ -1257,6 +1273,9 @@ fn main() -> io::Result<()> {
                                 }
                                 PauseMenuFocus::FoodMagnetToggle => {
                                     game.food_magnet_enabled = !game.food_magnet_enabled;
+                                    if !game.food_magnet_enabled {
+                                        game.clear_food_magnet_state();
+                                    }
                                 }
                             },
                             AppMode::Playing => {}
