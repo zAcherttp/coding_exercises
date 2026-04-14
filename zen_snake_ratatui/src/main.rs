@@ -28,7 +28,7 @@ const TUNNEL_DIM: Duration = Duration::from_millis(400);
 const FLASH_DURATION: Duration = Duration::from_millis(200);
 const STAR_DURATION: Duration = Duration::from_secs(6);
 const STAR_SPEED_MULTIPLIER: f32 = 1.0 / 0.72;
-const MAX_SNAKE_CELLS_PER_SECOND: f32 = 14.0;
+const MAX_SNAKE_STEPS_PER_TICK: f32 = 1.0;
 const STAR_RAINBOW_SPAN_DEGREES: f32 = 360.0;
 const STAR_RAINBOW_SCROLL_SEGMENTS_PER_STEP: f32 = 2.0;
 const GROW_WITH_TIME_PER_SEC: f32 = 2.0;
@@ -669,8 +669,7 @@ impl Game {
         if let Some(stacks) = self.effective_star_stacks(now) {
             steps *= STAR_SPEED_MULTIPLIER.powi(stacks as i32);
         }
-        let max_steps_per_tick = MAX_SNAKE_CELLS_PER_SECOND * SIMULATION_TICK.as_secs_f32();
-        steps.min(max_steps_per_tick)
+        steps.min(MAX_SNAKE_STEPS_PER_TICK)
     }
 
     fn star_scroll_segments_at(&self, now: Instant) -> f32 {
