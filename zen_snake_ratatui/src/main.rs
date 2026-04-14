@@ -39,6 +39,10 @@ const FOOD_MAGNET_EXP_FACTOR: f32 = 0.10;
 const FOOD_MAGNET_MAX_SPEED_MULTIPLIER: f32 = 3.0;
 const FOOD_TARGET_COUNT: usize = 6;
 const MAX_FOODS_PER_KIND: usize = 3;
+const MIN_GRID_W: i16 = 12;
+const MIN_GRID_H: i16 = 8;
+const MAX_GRID_W: i16 = 160;
+const MAX_GRID_H: i16 = 90;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 struct Pos {
@@ -908,8 +912,8 @@ fn board_rect(area: Rect) -> Rect {
 
 fn grid_size_from_area(area: Rect) -> (i16, i16) {
     let board = board_rect(area);
-    let grid_w = (board.width.saturating_sub(2) / 2).max(1) as i16;
-    let grid_h = board.height.saturating_sub(2).max(1) as i16;
+    let grid_w = ((board.width.saturating_sub(2) / 2) as i16).clamp(MIN_GRID_W, MAX_GRID_W);
+    let grid_h = ((board.height.saturating_sub(2)) as i16).clamp(MIN_GRID_H, MAX_GRID_H);
     (grid_w, grid_h)
 }
 
