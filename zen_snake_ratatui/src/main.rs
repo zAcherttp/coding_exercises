@@ -22,6 +22,7 @@ use ratatui::{
 const BASE_MOVE_INTERVAL: Duration = Duration::from_millis(100);
 const SIMULATION_TICK: Duration = Duration::from_nanos(16_666_667);
 const RENDER_TICK: Duration = SIMULATION_TICK;
+const RESIZE_RESUME_DEBOUNCE: Duration = Duration::from_secs(1);
 const GHOST_TTL: Duration = Duration::from_secs(5);
 const RIPPLE_PERIOD: Duration = Duration::from_secs(2);
 const TUNNEL_DIM: Duration = Duration::from_millis(400);
@@ -254,12 +255,13 @@ const THEMES: [Theme; 4] = [
 struct Game {
     snake: VecDeque<Pos>,
     dir: Dir,
+    buffered_turn: Option<Dir>,
+    queued_turn: Option<Dir>,
     pending_growth: usize,
     tunnel_dim_until: Option<Instant>,
     flash_until: Option<Instant>,
     foods: Vec<Food>,
     particles: Vec<Particle>,
-    dir_queue: VecDeque<Dir>,
     paint_cells: HashSet<Pos>,
     theme_index: usize,
     theme_brightness_steps: u8,
@@ -296,12 +298,13 @@ impl Game {
         let mut game = Self {
             snake,
             dir: Dir::Right,
+            buffered_turn: None,
+            queued_turn: None,
             pending_growth: 0,
             tunnel_dim_until: None,
             flash_until: None,
             foods: Vec::new(),
             particles: Vec::new(),
-            dir_queue: VecDeque::new(),
             paint_cells: HashSet::new(),
             theme_index: 0,
             theme_brightness_steps: 0,
@@ -425,10 +428,30 @@ impl Game {
     }
 
     fn push_dir(&mut self, dir: Dir) {
-        if self.dir_queue.back().is_some_and(|d| *d == dir) {
+        if !Self::can_turn_from(self.dir, dir) && self.buffered_turn.is_none() {
             return;
         }
-        self.dir_queue.push_back(dir);
+
+        match self.buffered_turn {
+            None => {
+                if Self::can_turn_from(self.dir, dir) {
+                    self.buffered_turn = Some(dir);
+                }
+            }
+            Some(buffered) => {
+                if Self::can_turn_from(self.dir, dir) {
+                    self.buffered_turn = Some(dir);
+                    if self
+                        .queued_turn
+                        .is_some_and(|queued| !Self::can_turn_from(dir, queued))
+                    {
+                        self.queued_turn = None;
+                    }
+                } else if Self::can_turn_from(buffered, dir) {
+                    self.queued_turn = Some(dir);
+                }
+            }
+        }
     }
 
     fn update(&mut self, now: Instant) {
@@ -455,16 +478,6 @@ impl Game {
             self.turn_timestamps.pop_front();
         }
 
-        if let Some(next_dir) = self.dir_queue.pop_front()
-            && !self.dir.opposite(next_dir)
-        {
-            self.dir = next_dir;
-            self.turn_timestamps.push_back(now);
-            if let Some(head) = self.snake.front().copied() {
-                self.spawn_ghost(head, now + GHOST_TTL);
-            }
-        }
-
         self.agitation = (self.turn_timestamps.len() as f32 / 4.0).min(2.5);
         self.movement_progress += self.movement_steps_per_tick(now);
         let steps = self.movement_progress.floor() as usize;
@@ -483,6 +496,7 @@ impl Game {
     }
 
     fn step_snake(&mut self, now: Instant) -> bool {
+        self.consume_buffered_turn(now);
         let old_head = self.snake.front().copied().expect("snake has head");
         let mut new_head = self.dir.step(old_head);
 
@@ -556,6 +570,8 @@ impl Game {
             x: w / 2 - 2,
             y: h / 2,
         });
+        self.buffered_turn = None;
+        self.queued_turn = None;
         self.pending_growth = 0;
         self.dir = Dir::Right;
         self.theme_brightness_steps = self.theme_brightness_steps.saturating_add(1);
@@ -762,6 +778,29 @@ impl Game {
         for food in &mut self.foods {
             food.velocity = Vec2::zero();
         }
+    }
+
+    fn can_turn_from(base: Dir, candidate: Dir) -> bool {
+        candidate != base && !base.opposite(candidate)
+    }
+
+    fn consume_buffered_turn(&mut self, now: Instant) {
+        let Some(next_dir) = self.buffered_turn.take() else {
+            return;
+        };
+
+        if Self::can_turn_from(self.dir, next_dir) {
+            self.dir = next_dir;
+            self.turn_timestamps.push_back(now);
+            if let Some(head) = self.snake.front().copied() {
+                self.spawn_ghost(head, now + GHOST_TTL);
+            }
+        }
+
+        self.buffered_turn = self
+            .queued_turn
+            .take()
+            .filter(|queued| Self::can_turn_from(self.dir, *queued));
     }
 }
 
@@ -1170,6 +1209,7 @@ fn main() -> io::Result<()> {
     let mut mode = AppMode::StartMenu;
     let mut start_menu_selection = 0usize;
     let mut pause_focus = PauseMenuFocus::Resume;
+    let mut resize_resume_at: Option<Instant> = None;
 
     let start = Instant::now();
     let mut last_update = start;
@@ -1288,6 +1328,7 @@ fn main() -> io::Result<()> {
                         let terminal_area = Rect::new(0, 0, size.width, size.height);
                         let (grid_w, grid_h) = grid_size_from_area(terminal_area);
                         game.resize(grid_w, grid_h);
+                        resize_resume_at = Some(Instant::now() + RESIZE_RESUME_DEBOUNCE);
                     }
                     _ => {}
                 }
@@ -1295,12 +1336,17 @@ fn main() -> io::Result<()> {
         }
 
         let now = Instant::now();
-        while mode == AppMode::Playing && now.duration_since(last_update) >= SIMULATION_TICK {
+        if resize_resume_at.is_some_and(|resume_at| now >= resume_at) {
+            resize_resume_at = None;
+        }
+
+        let can_update = mode == AppMode::Playing && resize_resume_at.is_none();
+        while can_update && now.duration_since(last_update) >= SIMULATION_TICK {
             last_update += SIMULATION_TICK;
             game.update(last_update);
         }
 
-        if mode != AppMode::Playing {
+        if mode != AppMode::Playing || resize_resume_at.is_some() {
             last_update = now;
         }
 
