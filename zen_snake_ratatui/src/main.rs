@@ -24,8 +24,6 @@ const MIN_TICK: Duration = Duration::from_millis(85);
 const GHOST_TTL: Duration = Duration::from_secs(5);
 const RIPPLE_PERIOD: Duration = Duration::from_secs(2);
 const TUNNEL_DIM: Duration = Duration::from_millis(400);
-const INERTIA_DURATION: Duration = Duration::from_secs(15);
-const INERTIA_TURN_EVERY: u8 = 10;
 const FLASH_DURATION: Duration = Duration::from_millis(200);
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
@@ -61,22 +59,12 @@ impl Dir {
             Dir::Right => Pos { x: pos.x + 1, y: pos.y },
         }
     }
-
-    fn rotate_clockwise(self) -> Dir {
-        match self {
-            Dir::Up => Dir::Right,
-            Dir::Right => Dir::Down,
-            Dir::Down => Dir::Left,
-            Dir::Left => Dir::Up,
-        }
-    }
 }
 
 #[derive(Clone, Copy)]
 enum FoodKind {
     RippleSeed,
     PrismPetal,
-    InertiaFruit,
 }
 
 #[derive(Clone, Copy)]
@@ -115,11 +103,6 @@ const THEMES: [Theme; 4] = [
     Theme { bg: Color::Black, fg: Color::White, accent: Color::Gray },
 ];
 
-struct AutoCurve {
-    until: Instant,
-    tiles_since_turn: u8,
-}
-
 struct Game {
     snake: VecDeque<Pos>,
     dir: Dir,
@@ -132,11 +115,9 @@ struct Game {
     paint_cells: HashSet<Pos>,
     theme_index: usize,
     theme_brightness_steps: u8,
-    inertia: Option<AutoCurve>,
     agitation: f32,
     turn_timestamps: VecDeque<Instant>,
     terminal_grid: (i16, i16),
-    last_turn_pos: Option<Pos>,
 }
 
 impl Game {
@@ -158,11 +139,9 @@ impl Game {
             paint_cells: HashSet::new(),
             theme_index: 0,
             theme_brightness_steps: 0,
-            inertia: None,
             agitation: 0.0,
             turn_timestamps: VecDeque::new(),
             terminal_grid: (grid_w, grid_h),
-            last_turn_pos: None,
         };
         game.spawn_foods();
         game
@@ -173,8 +152,7 @@ impl Game {
             if let Some(pos) = self.random_empty_cell() {
                 let kind = match self.foods.len() {
                     0 => FoodKind::RippleSeed,
-                    1 => FoodKind::PrismPetal,
-                    _ => FoodKind::InertiaFruit,
+                    _ => FoodKind::PrismPetal,
                 };
                 self.foods.push(Food {
                     pos,
@@ -214,21 +192,6 @@ impl Game {
             self.turn_timestamps.pop_front();
         }
 
-        if let Some(curve) = self.inertia.as_mut() {
-            if now >= curve.until {
-                self.inertia = None;
-            } else {
-                curve.tiles_since_turn = curve.tiles_since_turn.saturating_add(1);
-                if curve.tiles_since_turn >= INERTIA_TURN_EVERY {
-                    curve.tiles_since_turn = 0;
-                    self.dir = self.dir.rotate_clockwise();
-                    if let Some(head) = self.snake.front().copied() {
-                        self.spawn_ghost(head, now + GHOST_TTL);
-                    }
-                }
-            }
-        }
-
         if let Some(next_dir) = self.dir_queue.pop_front()
             && !self.dir.opposite(next_dir)
         {
@@ -236,7 +199,6 @@ impl Game {
             self.turn_timestamps.push_back(now);
             if let Some(head) = self.snake.front().copied() {
                 self.spawn_ghost(head, now + GHOST_TTL);
-                self.last_turn_pos = Some(head);
             }
         }
 
@@ -309,7 +271,6 @@ impl Game {
         self.pending_growth = 0;
         self.dir = Dir::Right;
         self.theme_brightness_steps = self.theme_brightness_steps.saturating_add(1);
-        self.inertia = None;
     }
 
     fn consume_food(&mut self, now: Instant) {
@@ -327,12 +288,6 @@ impl Game {
                 }
                 FoodKind::PrismPetal => {
                     self.theme_index = (self.theme_index + 1) % THEMES.len();
-                }
-                FoodKind::InertiaFruit => {
-                    self.inertia = Some(AutoCurve {
-                        until: now + INERTIA_DURATION,
-                        tiles_since_turn: 0,
-                    });
                 }
             }
         }
@@ -396,11 +351,30 @@ fn brighten(color: Color, steps: u8) -> Color {
     }
 }
 
-fn clamp_to_grid(p: Pos, w: i16, h: i16) -> Option<Pos> {
+fn clamp_to_grid(p: Pos, w: i16, h: i16) -> Option<(usize, usize)> {
     if p.x >= 0 && p.y >= 0 && p.x < w && p.y < h {
-        Some(p)
+        Some((p.x as usize * 2, p.y as usize))
     } else {
         None
+    }
+}
+
+fn paint_double_cell(
+    grid: &mut [Vec<char>],
+    styles: &mut [Vec<Style>],
+    pos: Pos,
+    w: i16,
+    h: i16,
+    glyphs: [char; 2],
+    style: Style,
+) {
+    if let Some((x, y)) = clamp_to_grid(pos, w, h) {
+        for (offset, glyph) in glyphs.into_iter().enumerate() {
+            if x + offset < grid[y].len() {
+                grid[y][x + offset] = glyph;
+                styles[y][x + offset] = style;
+            }
+        }
     }
 }
 
@@ -415,66 +389,85 @@ fn draw(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>, game: &Game) -> i
         };
 
         let theme = game.theme();
-        let width = play.width as i16;
+        let width = (play.width / 2) as i16;
         let height = play.height as i16;
 
-        let mut grid = vec![vec![' '; width as usize]; height as usize];
-        let mut styles = vec![vec![Style::default().fg(theme.fg).bg(theme.bg); width as usize]; height as usize];
+        let mut grid = vec![vec![' '; play.width as usize]; height as usize];
+        let mut styles = vec![vec![Style::default().fg(theme.fg).bg(theme.bg); play.width as usize]; height as usize];
 
         for p in &game.paint_cells {
-            if let Some(c) = clamp_to_grid(*p, width, height) {
-                styles[c.y as usize][c.x as usize] = Style::default().bg(theme.bg).fg(theme.fg);
-                grid[c.y as usize][c.x as usize] = '·';
-            }
+            paint_double_cell(
+                &mut grid,
+                &mut styles,
+                *p,
+                width,
+                height,
+                ['.', '.'],
+                Style::default().bg(theme.bg).fg(theme.fg),
+            );
         }
 
         for particle in &game.particles {
-            if let Some(c) = clamp_to_grid(particle.pos, width, height) {
-                grid[c.y as usize][c.x as usize] = particle.glyph;
-                let color = match particle.kind {
-                    ParticleKind::Ghost => Color::DarkGray,
-                    ParticleKind::Spark => theme.accent,
-                    ParticleKind::Ripple => Color::Blue,
-                };
-                styles[c.y as usize][c.x as usize] = Style::default().fg(color).bg(theme.bg);
-            }
+            let color = match particle.kind {
+                ParticleKind::Ghost => Color::DarkGray,
+                ParticleKind::Spark => theme.accent,
+                ParticleKind::Ripple => Color::Blue,
+            };
+            paint_double_cell(
+                &mut grid,
+                &mut styles,
+                particle.pos,
+                width,
+                height,
+                [particle.glyph, particle.glyph],
+                Style::default().fg(color).bg(theme.bg),
+            );
         }
 
         for food in &game.foods {
-            if let Some(c) = clamp_to_grid(food.pos, width, height) {
-                let (glyph, color) = match food.kind {
-                    FoodKind::RippleSeed => ('◎', Color::LightBlue),
-                    FoodKind::PrismPetal => ('✶', Color::LightMagenta),
-                    FoodKind::InertiaFruit => ('◆', Color::LightYellow),
-                };
-                grid[c.y as usize][c.x as usize] = glyph;
-                styles[c.y as usize][c.x as usize] = Style::default().fg(color).bg(theme.bg).add_modifier(Modifier::BOLD);
-            }
+            let (glyph, color) = match food.kind {
+                FoodKind::RippleSeed => ('◎', Color::LightBlue),
+                FoodKind::PrismPetal => ('✶', Color::LightMagenta),
+            };
+            paint_double_cell(
+                &mut grid,
+                &mut styles,
+                food.pos,
+                width,
+                height,
+                [glyph, glyph],
+                Style::default().fg(color).bg(theme.bg).add_modifier(Modifier::BOLD),
+            );
         }
 
         let flash_all_solid = game.flash_until.is_some_and(|t| Instant::now() < t);
         for (i, seg) in game.snake.iter().enumerate() {
-            if let Some(c) = clamp_to_grid(*seg, width, height) {
-                let glyph = if flash_all_solid {
-                    '█'
-                } else if i <= 3 {
-                    '█'
-                } else if i <= 8 {
-                    '▓'
-                } else if i <= 14 {
-                    '▒'
-                } else {
-                    '░'
-                };
+            let glyphs = if flash_all_solid {
+                ['█', '█']
+            } else if i <= 3 {
+                ['█', '█']
+            } else if i <= 8 {
+                ['▓', '▓']
+            } else if i <= 14 {
+                ['▒', '▒']
+            } else {
+                ['░', '░']
+            };
 
-                let mut snake_color = theme.fg;
-                if game.tunnel_dim_until.is_some_and(|t| Instant::now() < t) {
-                    snake_color = Color::DarkGray;
-                }
-
-                grid[c.y as usize][c.x as usize] = glyph;
-                styles[c.y as usize][c.x as usize] = Style::default().fg(snake_color).bg(theme.bg);
+            let mut snake_color = theme.fg;
+            if game.tunnel_dim_until.is_some_and(|t| Instant::now() < t) {
+                snake_color = Color::DarkGray;
             }
+
+            paint_double_cell(
+                &mut grid,
+                &mut styles,
+                *seg,
+                width,
+                height,
+                glyphs,
+                Style::default().fg(snake_color).bg(theme.bg),
+            );
         }
 
         let lines: Vec<Line> = grid
@@ -493,13 +486,11 @@ fn draw(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>, game: &Game) -> i
         let body = Paragraph::new(lines).block(Block::default().borders(Borders::ALL).title("Zen Snake"));
         frame.render_widget(body, play);
 
-        let inertia = if game.inertia.is_some() { "ON" } else { "OFF" };
         let hud = format!(
-            "coverage: {:>5.1}% | len: {} | tick: {}ms | inertia: {} | q to quit",
+            "coverage: {:>5.1}% | len: {} | tick: {}ms | q to quit",
             game.coverage() * 100.0,
             game.snake.len(),
-            game.current_tick().as_millis(),
-            inertia
+            game.current_tick().as_millis()
         );
         let hud_widget = Paragraph::new(hud).style(Style::default().fg(theme.accent).bg(theme.bg));
         frame.render_widget(hud_widget, Rect::new(0, area.height.saturating_sub(1), area.width, 1));
@@ -515,7 +506,7 @@ fn main() -> io::Result<()> {
     let mut terminal = Terminal::new(backend)?;
 
     let size = terminal.size()?;
-    let mut game = Game::new(size.width.saturating_sub(2) as i16, size.height.saturating_sub(4) as i16);
+    let mut game = Game::new((size.width.saturating_sub(2) / 2) as i16, size.height.saturating_sub(4) as i16);
 
     let mut last_update = Instant::now();
 
