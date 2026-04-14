@@ -1,5 +1,0 @@
-E:\Cplusplus\VisualStudio\Project1\x64\Debug\D3DCompiler_43.dll
-E:\Cplusplus\VisualStudio\Project1\x64\Debug\d3dx9d_43.dll
-E:\Cplusplus\VisualStudio\Project1\x64\Debug\d3dx10d_43.dll
-E:\Cplusplus\VisualStudio\Project1\x64\Debug\d3dx11d_43.dll
-E:\Cplusplus\VisualStudio\Project1\Project1\x64\Debug\Project1.vcxproj.Up2Date
