@@ -28,6 +28,7 @@ target/
 *.pdb
 *.idb
 *.ilk
+fortran/*.mod
 
 # Visual Studio
 .vs/
